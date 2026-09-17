@@ -26,3 +26,24 @@ token.txt
 users.txt
 token
 application.properties
+
+# --- LIXO DA IDE (Eclipse) ---
+.settings/
+.externalToolBuilders/
+.classpath
+.factorypath
+.project
+.sdkmanrc
+
+# --- DADOS LOCAIS ---
+users.txt
+token
+token.txt
+.env
+
+# --- BUILD ---
+bin/installer/
+target/
+out/
+*.jar
+*.msi
