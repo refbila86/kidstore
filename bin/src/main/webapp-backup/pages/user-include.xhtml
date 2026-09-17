@@ -1,0 +1,322 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:form id="formUserInclude" styleClass="user-container p-fluid">
+
+        <style>
+            .user-container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 2rem 1rem;
+                animation: fadeIn 0.5s ease-out;
+            }
+
+            .user-header {
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                border-radius: 20px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+                color: white;
+            }
+
+            .header-content {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .header-icon {
+                font-size: 2.8rem;
+            }
+
+            .header-text h1 {
+                margin: 0;
+                font-size: 1.8rem;
+                font-weight: 700;
+            }
+
+            .header-text p {
+                margin: 0.5rem 0 0;
+                font-size: 1rem;
+                opacity: 0.95;
+            }
+
+            .user-card {
+                background: white;
+                border-radius: 20px;
+                padding: 2rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                border: 1px solid #dbeafe;
+            }
+
+            .section-title {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: #1e3a8a;
+                margin: 0 0 1.5rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 2px solid #dbeafe;
+            }
+
+            .section-title:not(:first-child) {
+                margin-top: 2rem;
+            }
+
+            .info-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1.25rem;
+            }
+
+            .info-item {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .info-item.full-width {
+                grid-column: 1 / -1;
+            }
+
+            .info-label {
+                font-weight: 600;
+                color: #1e40af;
+                font-size: 0.95rem;
+            }
+
+            .checkbox-item {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                height: 100%;
+                padding-top: 1.8rem;
+            }
+
+            .user-container .ui-inputfield,
+            .user-container .ui-selectonemenu {
+                width: 100%;
+                border-radius: 12px !important;
+                border: 2px solid #dbeafe !important;
+                transition: all 0.3s ease !important;
+            }
+
+            .user-container .ui-inputfield:focus,
+            .user-container .ui-selectonemenu:focus {
+                border-color: #2563eb !important;
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10) !important;
+            }
+
+            .user-container .ui-inputfield[readonly] {
+                background: #f1f5f9 !important;
+                border-color: #cbd5e1 !important;
+                color: #64748b !important;
+                cursor: not-allowed;
+            }
+
+            .form-divider {
+                margin: 2rem 0;
+                border: 0;
+                border-top: 1px solid #dbeafe;
+            }
+
+            .button-group {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .btn-cancel {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                background: #f8fafc !important;
+                border: 2px solid #cbd5e1 !important;
+                color: #475569 !important;
+            }
+
+            .btn-next {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                font-weight: 700 !important;
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+                border: none !important;
+                color: white !important;
+            }
+
+            .btn-next:hover {
+                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.30) !important;
+                transform: translateY(-1px);
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @media (max-width: 768px) {
+                .user-container {
+                    padding: 1rem 0.5rem;
+                }
+
+                .user-header,
+                .user-card {
+                    padding: 1.5rem;
+                }
+
+                .info-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .checkbox-item {
+                    padding-top: 0.5rem;
+                }
+
+                .button-group {
+                    flex-direction: column;
+                }
+
+                .button-group .ui-button {
+                    width: 100%;
+                }
+            }
+        </style>
+
+        <p:messages id="msgs" showDetail="true" closable="true" />
+
+        <!-- Cabeçalho -->
+        <div class="user-header">
+            <div class="header-content">
+                <div class="header-icon">
+                    <i class="pi pi-user-plus"></i>
+                </div>
+
+                <div class="header-text">
+                    <h1>#{userBean.editMode ? 'Editar Utilizador' : 'Cadastro de Utilizador'}</h1>
+                    <p>Preencha os dados abaixo para cadastrar um novo utilizador no sistema.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário -->
+        <div class="user-card">
+
+            <!-- Informações do Utilizador -->
+            <h3 class="section-title">
+                <i class="pi pi-user"></i>
+                Informações do Utilizador
+            </h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <h:outputLabel value="Nome Completo" styleClass="info-label" for="fullName" />
+                    <p:inputText id="fullName"
+                        value="#{userBean.itemUser.fullName}"
+                        required="true"
+                        requiredMessage="Informe o nome completo"
+                        placeholder="Digite o nome completo" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputLabel value="Username" styleClass="info-label" for="username" />
+                    <p:inputText id="username"
+                        value="#{userBean.itemUser.username}"
+                        required="true"
+                        maxlength="50"
+                        requiredMessage="Informe o username"
+                        placeholder="Digite o nome de utilizador" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputLabel value="Email" styleClass="info-label" for="email" />
+                    <p:inputText id="email"
+                        value="#{userBean.itemUser.email}"
+                        required="true"
+                        maxlength="100"
+                        requiredMessage="Informe o email"
+                        placeholder="exemplo@dominio.com" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputLabel value="Password" styleClass="info-label" for="password" />
+                    <p:password id="password"
+                        value="#{userBean.itemUser.password}"
+                        required="true"
+                        feedback="false"
+                        toggleMask="true"
+                        requiredMessage="Informe a senha"
+                        placeholder="••••••••" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputLabel value="Perfil" styleClass="info-label" for="role" />
+                    <p:selectOneMenu id="role" value="#{userBean.itemUser.role}" required="true">
+                        <f:selectItem itemLabel="Selecione o perfil..." itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{userBean.userRoles}" var="r" itemLabel="#{r}" itemValue="#{r}" />
+                    </p:selectOneMenu>
+                </div>
+
+                <div class="checkbox-item">
+                    <p:selectBooleanCheckbox id="active" value="#{userBean.itemUser.active}" />
+                    <h:outputLabel value="Utilizador Ativo" styleClass="info-label" for="active" style="margin: 0; cursor: pointer;" />
+                </div>
+            </div>
+
+            <!-- Histórico e Sistema -->
+            <h3 class="section-title">
+                <i class="pi pi-clock"></i>
+                Histórico do Sistema
+            </h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <h:outputLabel value="Criado em" styleClass="info-label" for="createdAt" />
+                    <p:inputText id="createdAt"
+                        value="#{userBean.itemUser.createdAt}"
+                        readonly="true" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputLabel value="Último Login" styleClass="info-label" for="lastLogin" />
+                    <p:inputText id="lastLogin"
+                        value="#{userBean.itemUser.lastLogin}"
+                        readonly="true" />
+                </div>
+            </div>
+
+            <hr class="form-divider" />
+
+            <!-- Botões -->
+            <div class="button-group">
+                <p:commandButton value="Cancelar"
+                    icon="pi pi-times"
+                    action="#{dashboardBean.cancelUserInclude}"
+                    update=":mainForm:mainContent"
+                    process="@this"
+                    styleClass="btn-cancel" />
+
+                <p:commandButton value="Próximo"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                    actionListener="#{dashboardBean.loadUserConfirm}"
+                    process="@form"
+                    update=":mainForm:mainContent"
+                    styleClass="btn-next" />
+            </div>
+
+        </div>
+
+    </h:form>
+</ui:composition>

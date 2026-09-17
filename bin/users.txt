@@ -1,0 +1,10 @@
+INSERT INTO users
+    (active, created_at, created_by, email, full_name, last_login, password, role, username)
+VALUES
+    (1, NOW(), 'SYSTEM', 'admin@empresa.com', 'Administrador do Sistema', NULL, '123456', 'ADMIN', 'admin'),
+
+    (1, NOW(), 'SYSTEM', 'caixa@empresa.com', 'Caixa Principal', NULL, '123456', 'CAIXA', 'caixa'),
+
+    (1, NOW(), 'SYSTEM', 'gerente@empresa.com', 'Gerente da Loja', NULL, '123456', 'GERENTE', 'gerente'),
+
+    (1, NOW(), 'SYSTEM', 'vendedor@empresa.com', 'Vendedor Principal', NULL, '123456', 'VENDEDOR', 'vendedor');

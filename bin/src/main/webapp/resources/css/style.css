@@ -1,0 +1,63 @@
+/* ======== Layout principal ======== */
+.layout-wrapper {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: 60px 1fr;
+    grid-template-areas:
+        "header header"
+        "sidebar content";
+    height: 100vh;
+    background-color: #f7f8fa;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.header {
+    grid-area: header;
+    background-color: #007ad9;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+.sidebar {
+    grid-area: sidebar;
+    background-color: #2f4050;
+    padding: 15px;
+    color: #fff;
+}
+
+.menu .ui-menuitem-link {
+    color: #fff !important;
+}
+
+.menu .ui-menuitem-link:hover {
+    background-color: #007ad9 !important;
+}
+
+.content {
+    grid-area: content;
+    padding: 25px;
+    background-color: #fff;
+    border-top-left-radius: 15px;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+/* ======== Formulários ======== */
+.form-grid {
+    width: 100%;
+}
+
+.form-grid .ui-inputfield {
+    width: 100% !important;
+}
+
+/* ======== Botões ======== */
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}

@@ -1,0 +1,386 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<h:form id="formCashier" styleClass="p-fluid">
+
+		<style>
+/* Container Principal */
+.cashier-page {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 2rem 1rem;
+}
+
+/* Cabeçalho da Página */
+.page-header {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	border-radius: 20px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+	color: white;
+}
+
+.header-content {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.header-icon {
+	font-size: 3rem;
+	animation: pulse 2s ease-in-out infinite;
+}
+
+@
+keyframes pulse { 0%, 100% {
+	transform: scale(1);
+}
+
+50
+
+
+%
+{
+transform
+
+
+:
+
+
+scale
+(
+
+
+1
+.1
+
+
+)
+;
+
+
+}
+}
+.header-text h1 {
+	margin: 0;
+	font-size: 1.8rem;
+	font-weight: 700;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-text p {
+	margin: 0.5rem 0 0 0;
+	font-size: 1rem;
+	opacity: 0.95;
+}
+
+/* Card de Seleção */
+.selection-card {
+	background: white;
+	border-radius: 20px;
+	padding: 2.5rem;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	transition: all 0.3s ease;
+}
+
+.selection-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card-title {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 2rem;
+	font-size: 1.3rem;
+	font-weight: 600;
+	color: #2d3748;
+}
+
+.card-title-icon {
+	font-size: 1.5rem;
+}
+
+/* Campo de Seleção */
+.field-group {
+	margin-bottom: 2rem;
+}
+
+.field-label {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-weight: 600;
+	color: #4a5568;
+	margin-bottom: 0.75rem;
+	font-size: 0.95rem;
+}
+
+.label-icon {
+	font-size: 1.2rem;
+}
+
+.ui-selectonemenu {
+	border-radius: 12px !important;
+	border: 2px solid #e2e8f0 !important;
+	padding: 0.75rem !important;
+	font-size: 1rem !important;
+	transition: all 0.3s ease !important;
+}
+
+.ui-selectonemenu:hover {
+	border-color: #cbd5e0 !important;
+}
+
+.ui-selectonemenu:focus {
+	border-color: #667eea !important;
+	box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+/* Info Box */
+.info-box {
+	background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
+	border-left: 4px solid #667eea;
+	border-radius: 12px;
+	padding: 1rem 1.25rem;
+	margin-bottom: 2rem;
+	display: flex;
+	align-items: start;
+	gap: 0.75rem;
+}
+
+.info-icon {
+	font-size: 1.5rem;
+	margin-top: 0.1rem;
+}
+
+.info-text {
+	color: #4a5568;
+	line-height: 1.6;
+	font-size: 0.9rem;
+}
+
+/* Botão de Ação */
+.action-button-wrapper {
+	margin-top: 2rem;
+}
+
+.btn-next {
+	width: 100%;
+	font-weight: 700;
+	padding: 1rem 2rem;
+	border-radius: 12px;
+	font-size: 1.1rem;
+	background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+	border: none;
+	color: white;
+	transition: all 0.3s ease;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.75rem;
+}
+
+.btn-next:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+	background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+.btn-next:active {
+	transform: translateY(0);
+}
+
+.btn-icon {
+	font-size: 1.2rem;
+	animation: slideRight 1.5s ease-in-out infinite;
+}
+
+@
+keyframes slideRight { 0%, 100% {
+	transform: translateX(0);
+}
+
+50
+
+
+%
+{
+transform
+
+
+:
+
+
+translateX
+(
+
+
+5px
+
+
+)
+;
+
+
+}
+}
+
+/* Stats Preview */
+.stats-preview {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 1rem;
+	margin-top: 1.5rem;
+	padding-top: 1.5rem;
+	border-top: 1px solid #e2e8f0;
+}
+
+.stat-item {
+	text-align: center;
+	padding: 1rem;
+	background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+	border-radius: 12px;
+	transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+	transform: translateY(-2px);
+	background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+}
+
+.stat-icon {
+	font-size: 2rem;
+	margin-bottom: 0.5rem;
+}
+
+.stat-label {
+	font-size: 0.85rem;
+	color: #718096;
+	margin-bottom: 0.25rem;
+}
+
+.stat-value {
+	font-size: 1.2rem;
+	font-weight: 700;
+	color: #2d3748;
+}
+
+/* Loading State */
+.ui-state-loading {
+	opacity: 0.6;
+	pointer-events: none;
+}
+
+/* Responsive */
+@media ( max-width : 768px) {
+	.cashier-page {
+		padding: 1rem 0.5rem;
+	}
+	.page-header {
+		padding: 1.5rem;
+	}
+	.header-text h1 {
+		font-size: 1.4rem;
+	}
+	.selection-card {
+		padding: 1.5rem;
+	}
+	.stats-preview {
+		grid-template-columns: 1fr;
+	}
+}
+</style>
+
+		<div class="cashier-page">
+
+			<!-- Cabeçalho da Página -->
+			<div class="page-header">
+				<div class="header-content">
+					<div class="header-icon">💰</div>
+					<div class="header-text">
+						<h1>Caixa do Dia</h1>
+						<p>Selecione a data para visualizar as vendas realizadas</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Card de Seleção -->
+			<div class="selection-card">
+
+				<div class="card-title">
+					<span class="card-title-icon">📅</span> <span>Seleção de
+						Data de Venda</span>
+				</div>
+
+				<!-- Info Box -->
+				<div class="info-box">
+					<span class="info-icon">ℹ️</span>
+					<div class="info-text">Escolha uma das datas disponíveis
+						abaixo para visualizar todas as vendas realizadas naquele dia.</div>
+				</div>
+
+				<!-- Campo de Seleção -->
+				<div class="field-group">
+					<p:outputLabel value="Datas de Vendas Abertas:"
+						styleClass="field-label">
+						<span class="label-icon">🗓️</span>
+					</p:outputLabel>
+
+					<p:selectOneMenu value="#{cashierBean.selectedDate}"
+						style="width:100%" required="true"
+						requiredMessage="Por favor, selecione uma data">
+
+						<!-- Conversor de data para o valor do bean -->
+						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="Africa/Maputo" />
+
+						<!-- Opção nula padrão -->
+						<f:selectItem itemLabel="Selecione uma data..."
+							itemValue="#{null}" noSelectionOption="true" />
+
+						<!-- Lista de datas formatadas -->
+						<f:selectItems value="#{cashierBean.uniqueDatesAsDate}" var="d"
+							itemLabel="#{cashierBean.formatDate(d)}" itemValue="#{d}" />
+					</p:selectOneMenu>
+
+				</div>
+
+				<!-- Stats Preview (opcional - pode ser removido se não tiver dados) -->
+				<div class="stats-preview"
+					style="display: #{cashierBean.uniqueDatesAsDate.size() > 0 ? 'grid' : 'none'}">
+					<div class="stat-item">
+						<div class="stat-icon">📊</div>
+						<div class="stat-label">Datas Disponíveis</div>
+						<div class="stat-value">
+							<h:outputText value="#{cashierBean.uniqueDatesAsDate.size()}" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Botão de Ação -->
+				<div class="action-button-wrapper">
+					<p:commandButton value="Visualizar Vendas do Dia"
+						icon="pi pi-arrow-right" iconPos="right"
+						actionListener="#{cashierBean.loadSalesBySelectedDate}"
+						action="#{dashboardBean.loadCashierIncludeTwo}" process="@form"
+						update=":mainForm:mainContent" styleClass="btn-next"
+						validateClient="true">
+						<span class="btn-icon">→</span>
+					</p:commandButton>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Mensagens de Validação -->
+		<p:messages id="messages" showDetail="false" closable="true" />
+
+	</h:form>
+</ui:composition>

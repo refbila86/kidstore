@@ -1,0 +1,295 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<h:form id="formProductView" styleClass="product-container p-fluid">
+
+		<style>
+.product-container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 2rem 1rem;
+	animation: fadeIn 0.5s ease-out;
+}
+
+.product-header {
+	background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+	border-radius: 20px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+	color: white;
+}
+
+.header-content {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.header-icon {
+	font-size: 2.8rem;
+}
+
+.header-text h1 {
+	margin: 0;
+	font-size: 1.8rem;
+	font-weight: 700;
+}
+
+.header-text p {
+	margin: 0.5rem 0 0;
+	font-size: 1rem;
+	opacity: 0.95;
+}
+
+.product-card {
+	background: white;
+	border-radius: 20px;
+	padding: 2rem;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	border: 1px solid #dbeafe;
+}
+
+.section-title {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #1e3a8a;
+	margin: 0 0 1.5rem;
+	padding-bottom: 0.75rem;
+	border-bottom: 2px solid #dbeafe;
+}
+
+.section-title:not(:first-child) {
+	margin-top: 2rem;
+}
+
+.info-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1.25rem;
+}
+
+.info-grid.three-columns {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.info-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.info-item.full-width {
+	grid-column: 1/-1;
+}
+
+.info-label {
+	font-weight: 600;
+	color: #1e40af;
+	font-size: 0.95rem;
+}
+
+.info-value-box {
+	background-color: #f8fafc;
+	border: 2px solid #dbeafe;
+	border-radius: 12px;
+	padding: 0.75rem 1rem;
+	color: #1e293b;
+	font-size: 1rem;
+	min-height: 48px;
+	display: flex;
+	align-items: center;
+}
+
+.form-divider {
+	margin: 2rem 0;
+	border: 0;
+	border-top: 1px solid #dbeafe;
+}
+
+.button-group {
+	display: flex;
+	justify-content: flex-start;
+	gap: 1rem;
+	margin-top: 1.5rem;
+}
+
+.btn-cancel {
+	border-radius: 12px !important;
+	padding: 0.8rem 2rem !important;
+	background: #f8fafc !important;
+	border: 2px solid #cbd5e1 !important;
+	color: #475569 !important;
+}
+
+@
+keyframes fadeIn {from { opacity:0;
+	transform: translateY(20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+@media ( max-width : 768px) {
+	.product-container {
+		padding: 1rem 0.5rem;
+	}
+	.product-header, .product-card {
+		padding: 1.5rem;
+	}
+	.info-grid, .info-grid.three-columns {
+		grid-template-columns: 1fr;
+	}
+	.button-group .ui-button {
+		width: 100%;
+	}
+}
+</style>
+
+		<!-- Cabeçalho -->
+		<div class="product-header">
+			<div class="header-content">
+				<div class="header-icon">
+					<i class="pi pi-eye"></i>
+				</div>
+
+				<div class="header-text">
+					<h1>Visualização de Produto</h1>
+					<p>Detalhes e informações cadastradas do produto.</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Painel Principal -->
+		<div class="product-card">
+
+			<!-- Dados Gerais -->
+			<h3 class="section-title">
+				<i class="pi pi-info-circle"></i> Dados Gerais
+			</h3>
+
+			<div class="info-grid">
+				<div class="info-item">
+					<span class="info-label">Nome do Produto</span>
+					<div class="info-value-box">
+						<h:outputText value="#{productBean.product.name}" />
+					</div>
+				</div>
+
+				<div class="info-item">
+					<span class="info-label">Marca / Fabricante</span>
+					<div class="info-value-box">
+						<h:outputText value="#{productBean.product.manufacturer}" />
+					</div>
+				</div>
+
+				<div class="info-item">
+					<span class="info-label">Categoria</span>
+					<div class="info-value-box">
+						<h:outputText
+							value="#{productBean.product.category != null ? productBean.product.category.name : 'Não selecionada'}" />
+					</div>
+				</div>
+
+				<div class="info-item">
+					<span class="info-label">Fornecedor</span>
+					<div class="info-value-box">
+						<h:outputText
+							value="#{productBean.product.supplier != null ? productBean.product.supplier.name : 'Não informado'}" />
+					</div>
+				</div>
+
+				<div class="info-item full-width">
+					<span class="info-label">Descrição</span>
+					<div class="info-value-box" style="height: auto; min-height: 80px;">
+						<h:outputText
+							value="#{empty productBean.product.description ? 'Sem descrição cadastrada.' : productBean.product.description}" />
+					</div>
+				</div>
+			</div>
+
+			<!-- Preços e Stock -->
+			<h3 class="section-title">
+				<i class="pi pi-dollar"></i> Preços e Stock
+			</h3>
+
+			<div class="info-grid three-columns">
+				<div class="info-item">
+					<span class="info-label">Preço de Compra</span>
+					<div class="info-value-box">
+						<h:outputText value="#{productBean.product.purchasePrice}">
+							<f:convertNumber type="currency" currencySymbol="MT " locale="pt_MZ" />
+						</h:outputText>
+					</div>
+				</div>
+
+				<div class="info-item">
+					<span class="info-label">Preço de Venda</span>
+					<div class="info-value-box">
+						<h:outputText value="#{productBean.product.salePrice}">
+							<f:convertNumber type="currency" currencySymbol="MT " locale="pt_MZ" />
+						</h:outputText>
+					</div>
+				</div>
+
+				<div class="info-item">
+					<span class="info-label">Stock Atual</span>
+					<div class="info-value-box">
+						<h:outputText value="#{productBean.product.currentStock}" />
+					</div>
+				</div>
+
+				<div class="info-item">
+					<span class="info-label">Stock Mínimo</span>
+					<div class="info-value-box">
+						<h:outputText value="#{productBean.product.minimumStock}" />
+					</div>
+				</div>
+			</div>
+
+			<!-- Datas e Validade -->
+			<h3 class="section-title">
+				<i class="pi pi-calendar"></i> Datas e Validade
+			</h3>
+
+			<div class="info-grid">
+				<div class="info-item">
+					<span class="info-label">Data de Registro</span>
+					<div class="info-value-box">
+						<h:outputText value="#{productBean.product.registrationDate}"
+							converter="localDateConverter" />
+					</div>
+				</div>
+
+				<div class="info-item">
+					<span class="info-label">Data de Validade</span>
+					<div class="info-value-box">
+						<h:outputText value="#{productBean.product.expirationDate}"
+							converter="localDateConverter" />
+					</div>
+				</div>
+			</div>
+
+			<hr class="form-divider" />
+
+			<!-- Ações -->
+			<div class="button-group">
+				<p:commandButton value="Voltar" icon="pi pi-arrow-left"
+					action="#{dashboardBean.cancelProductInclude}"
+					update=":mainForm:mainContent" process="@this"
+					styleClass="btn-cancel" />
+			</div>
+
+		</div>
+
+	</h:form>
+</ui:composition>

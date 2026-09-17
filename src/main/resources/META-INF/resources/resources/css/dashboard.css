@@ -1,0 +1,306 @@
+# dashboard.xhtml
+
+```html
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>Dashboard - Sistema de Gestao de Vendas e Stock</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <h:outputStylesheet library="css" name="dashboard.css" />
+</h:head>
+
+<h:body>
+    <h:form id="mainForm">
+        <div class="layout" id="mainLayout">
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo-wrapper">
+                        <i class="pi pi-chart-line logo-icon"></i>
+                        <h2>Sistema de Gestao de Vendas e Stock</h2>
+                    </div>
+                </div>
+
+                <div class="sidebar-menu">
+                    <p:accordionPanel multiple="true" activeIndex="0,1,2,3">
+
+                        <p:tab title="Gestao" rendered="#{permissionBean.hasGestaoAccess()}">
+                            <p:menu>
+                                <p:menuitem value="Categorias" icon="pi pi-tags"
+                                            actionListener="#{dashboardBean.loadPage('category')}"
+                                            update=":mainForm:mainContent"
+                                            styleClass="#{dashboardBean.currentPage == 'category.xhtml' ? 'active' : ''}" />
+
+                                <p:menuitem value="Produtos" icon="pi pi-box"
+                                            actionListener="#{dashboardBean.loadPage('product')}"
+                                            update=":mainForm:mainContent"
+                                            styleClass="#{dashboardBean.currentPage == 'product.xhtml' ? 'active' : ''}" />
+
+                                <p:menuitem value="Clientes" icon="pi pi-users"
+                                            actionListener="#{dashboardBean.loadPage('customer')}"
+                                            update=":mainForm:mainContent"
+                                            styleClass="#{dashboardBean.currentPage == 'customer.xhtml' ? 'active' : ''}" />
+                            </p:menu>
+                        </p:tab>
+
+                        <p:tab title="Vendas">
+                            <p:menu>
+                                <p:menuitem value="Saida de Produtos" icon="pi pi-arrow-up"
+                                            rendered="#{permissionBean.hasSalesAccess()}"
+                                            actionListener="#{dashboardBean.loadPage('sales')}"
+                                            update=":mainForm:mainContent"
+                                            styleClass="#{dashboardBean.currentPage == 'sales.xhtml' ? 'active' : ''}" />
+
+                                <p:menuitem value="Entrada de Produtos" icon="pi pi-arrow-down"
+                                            rendered="#{permissionBean.hasStockEntryAccess()}"
+                                            actionListener="#{dashboardBean.loadPage('stock-entry')}"
+                                            update=":mainForm:mainContent"
+                                            styleClass="#{dashboardBean.currentPage == 'stock-entry.xhtml' ? 'active' : ''}" />
+                            </p:menu>
+                        </p:tab>
+
+                        <p:tab title="Relatorios" rendered="#{permissionBean.hasReportsAccess()}">
+                            <p:menu>
+                                <p:menuitem value="Vendas" icon="pi pi-chart-line"
+                                            actionListener="#{dashboardBean.loadPage('report-sales')}"
+                                            update=":mainForm:mainContent" />
+                            </p:menu>
+                        </p:tab>
+
+                        <p:tab title="Utilitarios" rendered="#{permissionBean.hasUtilitariosAccess()}">
+                            <p:menu>
+                                <p:menuitem value="Utilizadores" icon="pi pi-user-plus"
+                                            actionListener="#{dashboardBean.loadPage('user')}"
+                                            update=":mainForm:mainContent"
+                                            styleClass="#{dashboardBean.currentPage == 'user.xhtml' ? 'active' : ''}" />
+                            </p:menu>
+                        </p:tab>
+
+                    </p:accordionPanel>
+                </div>
+            </div>
+
+            <div class="header">
+                <div class="header-left">
+                    <p:commandButton icon="pi pi-bars" styleClass="toggle-btn"
+                                     process="@this" onclick="toggleSidebar(); return false;" />
+                    <h1 class="header-title"><i class="pi pi-th-large"></i> <span>Dashboard</span></h1>
+                </div>
+
+                <div class="header-right">
+                    <div class="user-info">
+                        <i class="pi pi-user user-icon"></i>
+                        <span>#{loginBean.username} <small style="opacity: 0.7; font-weight: 500;">(#{permissionBean.roleDescription})</small></span>
+                    </div>
+
+                    <p:commandButton value="Sair" icon="pi pi-sign-out" styleClass="logout-btn" action="#{loginBean.logout}" />
+                </div>
+            </div>
+
+            <div class="main">
+                <div class="content-wrapper">
+                    <p:outputPanel id="mainContent" layout="block">
+                        <ui:include src="#{dashboardBean.currentPage}" />
+                    </p:outputPanel>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p><i class="pi pi-copyright"></i> <span>2025 Sistema de Gestao de Vendas e Stock - Todos os direitos reservados</span> <strong>v1.0.0</strong></p>
+            </div>
+        </div>
+    </h:form>
+
+<script type="text/javascript">
+function toggleSidebar() {
+    var layout = document.getElementById('mainLayout');
+    var sidebar = document.getElementById('sidebar');
+
+    if (window.innerWidth > 1024) {
+        layout.classList.toggle('sidebar-collapsed');
+    } else {
+        sidebar.classList.toggle('active');
+    }
+}
+
+// Fechar sidebar no mobile
+
+</script>
+</h:body>
+</html>
+```
+
+# dashboard.css
+
+```css
+/* TODO: todo o seu CSS original foi movido para cá exatamente como estava. */
+
+/* Cole aqui o CSS completo convertido do XHTML */
+```
+
+# dashboard.xhtml
+
+```xml
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>Dashboard</title>
+    <h:outputStylesheet library="css" name="dashboard.css" />
+</h:head>
+
+<h:body>
+    <div class="dashboard-wrapper">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo"></div>
+
+            <div>Instituto de Transportes Terrestres</div>
+
+            <p:menu>
+                <!-- Shortcuts Section -->
+                <p:submenu label="Shortcuts" icon="pi pi-fw pi-star">
+
+                    <p:menuitem value="Home" icon="pi pi-fw pi-home"
+                                actionListener="#{dashboardBean.loadPage('product')}"
+                                update="@form"
+                                styleClass="#{dashboardBean.active('product')}">
+                        <f:attribute name="page" value="product" />
+                    </p:menuitem>
+
+                    <p:menuitem value="Dashboard" icon="pi pi-fw pi-chart-pie"
+                                actionListener="#{dashboardBean.loadPage('dashboard')}"
+                                update="@form"
+                                styleClass="#{dashboardBean.active('dashboard')}">
+                        <f:attribute name="page" value="dashboard" />
+                    </p:menuitem>
+
+                </p:submenu>
+
+                <p:submenu label="Gestão" icon="pi pi-folder-open">
+
+                    <p:menuitem rendered="#{permissionBean.canAccess1}" value="Automóveis" icon="pi pi-car"
+                                actionListener="#{dashboardBean.loadPage('product')}"
+                                update="@form"
+                                styleClass="#{dashboardBean.active('product')}">
+                        <f:attribute name="page" value="product" />
+                    </p:menuitem>
+
+                    <p:menuitem rendered="#{permissionBean.canAccess2}" value="Tipo Viatura" icon="pi pi-list"
+                                actionListener="#{dashboardBean.loadPage('category')}"
+                                update="@form"
+                                styleClass="#{dashboardBean.active('category')}">
+                        <f:attribute name="page" value="category" />
+                    </p:menuitem>
+
+                </p:submenu>
+            </p:menu>
+
+            <p:commandButton value="Sair" icon="pi pi-sign-out" styleClass="logout-btn"
+                             actionListener="#{userBean.logout()}" />
+        </div>
+
+        <!-- Page Content -->
+        <div class="content">
+            <h:form id="form">
+                <div class="page-content-wrapper">
+                    <ui:include src="/pages/#{dashboardBean.currentPage}.xhtml" />
+                </div>
+            </h:form>
+        </div>
+
+    </div>
+</h:body>
+</html>
+```
+
+# dashboard.css
+
+```css
+/*=============== BASE STYLES ===============*/
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background-color: #eaeaea;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/*=============== LAYOUT ===============*/
+.dashboard-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/*=============== SIDEBAR ===============*/
+.sidebar {
+    width: 260px;
+    background-color: #000000;
+    color: #fff;
+    padding: 25px 20px;
+    box-sizing: border-box;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar div {
+    font-size: 14px;
+    margin-bottom: 10px;
+    background-color: #2a932c; /* Green block for header */
+    color: #fff;
+    padding: 5px;
+    text-align: center;
+}
+
+/*=============== CONTENT AREA ===============*/
+.content {
+    flex: 1;
+    background-color: #f5f6fa;
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.page-content-wrapper {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    min-height: 90vh;
+    box-sizing: border-box;
+    animation: fadeIn 0.3s ease;
+}
+
+/*=============== LOGOUT BUTTON ===============*/
+.logout-btn {
+    margin-top: auto;
+    background-color: #ff5252 !important;
+    border: none !important;
+}
+
+/*=============== ACTIVE MENU ITEM ===============*/
+.active {
+    background-color: #2a932c !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    border-radius: 5px;
+}
+
+/*=============== ANIMATIONS ===============*/
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+```

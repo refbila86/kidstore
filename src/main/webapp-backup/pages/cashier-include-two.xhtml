@@ -1,0 +1,785 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<style>
+:root {
+	--primary: #6366f1;
+	--primary-dark: #4f46e5;
+	--success: #10b981;
+	--danger: #ef4444;
+	--warning: #f59e0b;
+	--info: #3b82f6;
+	--gray-50: #f9fafb;
+	--gray-100: #f3f4f6;
+	--gray-200: #e5e7eb;
+	--gray-600: #4b5563;
+	--gray-900: #111827;
+}
+
+.sales-page {
+	animation: fadeIn 0.5s ease-out;
+}
+
+/* Header Section */
+.page-header {
+	background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+	border-radius: 16px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25);
+	position: relative;
+	overflow: hidden;
+}
+
+.page-header::before {
+	content: '';
+	position: absolute;
+	top: -50%;
+	right: -10%;
+	width: 300px;
+	height: 300px;
+	background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%,
+		transparent 70%);
+	border-radius: 50%;
+}
+
+.page-header::after {
+	content: '';
+	position: absolute;
+	bottom: -30%;
+	left: -5%;
+	width: 200px;
+	height: 200px;
+	background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%,
+		transparent 70%);
+	border-radius: 50%;
+}
+
+.header-content {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+}
+
+.header-left {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.page-title {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin: 0;
+}
+
+.title-icon {
+	font-size: 2.5rem;
+	filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.title-text {
+	font-size: 2rem;
+	font-weight: 800;
+	color: white;
+	margin: 0;
+	letter-spacing: -0.02em;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-buttons {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+}
+
+.btn-back {
+	background: rgba(255, 255, 255, 0.2) !important;
+	color: white !important;
+	border: 2px solid white !important;
+	padding: 1rem 2rem !important;
+	font-weight: 700 !important;
+	font-size: 1rem !important;
+	border-radius: 12px !important;
+	backdrop-filter: blur(10px) !important;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.75rem !important;
+}
+
+.btn-back:hover {
+	background: rgba(255, 255, 255, 0.3) !important;
+	transform: translateY(-3px) !important;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+}
+
+.btn-close-cashier {
+	background: white !important;
+	color: var(--success) !important;
+	border: none !important;
+	padding: 1rem 2rem !important;
+	font-weight: 700 !important;
+	font-size: 1rem !important;
+	border-radius: 12px !important;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.75rem !important;
+}
+
+.btn-close-cashier:hover {
+	transform: translateY(-3px) !important;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+	background: #f0fdf4 !important;
+}
+
+.page-date {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.75rem;
+	background: rgba(255, 255, 255, 0.2);
+	padding: 0.75rem 1.5rem;
+	border-radius: 12px;
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.date-icon {
+	font-size: 1.5rem;
+}
+
+.date-text {
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: white;
+}
+
+.btn-new-sale {
+	background: white !important;
+	color: var(--primary) !important;
+	border: none !important;
+	padding: 1rem 2rem !important;
+	font-weight: 700 !important;
+	font-size: 1rem !important;
+	border-radius: 12px !important;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.75rem !important;
+}
+
+.btn-new-sale:hover {
+	transform: translateY(-3px) !important;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+	background: #f9fafb !important;
+}
+
+.btn-new-sale .ui-button-icon-left {
+	font-size: 1.25rem;
+}
+
+/* Stats Cards */
+.stats-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 1.5rem;
+	margin-bottom: 2rem;
+}
+
+.stat-card {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.stat-card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, var(--primary) 0%, var(--info) 100%);
+}
+
+.stat-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.stat-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+}
+
+.stat-icon-wrapper {
+	width: 56px;
+	height: 56px;
+	border-radius: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.75rem;
+	background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%,
+		rgba(139, 92, 246, 0.1) 100%);
+}
+
+.stat-label {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--gray-600);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	margin-bottom: 0.5rem;
+}
+
+.stat-value {
+	font-size: 2rem;
+	font-weight: 800;
+	color: var(--gray-900);
+	line-height: 1;
+}
+
+.stat-trend {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--success);
+	margin-top: 0.5rem;
+}
+
+/* Table Section */
+.table-container {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+}
+
+.table-header-section {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1.5rem;
+	padding-bottom: 1rem;
+	border-bottom: 2px solid var(--gray-100);
+}
+
+.table-title {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--gray-900);
+	margin: 0;
+}
+
+/* DataTable Customization */
+.ui-datatable {
+	border: none !important;
+}
+
+.ui-datatable .ui-datatable-header {
+	background: transparent !important;
+	border: none !important;
+	padding: 0 !important;
+}
+
+.ui-datatable thead th {
+	background: var(--gray-50) !important;
+	color: var(--gray-900) !important;
+	font-weight: 700 !important;
+	padding: 1rem !important;
+	border: none !important;
+	border-bottom: 2px solid var(--gray-200) !important;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.1em;
+}
+
+.ui-datatable tbody td {
+	padding: 1.25rem 1rem !important;
+	border: none !important;
+	border-bottom: 1px solid var(--gray-100) !important;
+	vertical-align: middle !important;
+	font-size: 0.9rem;
+}
+
+.ui-datatable tbody tr {
+	transition: all 0.2s ease !important;
+}
+
+.ui-datatable tbody tr:hover {
+	background: var(--gray-50) !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.ui-datatable .ui-datatable-footer {
+	background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important;
+	border: none !important;
+	padding: 1.25rem !important;
+	font-weight: 700 !important;
+	border-top: 2px solid var(--success) !important;
+	border-radius: 0 0 12px 12px !important;
+}
+
+/* Sale Code Badge */
+.sale-code {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+	color: var(--primary);
+	padding: 0.5rem 1rem;
+	border-radius: 8px;
+	font-weight: 700;
+	font-size: 0.875rem;
+	border: 1px solid #c7d2fe;
+}
+
+.sale-code-icon {
+	font-size: 1rem;
+	opacity: 0.8;
+}
+
+/* Customer Info */
+.customer-info {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.customer-avatar {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, var(--primary) 0%, var(--info) 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	font-weight: 700;
+	font-size: 0.875rem;
+}
+
+.customer-name {
+	font-weight: 600;
+	color: var(--gray-900);
+}
+
+/* Total Value */
+.total-value {
+	font-weight: 700;
+	font-size: 1.125rem;
+	color: var(--success);
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.total-value::before {
+	content: '💰';
+	font-size: 1.25rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: center;
+}
+
+.action-btn {
+	width: 38px !important;
+	height: 38px !important;
+	padding: 0 !important;
+	border-radius: 10px !important;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	border: none !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+.action-btn:hover {
+	transform: translateY(-2px) scale(1.08) !important;
+}
+
+.action-btn.btn-view {
+	background: var(--info) !important;
+}
+
+.action-btn.btn-view:hover {
+	background: #2563eb !important;
+	box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+}
+
+.action-btn.btn-edit {
+	background: var(--warning) !important;
+}
+
+.action-btn.btn-edit:hover {
+	background: #d97706 !important;
+	box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4) !important;
+}
+
+/* Footer Total */
+.footer-total {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 1rem;
+}
+
+.footer-label {
+	font-size: 1.125rem;
+	color: #065f46;
+	font-weight: 700;
+}
+
+.footer-value {
+	font-size: 1.75rem;
+	color: var(--success);
+	font-weight: 800;
+}
+
+/* Filter Input */
+.ui-column-filter {
+	border: 2px solid var(--gray-200) !important;
+	border-radius: 8px !important;
+	padding: 0.625rem 1rem !important;
+	font-size: 0.875rem !important;
+	transition: all 0.3s ease !important;
+	width: 100% !important;
+}
+
+.ui-column-filter:focus {
+	border-color: var(--primary) !important;
+	box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+	outline: none !important;
+}
+
+/* Empty State */
+.empty-state {
+	text-align: center;
+	padding: 4rem 2rem;
+}
+
+.empty-icon {
+	font-size: 5rem;
+	margin-bottom: 1rem;
+	opacity: 0.3;
+}
+
+.empty-text {
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: var(--gray-600);
+}
+
+/* Paginator */
+.ui-paginator {
+	background: transparent !important;
+	border: none !important;
+	padding: 1.5rem 0 0 0 !important;
+}
+
+.ui-paginator .ui-paginator-pages .ui-paginator-page {
+	border-radius: 8px !important;
+	min-width: 38px !important;
+	height: 38px !important;
+	margin: 0 0.25rem !important;
+	border: 1px solid var(--gray-200) !important;
+	transition: all 0.2s ease !important;
+}
+
+.ui-paginator .ui-paginator-pages .ui-paginator-page:hover {
+	background: var(--gray-50) !important;
+	border-color: var(--primary) !important;
+}
+
+.ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
+	background: var(--primary) !important;
+	border-color: var(--primary) !important;
+	color: white !important;
+}
+
+/* Confirm Dialog */
+.ui-confirmdialog {
+	border-radius: 16px !important;
+	overflow: hidden !important;
+}
+
+.ui-confirmdialog .ui-dialog-titlebar {
+	background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%)
+		!important;
+	color: white !important;
+}
+
+.ui-confirmdialog-yes {
+	background: var(--danger) !important;
+	border: none !important;
+}
+
+.ui-confirmdialog-no {
+	background: var(--gray-600) !important;
+	border: none !important;
+}
+
+/* Animations */
+@
+keyframes fadeIn {from { opacity:0;
+	transform: translateY(20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+@
+keyframes slideInRight {from { opacity:0;
+	transform: translateX(30px);
+}
+
+to {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+}
+.stat-card:nth-child(1) {
+	animation: slideInRight 0.5s ease-out 0.1s both;
+}
+
+.stat-card:nth-child(2) {
+	animation: slideInRight 0.5s ease-out 0.2s both;
+}
+
+.stat-card:nth-child(3) {
+	animation: slideInRight 0.5s ease-out 0.3s both;
+}
+
+/* Responsive */
+@media ( max-width : 768px) {
+	.header-content {
+		flex-direction: column;
+		text-align: center;
+	}
+	.header-left {
+		align-items: center;
+		width: 100%;
+	}
+	.btn-new-sale {
+		width: 100%;
+		justify-content: center !important;
+	}
+	.title-text {
+		font-size: 1.5rem;
+	}
+	.stats-grid {
+		grid-template-columns: 1fr;
+	}
+	.table-header-section {
+		flex-direction: column;
+		gap: 1rem;
+		align-items: flex-start;
+	}
+	.action-buttons {
+		flex-wrap: wrap;
+	}
+	.header-buttons {
+		width: 100%;
+		justify-content: center;
+	}
+}
+</style>
+
+	<h:form id="formCashierTwo">
+
+		<div class="sales-page">
+
+			<!-- Page Header -->
+			<div class="page-header">
+				<div class="header-content">
+					<div class="header-left">
+						<div class="page-title">
+							<span class="title-icon">🛒</span>
+							<h1 class="title-text">Fechar o caixa do dia</h1>
+						</div>
+					</div>
+
+					<div class="header-buttons">
+						<p:commandButton value="Cancelar" icon="pi pi-times"
+							action="#{dashboardBean.backCashierInclude}"
+							update=":mainForm:mainContent" process="@this"
+							style="background: #6b7280; border-color: #6b7280; color: white; padding: 0.75rem 1.5rem; font-size: 1rem; font-weight: 600; min-width: 140px;"
+							immediate="true">
+							<p:confirm header="Confirmação"
+								message="Deseja realmente cancelar? As alterações não serão salvas."
+								icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
+
+						<p:commandButton value="Fechar Caixa" icon="pi pi-check-circle"
+							action="#{cashierBean.closeCashieer}" process="@form"
+							update=":mainForm:mainContent"
+							actionListener="#{dashboardBean.loadCashier}"
+							style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: white; padding: 0.75rem 2rem; font-size: 1.1rem; font-weight: 700; min-width: 180px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);"
+							disabled="#{empty cashierBean.selectedDate}">
+							<p:confirm header="Confirmar Fechamento"
+								message="Tem certeza que deseja fechar o caixa do dia #{cashierBean.formatDate(cashierBean.selectedDate)}? Esta ação não poderá ser desfeita."
+								icon="pi pi-question-circle" />
+						</p:commandButton>
+					</div>
+				</div>
+			</div>
+
+			<!-- Componente de confirmação -->
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+				responsive="true" width="400">
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no"
+					style="background: #6b7280; border-color: #6b7280; color: white; padding: 0.6rem 1.5rem; font-weight: 600;"
+					icon="pi pi-times" />
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes"
+					style="background: #10b981; border-color: #10b981; color: white; padding: 0.6rem 1.5rem; font-weight: 600;"
+					icon="pi pi-check" />
+			</p:confirmDialog>
+
+			<!-- Stats Cards -->
+			<div class="stats-grid">
+				<div class="stat-card">
+					<div class="stat-header">
+						<div class="stat-icon-wrapper">💰</div>
+					</div>
+					<div class="stat-label">Total de Vendas Hoje</div>
+					<div class="stat-value">
+						<h:outputText value="#{cashierBean.totalGeral}">
+							<f:convertNumber type="currency" currencySymbol="MT " />
+						</h:outputText>
+					</div>
+					<div class="stat-trend">
+						<span>📈</span> Em tempo real
+					</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-header">
+						<div class="stat-icon-wrapper">📊</div>
+					</div>
+					<div class="stat-label">Numero de Vendas</div>
+					<div class="stat-value">
+						<h:outputText value="#{cashierBean.listSalesOfDay.size()}" />
+					</div>
+					<div class="stat-trend">
+						<span>✅</span> Vendas registradas
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Table Section -->
+			<div class="table-container">
+				<div class="table-header-section">
+					<h2 class="table-title">📋 Lista de Vendas</h2>
+				</div>
+
+				<p:dataTable id="salesTable" value="#{cashierBean.listSalesOfDay}"
+					var="sales" paginator="true" rows="10" paginatorPosition="bottom"
+					emptyMessage="Nenhuma venda encontrada para esta data."
+					widgetVar="salesTableWidget" styleClass="sales-datatable">
+
+					<p:ajax event="filter" update="salesTable:totalFooter" />
+
+					<p:column headerText="DATA" style="width:12%" sortable="true">
+						<h:outputText value="#{sales.dateSale}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="Africa/Maputo" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="CODIGO" style="width:20%"
+						filterPlaceholder="Pesquisar codigo..." sortable="true">
+						<div class="sale-code">
+							<span class="sale-code-icon">#</span>
+							<h:outputText value="#{sales.saleCode}" />
+						</div>
+					</p:column>
+
+					<p:column headerText="CLIENTE" style="width:35%">
+						<div class="customer-info">
+							<div class="customer-avatar">
+								<h:outputText
+									value="#{sales.customer.name.substring(0,1).toUpperCase()}" />
+							</div>
+							<span class="customer-name"> <h:outputText
+									value="#{sales.customer.name}" />
+							</span>
+						</div>
+
+						<f:facet name="footer">
+							<!-- 							<span class="footer-label">Total Geral:</span> -->
+						</f:facet>
+					</p:column>
+
+					<p:column headerText="TOTAL" style="width:18%; text-align:right;">
+						<span class="total-value"> <h:outputText
+								value="#{sales.totalSale}">
+								<f:convertNumber type="currency" currencySymbol="MT " />
+							</h:outputText>
+						</span>
+
+						<f:facet name="footer">
+							<h:panelGroup id="totalFooter">
+								<span class="footer-value"> </span>
+							</h:panelGroup>
+						</f:facet>
+					</p:column>
+
+					<p:column headerText="ACOES" style="width:15%; text-align:center;">
+						<div class="action-buttons">
+							<p:commandButton icon="pi pi-eye" title="Visualizar"
+								styleClass="action-btn btn-view"
+								actionListener="#{saleBean.viewSpecificSale(sales.id)}"
+								update=":mainForm:mainContent" process="@this" />
+						</div>
+					</p:column>
+
+				</p:dataTable>
+
+			</div>
+
+		</div>
+
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+			responsive="true" width="400">
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+			<p:commandButton value="Nao" type="button"
+				styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+		</p:confirmDialog>
+
+	</h:form>
+
+</ui:composition>

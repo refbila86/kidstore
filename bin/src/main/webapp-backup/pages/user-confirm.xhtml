@@ -1,0 +1,319 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:form id="formUserConfirm" styleClass="user-container p-fluid">
+
+        <style>
+            .user-container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 2rem 1rem;
+                animation: fadeIn 0.5s ease-out;
+            }
+
+            .user-header {
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                border-radius: 20px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+                color: white;
+            }
+
+            .header-content {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .header-icon {
+                font-size: 2.8rem;
+            }
+
+            .header-text h1 {
+                margin: 0;
+                font-size: 1.8rem;
+                font-weight: 700;
+            }
+
+            .header-text p {
+                margin: 0.5rem 0 0;
+                font-size: 1rem;
+                opacity: 0.95;
+            }
+
+            .user-card {
+                background: white;
+                border-radius: 20px;
+                padding: 2rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                border: 1px solid #dbeafe;
+            }
+
+            .section-title {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: #1e3a8a;
+                margin: 0 0 1.5rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 2px solid #dbeafe;
+            }
+
+            .section-title:not(:first-child) {
+                margin-top: 2rem;
+            }
+
+            .info-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1.25rem;
+            }
+
+            .info-item {
+                display: flex;
+                flex-direction: column;
+                gap: 0.35rem;
+                background: #f8fafc;
+                padding: 0.85rem 1rem;
+                border-radius: 12px;
+                border: 1px solid #e2e8f0;
+            }
+
+            .info-label {
+                font-weight: 600;
+                color: #1e40af;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .info-value {
+                font-size: 1rem;
+                font-weight: 600;
+                color: #1e293b;
+            }
+
+            .badge-status {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                width: fit-content;
+                padding: 0.25rem 0.75rem;
+                border-radius: 20px;
+                font-size: 0.85rem;
+                font-weight: 700;
+            }
+
+            .badge-active {
+                background-color: #dcfce7;
+                color: #15803d;
+            }
+
+            .badge-inactive {
+                background-color: #fee2e2;
+                color: #b91c1c;
+            }
+
+            .form-divider {
+                margin: 2rem 0;
+                border: 0;
+                border-top: 1px solid #dbeafe;
+            }
+
+            .button-group {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .button-group-left {
+                display: flex;
+                gap: 0.75rem;
+            }
+
+            .btn-cancel {
+                border-radius: 12px !important;
+                padding: 0.8rem 1.75rem !important;
+                background: #f8fafc !important;
+                border: 2px solid #cbd5e1 !important;
+                color: #475569 !important;
+            }
+
+            .btn-next {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                font-weight: 700 !important;
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+                border: none !important;
+                color: white !important;
+            }
+
+            .btn-next:hover {
+                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.30) !important;
+                transform: translateY(-1px);
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @media (max-width: 768px) {
+                .user-container {
+                    padding: 1rem 0.5rem;
+                }
+
+                .user-header,
+                .user-card {
+                    padding: 1.5rem;
+                }
+
+                .info-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .button-group {
+                    flex-direction: column-reverse;
+                }
+
+                .button-group-left {
+                    width: 100%;
+                    flex-direction: column;
+                }
+
+                .button-group .ui-button {
+                    width: 100%;
+                }
+            }
+        </style>
+
+        <!-- Cabeçalho -->
+        <div class="user-header">
+            <div class="header-content">
+                <div class="header-icon">
+                    <i class="pi pi-check-square"></i>
+                </div>
+
+                <div class="header-text">
+                    <h1>Confirmação de Utilizador</h1>
+                    <p>Revise as informações abaixo antes de finalizar o cadastro.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Resumo -->
+        <div class="user-card">
+
+            <!-- Informações Gerais -->
+            <h3 class="section-title">
+                <i class="pi pi-user"></i>
+                Dados do Utilizador
+            </h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Nome Completo</span>
+                    <h:outputText value="#{userBean.itemUser.fullName}" styleClass="info-value" />
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Username</span>
+                    <h:outputText value="#{userBean.itemUser.username}" styleClass="info-value" />
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Email</span>
+                    <h:outputText value="#{userBean.itemUser.email}" styleClass="info-value" />
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Password</span>
+                    <h:outputText value="••••••••" styleClass="info-value" />
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Perfil</span>
+                    <h:outputText value="#{userBean.itemUser.role}" styleClass="info-value" />
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Estado</span>
+                    <div>
+                        <span class="badge-status #{userBean.itemUser.active ? 'badge-active' : 'badge-inactive'}">
+                            <i class="pi #{userBean.itemUser.active ? 'pi-check-circle' : 'pi-times-circle'}"></i>
+                            #{userBean.itemUser.active ? 'Ativo' : 'Inativo'}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Registro no Sistema -->
+            <h3 class="section-title">
+                <i class="pi pi-clock"></i>
+                Histórico do Sistema
+            </h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Criado em</span>
+                    <h:outputText value="#{userBean.itemUser.createdAt}" styleClass="info-value">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                    </h:outputText>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Último Login</span>
+                    <h:outputText value="#{userBean.itemUser.lastLogin}" styleClass="info-value">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                    </h:outputText>
+                </div>
+            </div>
+
+            <hr class="form-divider" />
+
+            <!-- Grupo de Botões -->
+            <div class="button-group">
+                <div class="button-group-left">
+                    <p:commandButton value="Voltar"
+                        icon="pi pi-arrow-left"
+                        action="#{dashboardBean.backUserInclude}"
+                        update=":mainForm:mainContent"
+                        process="@this"
+                        styleClass="btn-cancel" />
+
+                    <p:commandButton value="Cancelar"
+                        icon="pi pi-times"
+                        action="#{dashboardBean.cancelUserInclude}"
+                        update=":mainForm:mainContent"
+                        process="@this"
+                        styleClass="btn-cancel" />
+                </div>
+
+                <p:commandButton value="Confirmar"
+                    icon="pi pi-check"
+                    iconPos="right"
+                    action="#{userBean.salvar}"
+                    process="@form"
+                    update=":mainForm:mainContent"
+                    actionListener="#{dashboardBean.loadUser}"
+                    styleClass="btn-next" />
+            </div>
+
+        </div>
+
+    </h:form>
+</ui:composition>

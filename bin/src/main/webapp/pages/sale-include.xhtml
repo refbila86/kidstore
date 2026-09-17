@@ -1,0 +1,586 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<h:form id="formSaleInclude" styleClass="sale-container p-fluid">
+
+		<style>
+.sale-container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 2rem 1rem;
+	animation: fadeIn 0.5s ease-out;
+}
+
+.sale-header {
+	background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+	border-radius: 20px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+	color: white;
+}
+
+.header-content {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.header-info-main {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.header-icon {
+	font-size: 2.8rem;
+}
+
+.header-text h1 {
+	margin: 0;
+	font-size: 1.8rem;
+	font-weight: 700;
+}
+
+.header-text p {
+	margin: 0.5rem 0 0;
+	font-size: 1rem;
+	opacity: 0.95;
+}
+
+.status-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 1.25rem;
+	border-radius: 50px;
+	font-size: 0.9rem;
+	font-weight: 600;
+	background: rgba(255, 255, 255, 0.2);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Resumo Superior da Venda */
+.sale-summary-card {
+	background: white;
+	border-radius: 20px;
+	padding: 1.5rem 2rem;
+	margin-bottom: 2rem;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	border: 1px solid #dbeafe;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.5rem;
+}
+
+.summary-item {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.summary-icon {
+	font-size: 2rem;
+	color: #2563eb;
+	background: #eff6ff;
+	padding: 0.75rem;
+	border-radius: 12px;
+}
+
+.summary-label {
+	font-size: 0.85rem;
+	color: #64748b;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.summary-value {
+	font-size: 1.15rem;
+	color: #1e3a8a;
+	font-weight: 700;
+	margin-top: 0.2rem;
+}
+
+/* Card Principal do Formulário */
+.sale-card {
+	background: white;
+	border-radius: 20px;
+	padding: 2rem;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	border: 1px solid #dbeafe;
+}
+
+.section-title {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #1e3a8a;
+	margin: 0 0 1.5rem;
+	padding-bottom: 0.75rem;
+	border-bottom: 2px solid #dbeafe;
+}
+
+.section-title:not(:first-child) {
+	margin-top: 2rem;
+}
+
+.info-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1.25rem;
+}
+
+.info-grid.four-columns {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.info-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.info-item.full-width {
+	grid-column: 1/-1;
+}
+
+.info-label {
+	font-weight: 600;
+	color: #1e40af;
+	font-size: 0.95rem;
+}
+
+/* Estilização de Inputs e Selects */
+.sale-container .ui-inputfield, .sale-container .ui-selectonemenu {
+	width: 100%;
+	border-radius: 12px !important;
+	border: 2px solid #dbeafe !important;
+	transition: all 0.3s ease !important;
+}
+
+.sale-container .ui-inputfield:focus, .sale-container .ui-selectonemenu.ui-state-focus
+	{
+	border-color: #2563eb !important;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10) !important;
+}
+
+/* Painel de Adicionar Produto */
+.product-add-panel {
+	background: #f8fafc;
+	border-radius: 16px;
+	padding: 1.5rem;
+	border: 1px solid #e2e8f0;
+	margin-top: 1rem;
+}
+
+.price-display {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #2563eb;
+	padding: 0.75rem 1rem;
+	background: #eff6ff;
+	border-radius: 12px;
+	border: 2px solid #dbeafe;
+	text-align: center;
+}
+
+.stock-ok {
+	color: #16a34a;
+}
+
+.stock-low {
+	color: #dc2626;
+}
+
+.add-btn-wrapper {
+	margin-top: 1.25rem;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.btn-add-item {
+	border-radius: 12px !important;
+	padding: 0.8rem 2rem !important;
+	font-weight: 700 !important;
+	background: #2563eb !important;
+	border: none !important;
+	color: white !important;
+}
+
+.btn-add-item:hover {
+	background: #1d4ed8 !important;
+	box-shadow: 0 6px 16px rgba(37, 99, 235, 0.30) !important;
+}
+
+/* Tabela de Itens */
+.sale-container .ui-datatable {
+	border-radius: 12px;
+	overflow: hidden;
+	border: 1px solid #dbeafe;
+}
+
+.sale-container .ui-datatable thead th {
+	background: #f1f5f9 !important;
+	color: #1e3a8a !important;
+	font-weight: 700 !important;
+	padding: 1rem !important;
+	border: none !important;
+	border-bottom: 2px solid #dbeafe !important;
+}
+
+.sale-container .ui-datatable tbody td {
+	padding: 0.9rem 1rem !important;
+	border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.total-footer {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 1rem;
+	padding: 1.25rem 1.5rem;
+	background: #eff6ff;
+	border-radius: 0 0 12px 12px;
+}
+
+.total-label {
+	font-size: 1.2rem;
+	font-weight: 700;
+	color: #1e3a8a;
+}
+
+.total-value {
+	font-size: 1.8rem;
+	font-weight: 800;
+	color: #2563eb;
+}
+
+/* Botões Globais */
+.form-divider {
+	margin: 2rem 0;
+	border: 0;
+	border-top: 1px solid #dbeafe;
+}
+
+.button-group {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-top: 1.5rem;
+}
+
+.btn-cancel {
+	border-radius: 12px !important;
+	padding: 0.8rem 2rem !important;
+	background: #f8fafc !important;
+	border: 2px solid #cbd5e1 !important;
+	color: #475569 !important;
+}
+
+.btn-next {
+	border-radius: 12px !important;
+	padding: 0.8rem 2rem !important;
+	font-weight: 700 !important;
+	background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+	border: none !important;
+	color: white !important;
+}
+
+.btn-next:hover {
+	box-shadow: 0 8px 20px rgba(37, 99, 235, 0.30) !important;
+	transform: translateY(-1px);
+}
+
+@
+keyframes fadeIn {from { opacity:0;
+	transform: translateY(20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+@media ( max-width : 768px) {
+	.sale-container {
+		padding: 1rem 0.5rem;
+	}
+	.sale-header, .sale-card, .sale-summary-card {
+		padding: 1.5rem;
+	}
+	.sale-summary-card, .info-grid, .info-grid.four-columns {
+		grid-template-columns: 1fr;
+	}
+	.button-group {
+		flex-direction: column;
+	}
+	.button-group .ui-button {
+		width: 100%;
+	}
+}
+</style>
+
+		<p:messages id="msgs" showDetail="true" closable="true" />
+
+		<!-- Cabeçalho Principal -->
+		<div class="sale-header">
+			<div class="header-content">
+				<div class="header-info-main">
+					<div class="header-icon">
+						<i class="pi pi-shopping-cart"></i>
+					</div>
+
+					<div class="header-text">
+						<h1>#{saleBean.editing ? 'Editar Venda' : 'Nova Venda'}</h1>
+						<p>Adicione produtos ao carrinho e conclua o processo de
+							venda.</p>
+					</div>
+				</div>
+
+				<div class="status-badge">
+					<i class="pi pi-circle-fill"></i> <span>#{saleBean.editing ?
+						'Editando Venda' : 'Em Andamento'}</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Resumo Rápido da Venda -->
+		<div class="sale-summary-card">
+			<div class="summary-item">
+				<i class="pi pi-hashtag summary-icon"></i>
+				<div>
+					<div class="summary-label">Número da Venda</div>
+					<div class="summary-value">
+						<h:outputText value="#{saleBean.saleCode}" />
+					</div>
+				</div>
+			</div>
+
+			<div class="summary-item">
+				<i class="pi pi-user summary-icon"></i>
+				<div>
+					<div class="summary-label">Cliente Selecionado</div>
+					<div class="summary-value">
+						<h:outputText
+							value="#{saleBean.selectedCustomer != null ? saleBean.selectedCustomer.name : 'Nenhum'}" />
+					</div>
+				</div>
+			</div>
+
+			<div class="summary-item">
+				<i class="pi pi-calendar summary-icon"></i>
+				<div>
+					<div class="summary-label">Data de Emissão</div>
+					<div class="summary-value">
+						<h:outputText value="#{saleBean.currentDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Formulário da Venda -->
+		<div class="sale-card">
+
+			<!-- Seleção de Cliente -->
+			<h3 class="section-title">
+				<i class="pi pi-user"></i> Identificação do Cliente
+			</h3>
+
+			<div class="info-grid">
+				<div class="info-item full-width">
+					<h:outputLabel value="Cliente" styleClass="info-label"
+						for="customerSelect" />
+					<p:selectOneMenu id="customerSelect"
+						value="#{saleBean.selectedCustomer}" converter="customerConverter"
+						filter="true" filterMatchMode="contains">
+						<f:selectItem itemLabel="Selecione um cliente..."
+							itemValue="#{null}" noSelectionOption="true" />
+						<f:selectItems value="#{saleBean.listCustomers}" var="c"
+							itemLabel="#{c.name}" itemValue="#{c}" />
+						<p:ajax event="change" update="@form" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+
+			<!-- Seleção e Adição de Produtos -->
+			<h3 class="section-title">
+				<i class="pi pi-box"></i> Adicionar Produto ao Carrinho
+			</h3>
+
+			<div class="info-grid">
+				<div class="info-item full-width">
+					<h:outputLabel value="Produto" styleClass="info-label"
+						for="productSelect" />
+					<p:selectOneMenu id="productSelect"
+						value="#{saleBean.selectedProduct}" converter="productConverter"
+						filter="true" filterMatchMode="contains">
+						<f:selectItem itemLabel="Selecione um produto..."
+							itemValue="#{null}" noSelectionOption="true" />
+						<f:selectItems value="#{saleBean.listProducts}" var="p"
+							itemLabel="#{p.name}" itemValue="#{p}" />
+						<p:ajax event="change" process="@this"
+							listener="#{saleBean.onProductSelect}" update="productDetails" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+
+			<!-- Detalhes do Produto Selecionado -->
+			<p:outputPanel id="productDetails" layout="block">
+				<div class="product-add-panel">
+					<div class="info-grid four-columns">
+						<div class="info-item">
+							<h:outputLabel value="Preço Unitário" styleClass="info-label" />
+							<div class="price-display">
+								<h:outputText id="price" value="#{saleBean.currentItem.price}">
+									<f:convertNumber type="currency" currencySymbol="MT "
+										minFractionDigits="2" />
+								</h:outputText>
+							</div>
+						</div>
+
+						<div class="info-item">
+							<h:outputLabel value="Stock Disponível" styleClass="info-label" />
+							<div
+								class="price-display #{saleBean.selectedProduct != null and saleBean.selectedProduct.currentStock gt 0 ? 'stock-ok' : 'stock-low'}">
+								<h:outputText id="stock"
+									value="#{saleBean.selectedProduct != null ? saleBean.selectedProduct.currentStock : 0}">
+									<f:convertNumber pattern="#,##0" />
+								</h:outputText>
+								un.
+							</div>
+						</div>
+
+						<div class="info-item">
+							<h:outputLabel value="Quantidade" styleClass="info-label"
+								for="quantity" />
+							<p:inputNumber id="quantity"
+								value="#{saleBean.currentItem.quantity}" minValue="1"
+								maxValue="#{saleBean.selectedProduct != null ? saleBean.selectedProduct.currentStock : 1}"
+								decimalPlaces="0"
+								disabled="#{saleBean.selectedProduct eq null or saleBean.selectedProduct.currentStock lt 1}">
+								<p:ajax event="change" listener="#{saleBean.calculateSubtotal}"
+									update="subtotal" />
+							</p:inputNumber>
+						</div>
+
+						<div class="info-item">
+							<h:outputLabel value="Subtotal" styleClass="info-label" />
+							<div class="price-display">
+								<h:outputText id="subtotal"
+									value="#{saleBean.currentItem.subtotal}">
+									<f:convertNumber type="currency" currencySymbol="MT "
+										minFractionDigits="2" />
+								</h:outputText>
+							</div>
+						</div>
+					</div>
+
+					<div class="add-btn-wrapper">
+						<p:commandButton id="addButton" value="Adicionar ao Carrinho"
+							icon="pi pi-plus" styleClass="btn-add-item"
+							action="#{saleBean.addItem}" update="@form msgs" process="@form" />
+					</div>
+				</div>
+			</p:outputPanel>
+
+			<!-- Carrinho de Compras / Tabela de Itens -->
+			<h3 class="section-title">
+				<i class="pi pi-shopping-bag"></i> Carrinho de Compras
+			</h3>
+
+			<p:dataTable id="salesTable"
+				value="#{saleBean.currentSale.salesItems}" var="item"
+				styleClass="p-datatable-striped"
+				emptyMessage="Nenhum item adicionado ao carrinho.">
+
+				<p:column headerText="Produto" style="width:40%;">
+					<h:outputText value="#{item.product.name}" />
+				</p:column>
+
+				<p:column headerText="Preço Unit."
+					style="width:15%; text-align:right;">
+					<h:outputText value="#{item.price}">
+						<f:convertNumber type="currency" currencySymbol="MT "
+							minFractionDigits="2" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Qtd." style="width:12%; text-align:center;">
+					<h:outputText value="#{item.quantity}">
+						<f:convertNumber pattern="#,##0" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Subtotal" style="width:18%; text-align:right;">
+					<h:outputText value="#{item.subtotal}"
+						style="font-weight:700; color:#2563eb;">
+						<f:convertNumber type="currency" currencySymbol="MT "
+							minFractionDigits="2" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Ações" style="width:15%; text-align:center;">
+					<p:commandButton icon="pi pi-trash"
+						styleClass="ui-button-danger ui-button-flat rounded-button"
+						actionListener="#{saleBean.removeItem(item)}" process="@this"
+						update="@form" title="Remover item">
+						<p:confirm header="Confirmação"
+							message="Deseja remover este item?"
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+
+				<f:facet name="footer">
+					<div class="total-footer">
+						<span class="total-label">Total da Venda:</span> <span
+							class="total-value"> <h:outputText id="total"
+								value="#{saleBean.currentSale.totalSale}">
+								<f:convertNumber type="currency" currencySymbol="MT "
+									minFractionDigits="2" />
+							</h:outputText>
+						</span>
+					</div>
+				</f:facet>
+			</p:dataTable>
+
+			<hr class="form-divider" />
+
+			<!-- Botões de Ação Global -->
+			<div class="button-group">
+				<p:commandButton value="Cancelar" icon="pi pi-times"
+					actionListener="#{dashboardBean.cancelSaleInclude}"
+					update=":mainForm:mainContent" process="@this"
+					styleClass="btn-cancel" />
+
+				<p:commandButton value="Próximo" icon="pi pi-arrow-right"
+					iconPos="right" actionListener="#{dashboardBean.loadSaleConfirm}"
+					process="@form" update=":mainForm:mainContent"
+					styleClass="btn-next"
+					disabled="#{empty saleBean.currentSale.salesItems}" />
+			</div>
+
+		</div>
+
+		<!-- Diálogo de confirmação global -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+			responsive="true">
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes btn-next" icon="pi pi-check" />
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no btn-cancel" icon="pi pi-times" />
+		</p:confirmDialog>
+
+	</h:form>
+</ui:composition>

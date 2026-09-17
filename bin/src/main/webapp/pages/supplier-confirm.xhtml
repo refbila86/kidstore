@@ -1,0 +1,247 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:form id="formSupplierConfirm" styleClass="supplier-container p-fluid">
+
+        <style>
+            .supplier-container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 2rem 1rem;
+                animation: fadeIn 0.5s ease-out;
+            }
+
+            .supplier-header {
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                border-radius: 20px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+                color: white;
+            }
+
+            .header-content {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .header-icon {
+                font-size: 2.8rem;
+            }
+
+            .header-text h1 {
+                margin: 0;
+                font-size: 1.8rem;
+                font-weight: 700;
+            }
+
+            .header-text p {
+                margin: 0.5rem 0 0;
+                font-size: 1rem;
+                opacity: 0.95;
+            }
+
+            .supplier-card {
+                background: white;
+                border-radius: 20px;
+                padding: 2rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                border: 1px solid #dbeafe;
+            }
+
+            .section-title {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: #1e3a8a;
+                margin: 0 0 1.5rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 2px solid #dbeafe;
+            }
+
+            .info-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1.25rem;
+            }
+
+            .info-item {
+                display: flex;
+                flex-direction: column;
+                gap: 0.35rem;
+            }
+
+            .info-item.full-width {
+                grid-column: 1 / -1;
+            }
+
+            .info-label {
+                font-weight: 600;
+                color: #1e40af;
+                font-size: 0.9rem;
+            }
+
+            .info-value {
+                font-size: 1.05rem;
+                color: #1f2937;
+                font-weight: 500;
+                padding: 0.6rem 0.8rem;
+                background-color: #eff6ff;
+                border-radius: 8px;
+                border: 1px solid #dbeafe;
+                word-break: break-word;
+            }
+
+            .form-divider {
+                margin: 2rem 0;
+                border: 0;
+                border-top: 1px solid #dbeafe;
+            }
+
+            .button-group {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .btn-back {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                background: #f8fafc !important;
+                border: 2px solid #cbd5e1 !important;
+                color: #475569 !important;
+            }
+
+            .btn-confirm {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                font-weight: 700 !important;
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+                border: none !important;
+                color: white !important;
+            }
+
+            .btn-confirm:hover {
+                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.30) !important;
+                transform: translateY(-1px);
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @media (max-width: 768px) {
+                .supplier-container {
+                    padding: 1rem 0.5rem;
+                }
+
+                .supplier-header,
+                .supplier-card {
+                    padding: 1.5rem;
+                }
+
+                .info-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .button-group {
+                    flex-direction: column;
+                }
+
+                .button-group .ui-button {
+                    width: 100%;
+                }
+            }
+        </style>
+
+        <p:messages id="msgs" showDetail="true" closable="true" />
+
+        <!-- Cabeçalho -->
+        <div class="supplier-header">
+            <div class="header-content">
+                <div class="header-icon">
+                    <i class="pi pi-check-circle"></i>
+                </div>
+
+                <div class="header-text">
+                    <h1>Confirmação de Fornecedor</h1>
+                    <p>Revise as informações abaixo antes de concluir o cadastro.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário/Resumo -->
+        <div class="supplier-card">
+
+            <!-- Informações Básicas -->
+            <h3 class="section-title">
+                <i class="pi pi-info-circle"></i>
+                Informações Básicas
+            </h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <h:outputText value="Nome" styleClass="info-label" />
+                    <h:outputText value="#{supplierBean.itemSupplier.name}" styleClass="info-value" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputText value="NUIT" styleClass="info-label" />
+                    <h:outputText value="#{supplierBean.itemSupplier.nuit}" styleClass="info-value" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputText value="Telefone" styleClass="info-label" />
+                    <h:outputText value="#{supplierBean.itemSupplier.phone}" styleClass="info-value" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputText value="Email" styleClass="info-label" />
+                    <h:outputText value="#{supplierBean.itemSupplier.email}" styleClass="info-value" />
+                </div>
+
+                <div class="info-item full-width">
+                    <h:outputText value="Endereço" styleClass="info-label" />
+                    <h:outputText value="#{supplierBean.itemSupplier.address}" styleClass="info-value" />
+                </div>
+            </div>
+
+            <hr class="form-divider" />
+
+            <!-- Botões -->
+            <div class="button-group">
+                <p:commandButton value="Voltar"
+                    icon="pi pi-arrow-left"
+                    action="#{dashboardBean.backToSupplierInclude}"
+                    update=":mainForm:mainContent"
+                    process="@this"
+                    styleClass="btn-back" />
+
+                <p:commandButton value="Confirmar"
+                    icon="pi pi-check"
+                    iconPos="right"
+                    action="#{supplierBean.saveSupplier}"
+                    actionListener="#{dashboardBean.loadSupplier}"
+                    process="@form"
+                    update=":mainForm:mainContent"
+                    styleClass="btn-confirm" />
+            </div>
+
+        </div>
+
+    </h:form>
+</ui:composition>

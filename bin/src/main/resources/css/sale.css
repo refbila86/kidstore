@@ -1,0 +1,92 @@
+.sale-panel .ui-panel-content {
+    padding: 1.5rem;
+}
+
+.label-bold {
+    font-weight: bold;
+}
+
+.section-title {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.product-panel {
+    padding: 1rem;
+}
+
+.no-border td, .no-border tr, .no-border {
+    border: none !important;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.labelCol {
+    width: 30%;
+    text-align: right;
+    font-weight: bold;
+    color: #2c3e50;
+    padding-right: 1rem;
+}
+
+.valueCol {
+    width: 70%;
+    text-align: left;
+    color: #2c3e50;
+}
+
+.text-success {
+    color: #27ae60 !important;
+    font-weight: bold;
+}
+
+.text-danger {
+    color: #e74c3c !important;
+    font-weight: bold;
+}
+
+.total-text {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.action-buttons {
+    margin-top: 1.5rem;
+    text-align: right;
+}
+
+/* Linha com combobox + botão */
+.product-select-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* antes era 0.5rem — agora tem mais espaço */
+    margin-bottom: 1rem;
+}
+
+.product-autocomplete {
+    flex: 1;
+}
+
+.add-btn {
+    height: 42px;
+    padding: 0 1.5rem;
+}
+.ui-selectonemenu, .ui-autocomplete {
+    width: 100% !important;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .product-select-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .add-btn {
+        width: 100%;
+    }
+}

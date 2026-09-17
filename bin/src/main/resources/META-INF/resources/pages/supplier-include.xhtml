@@ -1,0 +1,273 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:form id="formSupplierInclude" styleClass="supplier-container p-fluid">
+
+        <style>
+            .supplier-container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 2rem 1rem;
+                animation: fadeIn 0.5s ease-out;
+            }
+
+            .supplier-header {
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                border-radius: 20px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+                color: white;
+            }
+
+            .header-content {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .header-icon {
+                font-size: 2.8rem;
+            }
+
+            .header-text h1 {
+                margin: 0;
+                font-size: 1.8rem;
+                font-weight: 700;
+            }
+
+            .header-text p {
+                margin: 0.5rem 0 0;
+                font-size: 1rem;
+                opacity: 0.95;
+            }
+
+            .supplier-card {
+                background: white;
+                border-radius: 20px;
+                padding: 2rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                border: 1px solid #dbeafe;
+            }
+
+            .section-title {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: #1e3a8a;
+                margin: 0 0 1.5rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 2px solid #dbeafe;
+            }
+
+            .section-title:not(:first-child) {
+                margin-top: 2rem;
+            }
+
+            .info-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1.25rem;
+            }
+
+            .info-item {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .info-item.full-width {
+                grid-column: 1 / -1;
+            }
+
+            .info-label {
+                font-weight: 600;
+                color: #1e40af;
+                font-size: 0.95rem;
+            }
+
+            .supplier-container .ui-inputfield,
+            .supplier-container .ui-inputmask {
+                width: 100%;
+                border-radius: 12px !important;
+                border: 2px solid #dbeafe !important;
+                transition: all 0.3s ease !important;
+            }
+
+            .supplier-container .ui-inputfield:focus,
+            .supplier-container .ui-inputmask:focus {
+                border-color: #2563eb !important;
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10) !important;
+            }
+
+            .form-divider {
+                margin: 2rem 0;
+                border: 0;
+                border-top: 1px solid #dbeafe;
+            }
+
+            .button-group {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .btn-cancel {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                background: #f8fafc !important;
+                border: 2px solid #cbd5e1 !important;
+                color: #475569 !important;
+            }
+
+            .btn-next {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                font-weight: 700 !important;
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+                border: none !important;
+                color: white !important;
+            }
+
+            .btn-next:hover {
+                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.30) !important;
+                transform: translateY(-1px);
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @media (max-width: 768px) {
+                .supplier-container {
+                    padding: 1rem 0.5rem;
+                }
+
+                .supplier-header,
+                .supplier-card {
+                    padding: 1.5rem;
+                }
+
+                .info-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .button-group {
+                    flex-direction: column;
+                }
+
+                .button-group .ui-button {
+                    width: 100%;
+                }
+            }
+        </style>
+
+        <p:messages id="msgs" showDetail="true" closable="true" />
+
+        <!-- Cabeçalho -->
+        <div class="supplier-header">
+            <div class="header-content">
+                <div class="header-icon">
+                    <i class="pi pi-briefcase"></i>
+                </div>
+
+                <div class="header-text">
+                    <h1>#{supplierBean.editMode ? 'Editar Fornecedor' : 'Cadastro de Fornecedor'}</h1>
+                    <p>Preencha os dados abaixo para cadastrar um novo fornecedor.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário -->
+        <div class="supplier-card">
+
+            <!-- Informações Básicas -->
+            <h3 class="section-title">
+                <i class="pi pi-info-circle"></i>
+                Informações Básicas
+            </h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <h:outputLabel value="Nome" styleClass="info-label" for="name" />
+                    <p:inputText id="name"
+                        value="#{supplierBean.itemSupplier.name}"
+                        required="true"
+                        requiredMessage="Informe o nome"
+                        maxlength="200"
+                        placeholder="Digite o nome do fornecedor" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputLabel value="NUIT" styleClass="info-label" for="nuit" />
+                    <p:inputMask id="nuit"
+                        mask="999999999"
+                        value="#{supplierBean.itemSupplier.nuit}"
+                        required="true"
+                        requiredMessage="Informe o NUIT"
+                        placeholder="000000000" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputLabel value="Telefone" styleClass="info-label" for="phone" />
+                    <p:inputText id="phone"
+                        value="#{supplierBean.itemSupplier.phone}"
+                        required="true"
+                        requiredMessage="Informe o telefone"
+                        placeholder="Digite o número de telefone" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputLabel value="Email" styleClass="info-label" for="email" />
+                    <p:inputText id="email"
+                        value="#{supplierBean.itemSupplier.email}"
+                        placeholder="exemplo@dominio.com" />
+                </div>
+
+                <div class="info-item full-width">
+                    <h:outputLabel value="Endereço" styleClass="info-label" for="address" />
+                    <p:inputText id="address"
+                        value="#{supplierBean.itemSupplier.address}"
+                        required="true"
+                        requiredMessage="Informe o endereço"
+                        placeholder="Digite o endereço completo" />
+                </div>
+            </div>
+
+            <hr class="form-divider" />
+
+            <!-- Botões -->
+            <div class="button-group">
+                <p:commandButton value="Cancelar"
+                    icon="pi pi-times"
+                    action="#{dashboardBean.cancelSupplierInclude}"
+                    update=":mainForm:mainContent"
+                    process="@this"
+                    styleClass="btn-cancel" />
+
+                <p:commandButton value="Próximo"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                    actionListener="#{dashboardBean.loadSupplierConfirm}"
+                    process="@form"
+                    update=":mainForm:mainContent"
+                    styleClass="btn-next" />
+            </div>
+
+        </div>
+
+    </h:form>
+</ui:composition>

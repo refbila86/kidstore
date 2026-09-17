@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Confirmação de Produto</title>
+
+    <style>
+        .product-confirm-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+        }
+
+        .form-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+        }
+
+        .form-header p {
+            margin: 0.6rem 0 0 3.4rem;
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .form-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #dbeafe;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin: 2rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #dbeafe;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-grid.three-columns {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-item.large {
+            grid-column: 1 / -1;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #1e40af;
+            font-size: 0.95rem;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            color: #334155;
+            min-height: 48px;
+            padding: 0.85rem 1rem;
+            background: #f8fbff;
+            border: 2px solid #dbeafe;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            word-break: break-word;
+        }
+
+        .info-value.empty {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .price-value {
+            font-weight: 600;
+            color: #1d4ed8;
+        }
+
+        .form-divider {
+            margin: 2rem 0;
+            border: 0;
+            border-top: 1px solid #dbeafe;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn-cancel,
+        .btn-confirm {
+            border-radius: 12px !important;
+            padding: 0.8rem 2rem !important;
+            font-weight: 700 !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .btn-cancel {
+            background: #f8fafc !important;
+            border: 2px solid #cbd5e1 !important;
+            color: #475569 !important;
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+            border: none !important;
+            color: white !important;
+        }
+
+        .btn-confirm:hover {
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.30) !important;
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-confirm-container {
+                padding: 1rem 0.5rem;
+            }
+
+            .form-header,
+            .form-panel {
+                padding: 1.5rem;
+            }
+
+            .form-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .form-header p {
+                margin-left: 0;
+            }
+
+            .info-grid,
+            .info-grid.three-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-group .ui-button {
+                width: 100%;
+            }
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <h:form id="formProductConfirm" styleClass="product-confirm-container">
+
+        <!-- Cabeçalho -->
+        <div class="form-header">
+            <h2>
+                <i class="pi pi-check-circle"></i>
+                Confirmação do Produto
+            </h2>
+            <p>Confira os dados do produto antes de confirmar o cadastro.</p>
+        </div>
+
+        <!-- Informações do Produto -->
+        <div class="form-panel">
+
+            <!-- Dados Gerais -->
+            <h3 class="section-title">
+                <i class="pi pi-info-circle"></i>
+                Dados Gerais
+            </h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Nome do Produto</div>
+                    <div class="info-value">
+                        <h:outputText value="#{productBean.product.name}" />
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Marca / Fabricante</div>
+                    <div class="info-value">
+                        <h:outputText value="#{productBean.product.manufacturer}" />
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Categoria</div>
+                    <div class="info-value">
+                        <h:outputText
+                            value="#{productBean.product.category ne null ? productBean.product.category.name : 'Não selecionada'}" />
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Fornecedor</div>
+                    <div class="info-value #{productBean.product.supplier eq null ? 'empty' : ''}">
+                        <h:outputText
+                            value="#{productBean.product.supplier ne null ? productBean.product.supplier.name : 'Não informado'}" />
+                    </div>
+                </div>
+
+                <div class="info-item large">
+                    <div class="info-label">Descrição</div>
+                    <div class="info-value #{empty productBean.product.description ? 'empty' : ''}">
+                        <h:outputText
+                            value="#{empty productBean.product.description ? 'Sem descrição' : productBean.product.description}" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preços e Stock -->
+            <h3 class="section-title">
+                <i class="pi pi-dollar"></i>
+                Preços e Stock
+            </h3>
+
+            <div class="info-grid three-columns">
+                <div class="info-item">
+                    <div class="info-label">Preço de Compra</div>
+                    <div class="info-value price-value">
+                        MT #{productBean.product.purchasePrice}
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Preço de Venda</div>
+                    <div class="info-value price-value">
+                        MT #{productBean.product.salePrice}
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Stock Atual</div>
+                    <div class="info-value">
+                        <h:outputText value="#{productBean.product.currentStock}" />
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Stock Mínimo</div>
+                    <div class="info-value">
+                        <h:outputText value="#{productBean.product.minimumStock}" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Botões -->
+        <div class="button-group">
+            <p:commandButton
+                value="Cancelar"
+                icon="pi pi-times"
+                action="#{dashboardBean.cancelProductInclude}"
+                update=":mainForm:mainContent"
+                process="@this"
+                styleClass="btn-cancel" />
+
+            <p:commandButton
+                value="Confirmar"
+                icon="pi pi-check"
+                iconPos="right"
+                action="#{productBean.saveProduct}"
+                actionListener="#{dashboardBean.loadProduct}"
+                process="@form"
+                update=":mainForm:mainContent"
+                styleClass="btn-confirm" />
+        </div>
+
+    </h:form>
+</h:body>
+</html>

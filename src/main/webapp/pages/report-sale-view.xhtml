@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Confirmar Venda</title>
+	<style>
+:root {
+	--primary-color: #4F46E5;
+	--primary-dark: #4338CA;
+	--success-color: #10B981;
+	--danger-color: #EF4444;
+	--warning-color: #F59E0B;
+	--secondary-color: #6B7280;
+	--bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	--card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+body {
+	font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	min-height: 100vh;
+	padding: 2rem 1rem;
+	margin: 0;
+}
+
+.main-container {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.page-header {
+	text-align: center;
+	margin-bottom: 2rem;
+	animation: fadeInDown 0.6s ease-out;
+}
+
+.page-header h2 {
+	color: white;
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin: 0 0 0.5rem 0;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-header p {
+	color: rgba(255, 255, 255, 0.9);
+	font-size: 1.1rem;
+	margin: 0;
+}
+
+/* Status Badge */
+.status-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	background: linear-gradient(135deg, #F59E0B, #D97706);
+	color: white;
+	padding: 0.75rem 1.5rem;
+	border-radius: 50px;
+	font-weight: 600;
+	font-size: 0.95rem;
+	margin-bottom: 2rem;
+	box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+	animation: pulse 2s ease-in-out infinite;
+}
+
+@
+keyframes pulse { 0%, 100% {
+	box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+50
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+{
+box-shadow
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4px
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+20px
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+rgba
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+245
+,
+158
+,
+11
+,
+0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;
+}
+}
+.check-circle {
+	display: inline-flex;
+	width: 24px;
+	height: 24px;
+	background: white;
+	border-radius: 50%;
+	align-items: center;
+	justify-content: center;
+	animation: checkPop 0.6s ease-out;
+}
+
+@
+keyframes checkPop { 0% {
+	transform: scale(0);
+}
+
+50
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+{
+transform
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+scale
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;
+}
+100
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+{
+transform
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+scale
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;
+}
+}
+
+/* Sale Info Card */
+.sale-info-card {
+	background: white;
+	border-radius: 16px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	box-shadow: var(--card-shadow);
+	animation: fadeInUp 0.6s ease-out;
+	position: relative;
+	overflow: hidden;
+}
+
+.sale-info-card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, var(--warning-color),
+		var(--success-color));
+}
+
+.sale-info-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 1.5rem;
+}
+
+.info-item {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	padding: 1.25rem;
+	background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+	border-radius: 12px;
+	border-left: 4px solid var(--warning-color);
+	transition: all 0.3s ease;
+	animation: slideInRight 0.6s ease-out backwards;
+}
+
+.info-item:nth-child(1) {
+	animation-delay: 0.1s;
+}
+
+.info-item:nth-child(2) {
+	animation-delay: 0.2s;
+}
+
+.info-item:nth-child(3) {
+	animation-delay: 0.3s;
+}
+
+.info-item:hover {
+	transform: translateX(5px);
+	box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.info-icon {
+	font-size: 2rem;
+	flex-shrink: 0;
+}
+
+.info-content {
+	flex: 1;
+}
+
+.info-label {
+	font-size: 0.875rem;
+	color: #92400E;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.info-value {
+	font-size: 1.25rem;
+	color: #78350F;
+	font-weight: 700;
+	margin-top: 0.25rem;
+}
+
+/* Main Card */
+.main-card {
+	background: white;
+	border-radius: 16px;
+	padding: 2.5rem;
+	box-shadow: var(--card-shadow);
+	animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.section-header {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: #1F2937;
+	margin-bottom: 1.5rem;
+	padding-bottom: 1rem;
+	border-bottom: 2px solid #E5E7EB;
+}
+
+.section-header i {
+	color: var(--primary-color);
+}
+
+/* Customer Info Display */
+.customer-display {
+	background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+	border-left: 4px solid var(--primary-color);
+	padding: 1.5rem;
+	border-radius: 12px;
+	margin-bottom: 2rem;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.customer-icon {
+	font-size: 2rem;
+	color: var(--primary-color);
+}
+
+.customer-info {
+	flex: 1;
+}
+
+.customer-label {
+	font-size: 0.875rem;
+	color: #4338CA;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.customer-name {
+	font-size: 1.25rem;
+	color: #312E81;
+	font-weight: 700;
+	margin-top: 0.25rem;
+}
+
+/* DataTable Styles */
+.ui-datatable {
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	margin-bottom: 2rem;
+}
+
+.ui-datatable thead th {
+	background: linear-gradient(135deg, #4F46E5, #4338CA) !important;
+	color: white !important;
+	font-weight: 600 !important;
+	padding: 1rem !important;
+	border: none !important;
+}
+
+.ui-datatable tbody td {
+	padding: 1rem !important;
+	border-bottom: 1px solid #F3F4F6 !important;
+}
+
+.ui-datatable tbody tr {
+	background: white !important;
+	transition: all 0.2s ease !important;
+}
+
+.ui-datatable tbody tr:nth-child(even) {
+	background: #F9FAFB !important;
+}
+
+.ui-datatable tbody tr:hover {
+	background: #EEF2FF !important;
+	transform: scale(1.01);
+	box-shadow: 0 2px 8px rgba(79, 70, 229, 0.1);
+}
+
+.row-number {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	background: linear-gradient(135deg, #4F46E5, #4338CA);
+	color: white;
+	border-radius: 50%;
+	font-weight: 700;
+	font-size: 0.875rem;
+}
+
+/* Total Footer */
+.total-footer {
+	background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+	padding: 2rem;
+	border-radius: 0 0 12px 12px;
+	text-align: right;
+	border-top: 3px solid var(--success-color);
+}
+
+.total-label {
+	font-size: 1.5rem;
+	color: #065F46;
+	font-weight: 600;
+	margin-right: 1rem;
+}
+
+.total-value {
+	font-size: 2.5rem;
+	color: var(--success-color);
+	font-weight: 800;
+	text-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+/* Warning Box */
+.warning-box {
+	background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+	border-left: 4px solid var(--warning-color);
+	padding: 1.5rem;
+	border-radius: 12px;
+	margin: 2rem 0;
+	display: flex;
+	align-items: flex-start;
+	gap: 1rem;
+	animation: slideInUp 0.6s ease-out 0.4s both;
+}
+
+.warning-icon {
+	font-size: 1.75rem;
+	color: #D97706;
+	flex-shrink: 0;
+	animation: shake 2s ease-in-out infinite;
+}
+
+@
+keyframes shake { 0%, 100% {
+	transform: rotate(0deg);
+}
+
+10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+,
+30
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+,
+50
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+,
+70
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+,
+90
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+{
+transform
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+rotate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-5deg
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;
+}
+20
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+,
+40
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+,
+60
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+,
+80
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+{
+transform
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+rotate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5deg
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;
+}
+}
+.warning-content {
+	flex: 1;
+}
+
+.warning-title {
+	font-weight: 700;
+	color: #92400E;
+	font-size: 1.125rem;
+	margin-bottom: 0.5rem;
+}
+
+.warning-text {
+	color: #78350F;
+	line-height: 1.6;
+	margin: 0;
+}
+
+/* Buttons */
+.ui-button {
+	border-radius: 10px !important;
+	padding: 0.75rem 2rem !important;
+	font-weight: 600 !important;
+	font-size: 1rem !important;
+	transition: all 0.3s ease !important;
+	border: none !important;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+.ui-button:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.p-button-success {
+	background: var(--success-color) !important;
+	animation: glow 2s ease-in-out infinite;
+}
+
+.p-button-success:hover {
+	background: #059669 !important;
+}
+
+@
+keyframes glow { 0%, 100% {
+	box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+}
+
+50
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+{
+box-shadow
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4px
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+20px
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+rgba
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+16
+,
+185
+,
+129
+,
+0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;
+}
+}
+.p-button-secondary {
+	background: var(--secondary-color) !important;
+}
+
+.p-button-secondary:hover {
+	background: #4B5563 !important;
+}
+
+.action-buttons {
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+	margin-top: 2rem;
+	padding-top: 2rem;
+	border-top: 2px solid #E5E7EB;
+	animation: fadeIn 0.6s ease-out 0.6s both;
+}
+
+/* Divider */
+.section-divider {
+	border: none;
+	height: 2px;
+	background: linear-gradient(90deg, transparent 0%, #E5E7EB 20%, #E5E7EB 80%,
+		transparent 100%);
+	margin: 2rem 0;
+}
+
+/* Messages */
+.ui-messages {
+	border-radius: 10px !important;
+	margin-bottom: 1.5rem !important;
+	animation: slideInDown 0.4s ease-out;
+}
+
+/* Animations */
+@
+keyframes fadeInDown {from { opacity:0;
+	transform: translateY(-20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+@
+keyframes fadeInUp {from { opacity:0;
+	transform: translateY(20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+@
+keyframes slideInUp {from { opacity:0;
+	transform: translateY(20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+@
+keyframes slideInRight {from { opacity:0;
+	transform: translateX(-20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+}
+@
+keyframes fadeIn {from { opacity:0;
+	
+}
+
+to {
+	opacity: 1;
+}
+
+}
+@
+keyframes slideInDown {from { opacity:0;
+	transform: translateY(-10px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+
+/* Responsive */
+@media ( max-width : 768px) {
+	.page-header h2 {
+		font-size: 2rem;
+	}
+	.main-card {
+		padding: 1.5rem;
+	}
+	.sale-info-grid {
+		grid-template-columns: 1fr;
+	}
+	.action-buttons {
+		flex-direction: column;
+	}
+	.ui-button {
+		width: 100%;
+	}
+	.total-label {
+		font-size: 1.125rem;
+	}
+	.total-value {
+		font-size: 1.75rem;
+	}
+}
+</style>
+</h:head>
+
+<h:body>
+	<div class="main-container">
+		<div class="page-header">
+			<h2>✅ Visualizar Venda</h2>
+		</div>
+
+		<h:form id="formSaleView">
+
+			<p:messages id="msgs" showDetail="true" closable="true" />
+
+			<!-- Status Badge -->
+			<div style="text-align: center; margin-bottom: 2rem;">
+				<span class="status-badge"> <span class="check-circle">⚠️</span>
+					Visualização da venda
+				</span>
+			</div>
+
+			<!-- ===================== INFO DA VENDA ===================== -->
+			<div class="sale-info-card">
+				<div class="sale-info-grid">
+					<div class="info-item">
+						<span class="info-icon">🔢</span>
+						<div class="info-content">
+							<div class="info-label">Número da Venda</div>
+							<div class="info-value">
+								<h:outputText value="#{reportSaleBean.saleCode}" />
+							</div>
+						</div>
+					</div>
+
+					<div class="info-item">
+						<span class="info-icon">👤</span>
+						<div class="info-content">
+							<div class="info-label">Cliente</div>
+							<div class="info-value">
+								<h:outputText
+									value="#{reportSaleBean.selectedCustomer != null ? reportSaleBean.selectedCustomer.name : 'Cliente Anônimo'}" />
+							</div>
+						</div>
+					</div>
+
+					<div class="info-item">
+						<span class="info-icon">📅</span>
+						<div class="info-content">
+							<div class="info-label">Data</div>
+							<div class="info-value">
+								<h:outputText value="#{reportSaleBean.currentDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- ===================== MAIN CONTENT ===================== -->
+			<div class="main-card">
+
+				<!-- Cliente Display -->
+				<div class="customer-display">
+					<span class="customer-icon">👤</span>
+					<div class="customer-info">
+						<div class="customer-label">Cliente Selecionado</div>
+						<div class="customer-name">
+							<h:outputText
+								value="#{reportSaleBean.selectedCustomer != null ? reportSaleBean.selectedCustomer.name : 'Cliente Anônimo'}" />
+						</div>
+					</div>
+				</div>
+
+				<hr class="section-divider" />
+
+				<!-- Tabela de itens -->
+				<h3 class="section-header">
+					<i class="pi pi-shopping-cart"></i> Itens da Venda
+				</h3>
+
+				<p:dataTable id="salesTable"
+					value="#{reportSaleBean.currentSale.salesItems}" var="item"
+					styleClass="p-datatable-striped"
+					emptyMessage="Nenhum item adicionado.">
+
+					<p:column headerText="#" style="width:8%; text-align:center;">
+						<span class="row-number"> <h:outputText
+								value="#{salesTable.rowIndex + 1}" />
+						</span>
+					</p:column>
+
+					<p:column headerText="Produto" style="width:35%;">
+						<h:outputText value="#{item.product.name}"
+							style="font-weight:600; color:#1F2937;" />
+					</p:column>
+
+					<p:column headerText="Preço Unit."
+						style="width:17%; text-align:right;">
+						<h:outputText value="#{item.price}" style="color:#4B5563;">
+							<f:convertNumber type="currency" currencySymbol="MT "
+								minFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Quantidade"
+						style="width:15%; text-align:center;">
+						<h:outputText value="#{item.quantity}"
+							style="font-weight:600; color:#1F2937;">
+							<f:convertNumber pattern="#,##0" />
+						</h:outputText>
+						<span style="color: #6B7280; font-size: 0.875rem;"> un.</span>
+					</p:column>
+
+					<p:column headerText="Subtotal"
+						style="width:25%; text-align:right;">
+						<h:outputText value="#{item.subtotal}"
+							style="font-weight:700; font-size:1.125rem; color:#4F46E5;">
+							<f:convertNumber type="currency" currencySymbol="MT "
+								minFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+
+					<f:facet name="footer">
+						<div class="total-footer">
+							<span class="total-label">💰 Total da Venda:</span> <span
+								class="total-value"> <h:outputText id="total"
+									value="#{reportSaleBean.currentSale.totalSale}">
+									<f:convertNumber type="currency" currencySymbol="MT "
+										minFractionDigits="2" />
+								</h:outputText>
+							</span>
+						</div>
+					</f:facet>
+				</p:dataTable>
+
+				<!-- Botões de ação -->
+				<div class="action-buttons">
+
+					<p:commandButton value="Cancelar" icon="pi pi-times"
+						styleClass="p-button-secondary"
+						actionListener="#{dashboardBean.cancelReportSaleInclude}"
+						update=":mainForm:mainContent" process="@this" />
+
+				</div>
+			</div>
+
+		</h:form>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,417 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<style>
+:root {
+	--primary: #2563eb;
+	--primary-dark: #1e3a8a;
+	--success: #2563eb;
+	--danger: #ef4444;
+	--warning: #f59e0b;
+	--warning-dark: #d97706;
+	--info: #3b82f6;
+	--gray-50: #f9fafb;
+	--gray-100: #f3f4f6;
+	--gray-200: #e5e7eb;
+	--gray-600: #4b5563;
+	--gray-900: #111827;
+}
+
+.stock-page {
+	animation: fadeIn 0.5s ease-out;
+}
+
+/* Header */
+.page-header {
+	background: linear-gradient(135deg, var(--primary) 0%, #1e3a8a 100%);
+	border-radius: 16px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	color: white;
+	box-shadow: 0 10px 40px rgba(37, 99, 235, 0.25);
+}
+
+.header-content {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+}
+
+.page-title {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0;
+}
+
+.title-text {
+	font-size: 2rem;
+	font-weight: 800;
+	color: white;
+	margin: 0;
+}
+
+.btn-new-entry {
+	background: white !important;
+	color: var(--primary) !important;
+	border-radius: 12px !important;
+	padding: 0.75rem 1.5rem !important;
+	font-weight: 700 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.5rem !important;
+	transition: all 0.3s ease !important;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-new-entry:hover {
+	background: #f3f4f6 !important;
+	transform: translateY(-2px) !important;
+}
+
+/* Stats */
+.stats-grid {
+	margin-bottom: 2rem;
+}
+
+.stat-card {
+	background: white;
+	border-radius: 16px;
+	padding: 1.25rem 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+	max-width: 320px;
+}
+
+.stat-icon-wrapper {
+	width: 48px;
+	height: 48px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	background: var(--gray-50);
+}
+
+.stat-label {
+	font-size: 0.75rem;
+	font-weight: 700;
+	color: var(--gray-600);
+	text-transform: uppercase;
+}
+
+.stat-value {
+	font-size: 1.5rem;
+	font-weight: 800;
+	color: var(--gray-900);
+}
+
+/* Design Profissional de Tabs estilo 'Pills' */
+.custom-tabview.ui-tabs {
+	background: transparent !important;
+	border: none !important;
+	padding: 0 !important;
+}
+
+.custom-tabview .ui-tabs-nav {
+	background: var(--gray-100) !important;
+	border: 1px solid var(--gray-200) !important;
+	border-radius: 12px !important;
+	padding: 0.35rem !important;
+	display: inline-flex !important;
+	gap: 0.25rem !important;
+	margin-bottom: 1.5rem !important;
+}
+
+.custom-tabview .ui-tabs-nav li {
+	border: none !important;
+	background: transparent !important;
+	border-radius: 8px !important;
+	margin: 0 !important;
+	transition: all 0.2s ease !important;
+}
+
+.custom-tabview .ui-tabs-nav li a {
+	padding: 0.6rem 1.25rem !important;
+	font-weight: 600 !important;
+	font-size: 0.875rem !important;
+	color: var(--gray-600) !important;
+	border-radius: 8px !important;
+}
+
+.custom-tabview .ui-tabs-nav li:not(.ui-state-active) a:hover {
+	color: var(--gray-900) !important;
+	background: rgba(255, 255, 255, 0.5) !important;
+}
+
+.custom-tabview .ui-tabs-nav li.ui-state-active {
+	background: white !important;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+}
+
+.custom-tabview .ui-tabs-nav li.ui-state-active a {
+	color: var(--primary) !important;
+	font-weight: 700 !important;
+}
+
+.custom-tabview .ui-tabs-panels {
+	background: transparent !important;
+	border: none !important;
+	padding: 0 !important;
+}
+
+/* DataTable Container */
+.table-container {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+}
+
+/* DataTable Ajustado como Produtos */
+.ui-datatable thead th {
+	background: var(--gray-50) !important;
+	color: var(--gray-900) !important;
+	font-weight: 700 !important;
+	padding: 1rem !important;
+	border-bottom: 2px solid var(--gray-200) !important;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.5px;
+}
+
+.ui-datatable tbody td {
+	padding: 1rem !important;
+	border-bottom: 1px solid var(--gray-100) !important;
+	vertical-align: middle !important;
+	font-size: 0.9rem;
+	color: var(--gray-900);
+}
+
+.ui-datatable tbody tr {
+	transition: all 0.2s ease;
+}
+
+.ui-datatable tbody tr:hover {
+	background: var(--gray-50) !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.ui-datatable .ui-datatable-footer {
+	background: var(--gray-50) !important;
+	border: none !important;
+	padding: 1rem !important;
+	border-top: 2px solid var(--gray-200) !important;
+	border-radius: 0 0 16px 16px !important;
+}
+
+.item-name {
+	font-weight: 600;
+	color: var(--gray-900);
+}
+
+.quantity-value {
+	font-weight: 700;
+	color: var(--primary);
+}
+
+/* Action Buttons */
+.action-buttons {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: center;
+}
+
+.action-btn {
+	width: 38px !important;
+	height: 38px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 10px !important;
+	border: none !important;
+	transition: all 0.3s ease !important;
+	cursor: pointer;
+}
+
+.action-btn.btn-view {
+	background: var(--primary) !important;
+	color: white !important;
+}
+
+.action-btn.btn-view:hover {
+	background: var(--primary-dark) !important;
+	transform: scale(1.1) !important;
+}
+
+.action-btn.btn-edit {
+	background: var(--warning) !important;
+	color: white !important;
+}
+
+.action-btn.btn-edit:hover {
+	background: var(--warning-dark) !important;
+	transform: scale(1.1) !important;
+}
+
+.footer-total {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.75rem;
+}
+
+.footer-label {
+	font-size: 0.875rem;
+	color: var(--gray-600);
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.footer-value {
+	font-size: 1.25rem;
+	color: var(--primary);
+	font-weight: 800;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(20px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+	<h:form id="formStockEntry">
+		<div class="stock-page">
+
+			<!-- Header -->
+			<div class="page-header">
+				<div class="header-content">
+					<div class="page-title">
+						<h1 class="title-text">📦 Entradas de Estoque</h1>
+					</div>
+
+					<p:commandButton value="Nova Entrada" icon="pi pi-plus"
+						styleClass="btn-new-entry"
+						actionListener="#{dashboardBean.loadStockEntryInclude}"
+						update=":mainForm:mainContent" process="@this" />
+				</div>
+			</div>
+
+			<!-- Stats -->
+			<div class="stats-grid">
+				<div class="stat-card">
+					<div class="stat-icon-wrapper">📊</div>
+					<div>
+						<div class="stat-label">Total de Entradas</div>
+						<div class="stat-value">
+							<h:outputText value="#{stockEntryBean.listStockEntry.size()}" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Tab View Estilizado -->
+			<p:tabView styleClass="custom-tabview">
+
+				<!-- Tab 1 -->
+				<p:tab title="📋 Lista de Entradas">
+					<div class="table-container">
+						<p:dataTable id="salesTable"
+							value="#{stockEntryBean.listStockEntry}" var="stockEntry"
+							paginator="true" rows="10"
+							responsiveLayout="scroll"
+							rowsPerPageTemplate="10,15,20,25"
+							styleClass="p-datatable-striped p-datatable-sm"
+							emptyMessage="Nenhuma entrada encontrada"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords} entradas">
+
+							<p:column headerText="ID" style="width:10%" sortBy="#{stockEntry.id}">
+								<h:outputText value="#{stockEntry.id}" />
+							</p:column>
+
+							<p:column headerText="Data de Entrada" style="width:65%" sortBy="#{stockEntry.entryDate}">
+								<h:outputText value="#{stockEntry.entryDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="Africa/Maputo" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Ações" style="width:25%; text-align:center;">
+								<div class="action-buttons">
+									<p:commandButton icon="pi pi-eye" title="Visualizar"
+										styleClass="action-btn btn-view"
+										actionListener="#{stockEntry.viewEntry(stockEntry)}"
+										update=":mainForm:mainContent" process="@this" />
+
+									<p:commandButton icon="pi pi-pencil" title="Editar"
+										styleClass="action-btn btn-edit"
+										action="#{stockEntryBean.editarStockEntry(stockEntry)}"
+										process="@this" update=":mainForm:mainContent" />
+								</div>
+							</p:column>
+
+							<f:facet name="footer">
+								<div class="footer-total">
+									<span class="footer-label">Total Registrado:</span>
+									<h:outputText value="#{stockEntryBean.listStockEntry.size()}" styleClass="footer-value" />
+								</div>
+							</f:facet>
+
+						</p:dataTable>
+					</div>
+				</p:tab>
+
+				<!-- Tab 2 -->
+				<p:tab title="📊 Resumo por Produto">
+					<div class="table-container">
+						<p:dataTable id="summaryTable"
+							value="#{stockEntryBean.productSummaryList}" var="summary"
+							paginator="true" rows="10"
+							responsiveLayout="scroll"
+							rowsPerPageTemplate="10,15,20,25"
+							styleClass="p-datatable-striped p-datatable-sm"
+							emptyMessage="Nenhum resumo disponível"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords} registros">
+
+							<p:column headerText="Produto" style="width:50%" sortBy="#{summary.productName}"
+								filterBy="#{summary.productName}" filterMatchMode="contains"
+								filterPlaceholder="Pesquisar produto...">
+								<h:outputText value="#{summary.productName}" styleClass="item-name" />
+							</p:column>
+
+							<p:column headerText="Data de Entrada" style="width:25%" sortBy="#{summary.entryDate}">
+								<h:outputText value="#{summary.entryDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="Africa/Maputo" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Qtd. Total" style="width:25%; text-align:center;" sortBy="#{summary.total}">
+								<h:outputText value="#{summary.total}" styleClass="quantity-value" />
+							</p:column>
+
+							<f:facet name="footer">
+								<div class="footer-total">
+									<span class="footer-label">Total de Itens:</span>
+									<h:outputText value="#{stockEntryBean.grandTotalQuantity}" styleClass="footer-value" />
+								</div>
+							</f:facet>
+
+						</p:dataTable>
+					</div>
+				</p:tab>
+
+			</p:tabView>
+		</div>
+	</h:form>
+</ui:composition>

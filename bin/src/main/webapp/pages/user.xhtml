@@ -1,0 +1,207 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<style>
+:root {
+	--primary: #6366f1;
+	--danger: #ef4444;
+	--warning: #f59e0b;
+	--gray-50: #f9fafb;
+	--gray-100: #f3f4f6;
+	--gray-200: #e5e7eb;
+	--gray-600: #4b5563;
+	--gray-900: #111827;
+}
+
+.user-page {
+	animation: fadeIn 0.5s ease-out;
+}
+
+/* Page Header */
+.page-header {
+	background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+	border-radius: 16px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	color: white;
+	box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.page-header h1 {
+	font-size: 2rem;
+	font-weight: 800;
+	margin: 0;
+}
+
+.btn-new-user {
+	background: white !important;
+	color: var(--primary) !important;
+	border-radius: 12px !important;
+	padding: 0.75rem 1.5rem !important;
+	font-weight: 700 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.5rem !important;
+	transition: all 0.3s ease;
+}
+
+.btn-new-user:hover {
+	background: #f3f4f6 !important;
+	transform: translateY(-2px);
+}
+
+/* DataTable */
+.table-container {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+}
+
+.ui-datatable thead th {
+	background: var(--gray-50) !important;
+	color: var(--gray-900) !important;
+	font-weight: 700;
+	padding: 1rem !important;
+	border-bottom: 2px solid var(--gray-200);
+	text-transform: uppercase;
+	font-size: 0.75rem;
+}
+
+.ui-datatable tbody td {
+	padding: 1rem !important;
+	border-bottom: 1px solid var(--gray-100);
+	vertical-align: middle;
+	font-size: 0.9rem;
+}
+
+.ui-datatable tbody tr:hover {
+	background: var(--gray-50);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.action-btn {
+	width: 38px !important;
+	height: 38px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 10px !important;
+	border: none !important;
+	transition: all 0.3s ease;
+}
+
+.action-btn.btn-edit {
+	background: var(--warning);
+	color: white;
+}
+
+.action-btn.btn-edit:hover {
+	background: #d97706;
+}
+
+.action-btn.btn-delete {
+	background: var(--danger);
+	color: white;
+}
+
+.action-btn.btn-delete:hover {
+	background: #dc2626;
+}
+
+@
+keyframes fadeIn {
+	from {opacity: 0;
+	transform: translateY(20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+}
+</style>
+
+	<h:form id="formUser" class="user-page">
+
+		<!-- Header -->
+		<div class="page-header">
+			<h1>👤 Utilizadores</h1>
+			<p:commandButton value="Incluir Utilizador" icon="pi pi-plus"
+				styleClass="btn-new-user"
+				actionListener="#{dashboardBean.loadUserInclude}"
+				update=":mainForm:mainContent" process="@this" />
+		</div>
+
+		<!-- Table -->
+		<div class="table-container">
+
+			<p:dataTable id="tabela" value="#{userBean.listUser}" var="u"
+				paginator="true" rows="10" responsiveLayout="scroll"
+				styleClass="p-datatable-striped p-datatable-sm"
+				emptyMessage="Nenhum utilizador encontrado">
+
+				<p:column headerText="ID" style="width:5%" sortBy="#{u.id}">
+					<h:outputText value="#{u.id}" />
+				</p:column>
+
+				<p:column headerText="Nome completo" style="width:30%"
+					filterBy="#{u.fullName}" sortBy="#{u.fullName}"
+					filterMatchMode="contains" filterPlaceholder="Pesquisar..."
+					sortable="true">
+					<h:outputText value="#{u.fullName}" />
+				</p:column>
+
+				<p:column headerText="Username" style="width:15%"
+					filterBy="#{u.username}" sortBy="#{u.username}"
+					filterMatchMode="contains" filterPlaceholder="Pesquisar..."
+					sortable="true">
+					<h:outputText value="#{u.username}" />
+				</p:column>
+
+				<p:column headerText="Email" style="width:30%" filterBy="#{u.email}"
+					filterMatchMode="contains" filterPlaceholder="Pesquisar...">
+					<h:outputText value="#{u.email}" />
+				</p:column>
+
+				<p:column headerText="Perfil" style="width:30%" filterBy="#{u.role}"
+					filterMatchMode="contains" filterPlaceholder="Pesquisar...">
+					<h:outputText value="#{u.role}" />
+				</p:column>
+				<p:column headerText="Ultima Entrada" style="width:30%"
+					filterBy="#{u.lastLogin}" filterMatchMode="contains"
+					filterPlaceholder="Pesquisar...">
+					<h:outputText value="#{u.lastLogin}" />
+				</p:column>
+
+				<p:column headerText="Ações" style="width:20%; text-align:center;">
+
+					<p:commandButton icon="pi pi-pencil" title="Editar"
+						styleClass="action-btn btn-edit"
+						actionListener="#{userBean.editar(u)}"
+						update=":mainForm:mainContent" process="@this" />
+
+					<p:commandButton icon="pi pi-trash" title="Remover"
+						styleClass="action-btn btn-delete"
+						actionListener="#{userBean.remover(u.id)}"
+						update="tabela">
+						<p:confirm header="Confirmação"
+							message="Deseja realmente excluir esta categoria?"
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+		</div>
+
+	</h:form>
+</ui:composition>

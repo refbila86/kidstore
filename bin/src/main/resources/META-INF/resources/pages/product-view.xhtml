@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Visualização de Produto Farmacêutico</title>
+	<style>
+.product-view-container {
+	animation: fadeIn 0.5s ease-out;
+}
+
+.form-header {
+	background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+	border-radius: 12px;
+	padding: 1.5rem;
+	margin-bottom: 2rem;
+	color: white;
+	box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
+}
+
+.button-group {
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+	margin-top: 2rem;
+}
+
+.form-header h2 {
+	margin: 0;
+	font-size: 1.75rem;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.form-panel {
+	background: white;
+	border-radius: 12px;
+	padding: 2rem;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	border: 1px solid #d1fae5;
+}
+
+.section-title {
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: #064e3b;
+	margin: 1.5rem 0 1rem 0;
+	padding-bottom: 0.5rem;
+	border-bottom: 2px solid #d1fae5;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.info-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+.info-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.info-label {
+	font-weight: 600;
+	color: #047857;
+	font-size: 0.875rem;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.info-value {
+	font-size: 1rem;
+	color: #064e3b;
+	min-height: 44px;
+}
+
+.info-value.large {
+	grid-column: 1/-1;
+}
+
+@
+keyframes fadeIn {from { opacity:0;
+	transform: translateY(20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+@media ( max-width : 768px) {
+	.info-grid {
+		grid-template-columns: 1fr;
+	}
+	.form-panel {
+		padding: 1rem;
+	}
+}
+</style>
+</h:head>
+
+<h:body>
+	<h:form id="formProductView" styleClass="product-view-container">
+
+		<div class="form-header">
+			<h2>
+				<i class="pi pi-eye"></i> Visualização de Produto Farmacêutico
+			</h2>
+		</div>
+
+		<div class="form-panel">
+			<!-- INFORMAÇÕES BÁSICAS -->
+			<h3 class="section-title">
+				<i class="pi pi-info-circle"></i> Informações Básicas
+			</h3>
+
+			<div class="info-grid">
+				<div class="info-item">
+					<div class="info-label">Nome do Produto</div>
+					<div class="info-value">#{productBean.product.name}</div>
+				</div>
+
+				<div class="info-item">
+					<div class="info-label">Fabricante</div>
+					<div class="info-value">#{productBean.product.manufacturer}</div>
+				</div>
+
+				<div class="info-item">
+					<div class="info-label">Categoria</div>
+					<div class="info-value">
+						<h:outputText
+							value="#{productBean.product.category != null ? productBean.product.category.name : 'Não selecionada'}" />
+					</div>
+				</div>
+
+				<div class="info-item">
+					<div class="info-label">Fornecedor</div>
+					<div class="info-value">
+						<h:outputText
+							value="#{productBean.product.supplier != null ? productBean.product.supplier.name : 'Não informado'}" />
+					</div>
+				</div>
+
+				<div class="info-item large">
+					<div class="info-label">Descrição</div>
+					<div class="info-value">
+						<h:outputText
+							value="#{empty productBean.product.description ? 'Sem descrição' : productBean.product.description}" />
+					</div>
+				</div>
+			</div>
+
+			<!-- ESTOQUE -->
+			<h3 class="section-title">
+				<i class="pi pi-database"></i> Controle de Estoque
+			</h3>
+
+			<div class="info-grid">
+				<div class="info-item">
+					<div class="info-label">Stock Atual</div>
+					<div class="info-value">#{productBean.product.currentStock}</div>
+				</div>
+
+				<div class="info-item">
+					<div class="info-label">Stock Mínimo</div>
+					<div class="info-value">#{productBean.product.minimumStock}</div>
+				</div>
+			</div>
+
+			<!-- PREÇOS -->
+			<h3 class="section-title">
+				<i class="pi pi-dollar"></i> Preços
+			</h3>
+
+			<div class="info-grid">
+				<div class="info-item">
+					<div class="info-label">Preço de Compra</div>
+					<div class="info-value">MT
+						#{productBean.product.purchasePrice}</div>
+				</div>
+
+				<div class="info-item">
+					<div class="info-label">Preço de Venda</div>
+					<div class="info-value">MT #{productBean.product.salePrice}</div>
+				</div>
+			</div>
+
+			<!-- DATAS -->
+			<h3 class="section-title">
+				<i class="pi pi-calendar"></i> Datas e Validade
+			</h3>
+
+			<div class="info-grid">
+				<div class="info-item">
+					<div class="info-label">Data de Registro</div>
+					<div class="info-value">
+						<h:outputText value="#{productBean.product.registrationDate}"
+							converter="localDateConverter" />
+					</div>
+				</div>
+
+				<div class="info-item">
+					<div class="info-label">Data de Validade</div>
+					<div class="info-value">
+						<h:outputText value="#{productBean.product.expirationDate}"
+							converter="localDateConverter" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<br />
+		<div class="button-group">
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				action="#{dashboardBean.cancelProductInclude}"
+				update=":mainForm:mainContent" process="@this"
+				styleClass="p-button-secondary" />
+				
+		</div>
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,370 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<style>
+:root {
+	--primary: #2563eb;
+	--primary-dark: #1e3a8a;
+	--danger: #ef4444;
+	--danger-dark: #dc2626;
+	--warning: #f59e0b;
+	--warning-dark: #d97706;
+	--success: #2563eb;
+	--info: #3b82f6;
+	--gray-50: #f9fafb;
+	--gray-100: #f3f4f6;
+	--gray-200: #e5e7eb;
+	--gray-600: #4b5563;
+	--gray-900: #111827;
+}
+
+.product-page {
+	animation: fadeIn 0.5s ease-out;
+}
+
+/* Page Header */
+.page-header {
+	background: linear-gradient(135deg, var(--primary) 0%, #1e3a8a 100%);
+	border-radius: 16px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	color: white;
+	box-shadow: 0 10px 40px rgba(37, 99, 235, 0.25);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.page-header h1 {
+	font-size: 2rem;
+	font-weight: 800;
+	margin: 0;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.btn-new-product {
+	background: white !important;
+	color: var(--primary) !important;
+	border-radius: 12px !important;
+	padding: 0.75rem 1.5rem !important;
+	font-weight: 700 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.5rem !important;
+	transition: all 0.3s ease !important;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-new-product:hover {
+	background: #f3f4f6 !important;
+	transform: translateY(-2px) !important;
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* DataTable */
+.table-container {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+}
+
+.ui-datatable thead th {
+	background: var(--gray-50) !important;
+	color: var(--gray-900) !important;
+	font-weight: 700 !important;
+	padding: 1rem !important;
+	border-bottom: 2px solid var(--gray-200) !important;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.5px;
+}
+
+.ui-datatable tbody td {
+	padding: 1rem !important;
+	border-bottom: 1px solid var(--gray-100) !important;
+	vertical-align: middle !important;
+	font-size: 0.9rem;
+}
+
+.ui-datatable tbody tr {
+	transition: all 0.2s ease;
+}
+
+.ui-datatable tbody tr:hover {
+	background: var(--gray-50) !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Product Name Styling */
+.product-name {
+	font-weight: 600;
+	color: var(--gray-900);
+}
+
+/* Stock Styling */
+.stock-low {
+	color: #ef4444;
+	font-weight: 700;
+}
+
+.stock-ok {
+	color: #2563eb;
+	font-weight: 600;
+}
+
+/* Status Badges */
+.status-badge {
+	display: inline-block;
+	padding: 0.25rem 0.75rem;
+	border-radius: 8px;
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.badge-expired {
+	background: #fee2e2;
+	color: #991b1b;
+}
+
+.badge-expiring {
+	background: #dbeafe;
+	color: #1e40af;
+}
+
+.badge-low-stock {
+	background: #fef3c7;
+	color: #92400e;
+}
+
+.badge-active {
+	background: #dbeafe;
+	color: #1e3a8a;
+}
+
+/* Price Styling */
+.price-text {
+	font-weight: 600;
+	color: var(--success);
+	font-size: 0.95rem;
+}
+
+/* Action Buttons */
+.action-btn {
+	width: 38px !important;
+	height: 38px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 10px !important;
+	border: none !important;
+	transition: all 0.3s ease !important;
+	margin-right: 0.5rem;
+	cursor: pointer;
+}
+
+.action-btn:last-child {
+	margin-right: 0;
+}
+
+.action-btn.btn-edit {
+	background: var(--warning) !important;
+	color: white !important;
+}
+
+.action-btn.btn-edit:hover {
+	background: var(--warning-dark) !important;
+	transform: scale(1.1) !important;
+	box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4) !important;
+}
+
+.action-btn.btn-delete {
+	background: var(--danger) !important;
+	color: white !important;
+}
+
+.action-btn.btn-delete:hover {
+	background: var(--danger-dark) !important;
+	transform: scale(1.1) !important;
+	box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
+}
+
+.action-btn.btn-view {
+	background: var(--primary) !important;
+	color: white !important;
+}
+
+.action-btn.btn-view:hover {
+	background: var(--primary-dark) !important;
+	transform: scale(1.1) !important;
+	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4) !important;
+}
+
+/* Animation */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.page-header {
+		flex-direction: column;
+		text-align: center;
+	}
+	
+	.page-header h1 {
+		justify-content: center;
+	}
+}
+</style>
+
+	<h:form id="formProduct" class="product-page">
+
+		<!-- Header -->
+		<div class="page-header">
+			<h1>🧸 Produtos Infantis</h1>
+			<p:commandButton value="Incluir Produto" icon="pi pi-plus"
+				styleClass="btn-new-product"
+				actionListener="#{dashboardBean.loadProductInclude}"
+				update=":mainForm:mainContent" 
+				process="@this" />
+		</div>
+
+		<!-- Table -->
+		<div class="table-container">
+			<p:dataTable id="tabela" 
+				value="#{productBean.listProduct}" 
+				var="p"
+				paginator="true" 
+				rows="10" 
+				responsiveLayout="scroll"
+				rowsPerPageTemplate="10,15,20,25"
+				styleClass="p-datatable-striped p-datatable-sm"
+				emptyMessage="Nenhum produto encontrado"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords} produtos">
+
+				<p:column headerText="ID" style="width:5%" sortBy="#{p.id}">
+					<h:outputText value="#{p.id}" />
+				</p:column>
+
+				<p:column headerText="Nome" 
+					sortBy="#{p.name}" 
+					filterBy="#{p.name}"
+					style="width:25%" 
+					filterMatchMode="contains"
+					filterPlaceholder="Pesquisar nome...">
+					<h:outputText value="#{p.name}" styleClass="product-name" />
+				</p:column>
+
+				<p:column headerText="Categoria" 
+					sortBy="#{p.category.name}"
+					filterBy="#{p.category.name}" 
+					style="width:12%"
+					filterMatchMode="contains" 
+					filterPlaceholder="Pesquisar...">
+					<h:outputText value="#{p.category.name}" />
+				</p:column>
+
+				<p:column headerText="Fabricante" 
+					sortBy="#{p.manufacturer}"
+					style="width:15%">
+					<h:outputText value="#{p.manufacturer}" />
+				</p:column>
+
+				<p:column headerText="Validade" 
+					style="width:10%"
+					sortBy="#{p.expirationDate}">
+					<h:outputText value="#{p.expirationDate}" converter="localDateConverter"/>
+				</p:column>
+
+				<p:column headerText="Estoque" 
+					style="width:8%"
+					sortBy="#{p.currentStock}">
+					<h:outputText value="#{p.currentStock}" 
+						styleClass="#{p.currentStock le p.minimumStock ? 'stock-low' : 'stock-ok'}" />
+				</p:column>
+
+				<p:column headerText="Preço Venda" 
+					style="width:10%"
+					sortBy="#{p.salePrice}">
+					<h:outputText value="#{p.salePrice}" styleClass="price-text">
+						<f:convertNumber type="currency" 
+							currencySymbol="MT " 
+							maxFractionDigits="2" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Status" style="width:10%">
+					<span class="status-badge #{productBean.isProductExpired(p) ? 'badge-expired' : 
+						(productBean.isProductExpiringSoon(p) ? 'badge-expiring' : 
+						(productBean.isProductLowStock(p) ? 'badge-low-stock' : 'badge-active'))}">
+						<h:outputText value="#{productBean.isProductExpired(p) ? 'VENCIDO' : 
+							(productBean.isProductExpiringSoon(p) ? 'VENCENDO' : 
+							(productBean.isProductLowStock(p) ? 'BAIXO' : 'ATIVO'))}" />
+					</span>
+				</p:column>
+
+				<p:column headerText="Ações" style="width:15%; text-align:center;">
+					<p:commandButton icon="pi pi-pencil" 
+						title="Editar"
+						styleClass="action-btn btn-edit"
+						actionListener="#{productBean.editProduct(p)}"
+						update=":mainForm:mainContent" 
+						process="@this" />
+
+					<p:commandButton icon="pi pi-trash" 
+						title="Remover"
+						styleClass="action-btn btn-delete"
+						actionListener="#{productBean.remover(p)}" 
+						update="tabela">
+						<p:confirm header="Confirmação" 
+							message="Deseja realmente excluir este produto?" 
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+
+					<p:commandButton icon="pi pi-eye" 
+						title="Visualizar"
+						styleClass="action-btn btn-view"
+						actionListener="#{productBean.viewProduct(p)}"
+						update=":mainForm:mainContent" 
+						process="@this"/>
+				</p:column>
+
+			</p:dataTable>
+		</div>
+
+		<!-- Confirm Dialog -->
+		<p:confirmDialog global="true" 
+			showEffect="fade" 
+			hideEffect="fade"
+			responsive="true" 
+			width="350">
+			<p:commandButton value="Não" 
+				type="button"
+				styleClass="ui-confirmdialog-no" 
+				icon="pi pi-times" />
+			<p:commandButton value="Sim" 
+				type="button"
+				styleClass="ui-confirmdialog-yes" 
+				icon="pi pi-check" />
+		</p:confirmDialog>
+
+	</h:form>
+</ui:composition>

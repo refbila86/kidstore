@@ -1,0 +1,28 @@
+# Build e instaladores
+bin/installer/
+target/
+out/
+build/
+*.jar
+*.msi
+*.exe
+
+# SEGREDOS - nunca subir
+token
+token.txt
+.env
+*.env
+**/*secret*
+**/credentials*
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.DS_Store
+token
+token.txt
+.env
+users.txt
+token
+application.properties

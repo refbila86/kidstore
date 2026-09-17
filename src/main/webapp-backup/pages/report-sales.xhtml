@@ -1,0 +1,519 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<style>
+:root {
+	--primary: #6366f1;
+	--primary-dark: #4f46e5;
+	--success: #10b981;
+	--danger: #ef4444;
+	--warning: #f59e0b;
+	--info: #3b82f6;
+	--gray-50: #f9fafb;
+	--gray-100: #f3f4f6;
+	--gray-200: #e5e7eb;
+	--gray-600: #4b5563;
+	--gray-900: #111827;
+}
+
+.report-page {
+	animation: fadeIn 0.5s ease-out;
+}
+
+/* Header Section */
+.page-header {
+	background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+	border-radius: 16px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25);
+	position: relative;
+	overflow: hidden;
+}
+
+.page-header::before {
+	content: '';
+	position: absolute;
+	top: -50%;
+	right: -10%;
+	width: 300px;
+	height: 300px;
+	background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%,
+		transparent 70%);
+	border-radius: 50%;
+}
+
+.page-header::after {
+	content: '';
+	position: absolute;
+	bottom: -30%;
+	left: -5%;
+	width: 200px;
+	height: 200px;
+	background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%,
+		transparent 70%);
+	border-radius: 50%;
+}
+
+.header-content {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+}
+
+.header-left {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.page-title {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin: 0;
+}
+
+.title-icon {
+	font-size: 2.5rem;
+	filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.title-text {
+	font-size: 2rem;
+	font-weight: 800;
+	color: white;
+	margin: 0;
+	letter-spacing: -0.02em;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Stats Cards */
+.stats-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 1.5rem;
+	margin-bottom: 2rem;
+}
+
+.stat-card {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.stat-card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, var(--primary) 0%, var(--info) 100%);
+}
+
+.stat-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.stat-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+}
+
+.stat-icon-wrapper {
+	width: 56px;
+	height: 56px;
+	border-radius: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.75rem;
+	background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%,
+		rgba(139, 92, 246, 0.1) 100%);
+}
+
+.stat-label {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--gray-600);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	margin-bottom: 0.5rem;
+}
+
+.stat-value {
+	font-size: 2rem;
+	font-weight: 800;
+	color: var(--gray-900);
+	line-height: 1;
+}
+
+.stat-trend {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--success);
+	margin-top: 0.5rem;
+}
+
+/* Table Section */
+.table-container {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+}
+
+.table-header-section {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1.5rem;
+	padding-bottom: 1rem;
+	border-bottom: 2px solid var(--gray-100);
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.table-title {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--gray-900);
+	margin: 0;
+}
+
+.export-buttons {
+	display: flex;
+	gap: 0.75rem;
+}
+
+.btn-export {
+	padding: 0.75rem 1.5rem !important;
+	font-weight: 600 !important;
+	font-size: 0.875rem !important;
+	border-radius: 10px !important;
+	transition: all 0.3s ease !important;
+	border: none !important;
+}
+
+.btn-export-excel {
+	background: var(--success) !important;
+	color: white !important;
+}
+
+.btn-export-excel:hover {
+	background: #059669 !important;
+	transform: translateY(-2px) !important;
+	box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+}
+
+.btn-export-pdf {
+	background: var(--danger) !important;
+	color: white !important;
+}
+
+.btn-export-pdf:hover {
+	background: #dc2626 !important;
+	transform: translateY(-2px) !important;
+	box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* DataTable Customization */
+.ui-datatable {
+	border: none !important;
+}
+
+.ui-datatable .ui-datatable-header {
+	background: transparent !important;
+	border: none !important;
+	padding: 0 0 1rem 0 !important;
+}
+
+.ui-datatable thead th {
+	background: var(--gray-50) !important;
+	color: var(--gray-900) !important;
+	font-weight: 700 !important;
+	padding: 1rem !important;
+	border: none !important;
+	border-bottom: 2px solid var(--gray-200) !important;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.1em;
+}
+
+.ui-datatable tbody td {
+	padding: 1.25rem 1rem !important;
+	border: none !important;
+	border-bottom: 1px solid var(--gray-100) !important;
+	vertical-align: middle !important;
+	font-size: 0.9rem;
+}
+
+.ui-datatable tbody tr {
+	transition: all 0.2s ease !important;
+}
+
+.ui-datatable tbody tr:hover {
+	background: var(--gray-50) !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.sale-code {
+	display: inline-block;
+	background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+	color: var(--primary);
+	padding: 0.5rem 1rem;
+	border-radius: 8px;
+	font-weight: 700;
+	font-size: 0.875rem;
+	border: 1px solid #c7d2fe;
+}
+
+.customer-name {
+	font-weight: 600;
+	color: var(--gray-900);
+}
+
+.total-value {
+	font-weight: 700;
+	font-size: 1.125rem;
+	color: var(--success);
+}
+
+/* Action Button */
+.action-btn {
+	width: 38px !important;
+	height: 38px !important;
+	padding: 0 !important;
+	border-radius: 10px !important;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	border: none !important;
+	background: var(--info) !important;
+}
+
+.action-btn:hover {
+	transform: translateY(-2px) scale(1.08) !important;
+	background: #2563eb !important;
+	box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* Footer Actions */
+.footer-actions {
+	margin-top: 2rem;
+	display: flex;
+	justify-content: flex-end;
+	gap: 1rem;
+}
+
+.btn-close-cash {
+	background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%)
+		!important;
+	color: white !important;
+	border: none !important;
+	padding: 1rem 2rem !important;
+	font-weight: 700 !important;
+	font-size: 1rem !important;
+	border-radius: 12px !important;
+	box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3) !important;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn-close-cash:hover {
+	transform: translateY(-3px) !important;
+	box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4) !important;
+}
+
+@
+keyframes fadeIn {from { opacity:0;
+	transform: translateY(20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+}
+</style>
+
+	<h:form id="formSales">
+
+		<div class="report-page">
+
+			<!-- Page Header -->
+			<div class="page-header">
+				<div class="header-content">
+					<div class="header-left">
+						<div class="page-title">
+							<span class="title-icon">📊</span>
+							<h1 class="title-text">Resumo de Vendas</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Stats Cards envoltos em um container JSF para atualização segura -->
+			<h:panelGroup id="statsCards" layout="block" styleClass="stats-grid">
+				<div class="stat-card">
+					<div class="stat-header">
+						<div class="stat-icon-wrapper">💰</div>
+					</div>
+					<div class="stat-label">Total Geral</div>
+					<div class="stat-value">
+						<h:outputText value="#{reportSaleBean.totalGeral}">
+							<f:convertNumber type="currency" currencySymbol="MT " />
+						</h:outputText>
+					</div>
+					<div class="stat-trend">
+						<span>📈</span> Vendas filtradas
+					</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-header">
+						<div class="stat-icon-wrapper">📋</div>
+					</div>
+					<div class="stat-label">Total de Vendas</div>
+					<div class="stat-value">
+						<h:outputText value="#{reportSaleBean.currentSalesList.size()}" />
+					</div>
+					<div class="stat-trend">
+						<span>✅</span> Vendas encontradas
+					</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-header">
+						<div class="stat-icon-wrapper">💵</div>
+					</div>
+					<div class="stat-label">Ticket Medio</div>
+					<div class="stat-value">
+						<h:outputText
+							value="#{reportSaleBean.currentSalesList.size() > 0 ? reportSaleBean.totalGeral / reportSaleBean.currentSalesList.size() : 0}">
+							<f:convertNumber type="currency" currencySymbol="MT " />
+						</h:outputText>
+					</div>
+					<div class="stat-trend">
+						<span>📊</span> Por venda
+					</div>
+				</div>
+			</h:panelGroup>
+
+			<!-- Table Section -->
+			<div class="table-container">
+
+				<p:dataTable id="salesTable" value="#{reportSaleBean.listSales}"
+					var="sales" paginator="true" rows="10"
+					emptyMessage="Nenhuma venda encontrada no sistema."
+					filteredValue="#{reportSaleBean.filteredSales}"
+					widgetVar="salesTableWidget">
+
+					<!-- Atualiza cirurgicamente apenas os cards e o rodapé da tabela -->
+					<p:ajax event="filter"
+						update="@parent:statsCards salesTable:totalFooter" />
+
+					<f:facet name="header">
+						<div class="table-header-section">
+							<h2 class="table-title">📋 Lista de Todas as Vendas</h2>
+							<div class="export-buttons">
+								<p:commandButton value="Exportar Excel" icon="pi pi-file-excel"
+									styleClass="btn-export btn-export-excel" ajax="false">
+									<p:dataExporter type="xlsx" target="salesTable"
+										fileName="relatorio_vendas" pageOnly="false" />
+								</p:commandButton>
+
+								<p:commandButton value="Exportar PDF" icon="pi pi-file-pdf"
+									styleClass="btn-export btn-export-pdf" ajax="false">
+									<p:dataExporter type="pdf" target="salesTable"
+										fileName="relatorio_vendas" pageOnly="false" />
+								</p:commandButton>
+							</div>
+						</div>
+					</f:facet>
+
+					<p:column headerText="DATA" style="width:20%"
+						filterBy="#{sales.dateSaleFormatted}" sortBy="#{sales.dateSale}"
+						filterMatchMode="contains" sortable="true">
+						<h:outputText value="#{sales.dateSaleFormatted}" />
+					</p:column>
+
+					<p:column headerText="CODIGO" style="width:20%"
+						filterBy="#{sales.saleCode}" sortBy="#{sales.saleCode}"
+						filterMatchMode="contains" sortable="true">
+						<h:outputText value="##{sales.saleCode}" styleClass="sale-code" />
+					</p:column>
+
+					<p:column headerText="CLIENTE" style="width:35%">
+						<h:outputText value="#{sales.customer.name}"
+							styleClass="customer-name" />
+					</p:column>
+
+					<p:column headerText="VALOR TOTAL"
+						style="width:20%; text-align:right;">
+						<h:outputText value="#{sales.totalSale}" styleClass="total-value">
+							<f:convertNumber type="currency" currencySymbol="MT " />
+						</h:outputText>
+						<f:facet name="footer">
+							<h:outputText id="totalFooter"
+								value="#{reportSaleBean.totalGeral}">
+								<f:convertNumber type="currency" currencySymbol="MT " />
+							</h:outputText>
+						</f:facet>
+					</p:column>
+
+					<p:column headerText="ACOES" style="width:10%; text-align:center;"
+						exportable="false">
+						<p:commandButton icon="pi pi-eye" title="Visualizar"
+							styleClass="action-btn btn-view"
+							actionListener="#{reportSaleBean.viewSale(sales)}"
+							update=":mainForm:mainContent" process="@this" />
+					</p:column>
+
+				</p:dataTable>
+
+			</div>
+
+			<!-- Footer Actions -->
+			<div class="footer-actions">
+				<p:commandButton value="Fechar Caixa" icon="pi pi-lock"
+					styleClass="btn-close-cash"
+					actionListener="#{reportSaleBean.closeCashRegister()}"
+					update="@form">
+					<p:confirm header="Confirmacao"
+						message="Deseja realmente fechar o caixa?"
+						icon="pi pi-exclamation-triangle" />
+				</p:commandButton>
+			</div>
+
+		</div>
+
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+			responsive="true" width="400">
+			<p:commandButton value="Nao" type="button"
+				styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+		</p:confirmDialog>
+
+	</h:form>
+
+</ui:composition>

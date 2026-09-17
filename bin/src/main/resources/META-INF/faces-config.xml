@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.3"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee">
+
+    <application>
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+    </application>
+
+    <converter>
+        <converter-id>supplierConverter</converter-id>
+        <converter-class>mz.co.crud.converter.SupplierConverter</converter-class>
+    </converter>
+
+</faces-config>

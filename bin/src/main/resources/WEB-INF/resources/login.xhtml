@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Login - Sistema de Gestão de Loja Infantil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+
+    <h:outputStylesheet>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #2563eb 0%, #60a5fa 50%, #60a5fa 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                transparent 0%,
+                rgba(255,255,255,0.15) 25%,
+                transparent 50%,
+                rgba(255,255,255,0.15) 75%,
+                transparent 100%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
+        }
+
+        /* Login Container */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            max-width: 1000px;
+            width: 90%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Left Panel - Image/Brand */
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            position: relative;
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 2px, transparent 2px);
+            background-size: 34px 34px;
+            animation: backgroundMove 20s linear infinite;
+        }
+
+        @keyframes backgroundMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(34px, 34px); }
+        }
+
+        .brand-logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+            background: rgba(255,255,255,0.25);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-18px) rotate(6deg); }
+        }
+
+        .brand-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-subtitle {
+            font-size: 1rem;
+            opacity: 0.95;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .features-list {
+            margin-top: 2rem;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* Right Panel - Form */
+        .login-right {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: #1e3a8a;
+            font-size: 0.95rem;
+        }
+
+        /* Form Styling */
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2563eb;
+            font-size: 1.2rem;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .ui-inputfield {
+            width: 100% !important;
+            height: 50px !important;
+            padding-left: 3rem !important;
+            border: 2px solid #e2e8f0 !important;
+            border-radius: 12px !important;
+            font-size: 1rem !important;
+            transition: all 0.3s ease !important;
+            background: #f1f5f9 !important;
+        }
+
+        .ui-inputfield:focus {
+            border-color: #2563eb !important;
+            background: white !important;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15) !important;
+            outline: none !important;
+        }
+
+        /* Password Toggle */
+        .ui-password {
+            width: 100%;
+        }
+
+        .ui-password input {
+            padding-right: 3rem !important;
+        }
+
+        .ui-password-panel {
+            display: none !important;
+        }
+
+        /* Remember Me */
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #111827;
+        }
+
+        .ui-chkbox {
+            margin-right: 0.3rem;
+        }
+
+        .forgot-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-link:hover {
+            color: #1e3a8a;
+            text-decoration: underline;
+        }
+
+        /* Login Button */
+        .login-button {
+            width: 100% !important;
+            height: 50px !important;
+            background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%) !important;
+            border: none !important;
+            border-radius: 12px !important;
+            color: white !important;
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4) !important;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6) !important;
+        }
+
+        .login-button:active {
+            transform: translateY(0) !important;
+        }
+
+        .ui-button-text {
+            padding: 0 !important;
+        }
+
+        /* Divider */
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            position: relative;
+            color: #1e3a8a;
+            font-size: 0.85rem;
+        }
+
+        /* Social Login */
+        .social-login {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-button {
+            flex: 1;
+            height: 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #111827;
+        }
+
+        .social-button:hover {
+            border-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Footer */
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #1e3a8a;
+            font-size: 0.85rem;
+        }
+
+        .login-footer p {
+            margin: 0.5rem 0;
+        }
+
+        .signup-link {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .signup-link:hover {
+            color: #1e3a8a;
+            text-decoration: underline;
+        }
+
+        /* Messages */
+        .ui-messages {
+            margin-bottom: 1.5rem !important;
+            border-radius: 12px !important;
+            border-left: 4px solid !important;
+        }
+
+        .ui-messages-error {
+            background: #fee !important;
+            border-left-color: #e74c3c !important;
+            color: #c0392b !important;
+        }
+
+        .ui-messages-info {
+            background: #e2e8f0 !important;
+            border-left-color: #2563eb !important;
+            color: #111827 !important;
+        }
+
+        .ui-messages-warn {
+            background: #fef3c7 !important;
+            border-left-color: #f59e0b !important;
+            color: #92400e !important;
+        }
+
+        .ui-messages-icon {
+            font-size: 1.2rem !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .login-left {
+                padding: 2rem;
+            }
+
+            .login-right {
+                padding: 2rem;
+            }
+
+            .brand-title {
+                font-size: 1.5rem;
+            }
+
+            .brand-logo {
+                font-size: 3rem;
+                width: 100px;
+                height: 100px;
+            }
+
+            .features-list {
+                display: none;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+        }
+    </h:outputStylesheet>
+</h:head>
+
+<h:body>
+    <div class="login-container">
+        <!-- Left Panel -->
+        <div class="login-left">
+            <div class="brand-logo">
+                <i class="pi pi-star-fill"></i>
+            </div>
+            <h1 class="brand-title">Loja Infantiles</h1>
+            <p class="brand-subtitle">Gestão de stock e vendas de produtos infantis</p>
+
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="pi pi-box"></i>
+                    </div>
+                    <span>Controlo de Stock por Tamanho e Categoria</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="pi pi-shopping-cart"></i>
+                    </div>
+                    <span>Registo de Vendas em Loja</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="pi pi-chart-line"></i>
+                    </div>
+                    <span>Relatórios de Vendas em Tempo Real</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="pi pi-exclamation-triangle"></i>
+                    </div>
+                    <span>Alertas de Stock Mínimo</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="login-right">
+            <h:form id="loginForm">
+                <div class="login-header">
+                    <h2 class="login-title">🧸 Bem-vindo(a)!</h2>
+                    <p class="login-subtitle">Entre com as suas credenciais para aceder ao sistema</p>
+                </div>
+
+                <p:messages id="msgs" showDetail="true" closable="true" escape="false"/>
+
+                <!-- Username Input -->
+                <div class="input-group">
+                    <label class="input-label">Nome de Utilizador</label>
+                    <div class="input-wrapper">
+                        <i class="pi pi-user input-icon"></i>
+                        <p:inputText id="username"
+                                     value="#{loginBean.username}"
+                                     placeholder="Digite o seu utilizador"
+                                     required="true"
+                                     requiredMessage="Utilizador é obrigatório"
+                                     autocomplete="username">
+                            <f:validateLength minimum="3"
+                                            maximum="50"
+                                            minimumMessage="Utilizador deve ter no mínimo 3 caracteres"/>
+                        </p:inputText>
+                    </div>
+                </div>
+
+                <!-- Password Input -->
+                <div class="input-group">
+                    <label class="input-label">Senha</label>
+                    <div class="input-wrapper">
+                        <i class="pi pi-lock input-icon"></i>
+                        <p:password id="password"
+                                    value="#{loginBean.password}"
+                                    placeholder="Digite a sua senha"
+                                    feedback="false"
+                                    toggleMask="true"
+                                    required="true"
+                                    requiredMessage="Senha é obrigatória"
+                                    autocomplete="current-password">
+                            <f:validateLength minimum="3"
+                                            maximum="50"
+                                            minimumMessage="Senha deve ter no mínimo 3 caracteres"/>
+                        </p:password>
+                    </div>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="remember-forgot">
+                    <div class="remember-me">
+                        <p:selectBooleanCheckbox id="rememberMe" value="#{loginBean.rememberMe}"/>
+                        <span>Lembrar-me</span>
+                    </div>
+                    <a href="#" class="forgot-link" onclick="return false;">Esqueceu a senha?</a>
+                </div>
+
+                <!-- Login Button -->
+                <p:commandButton value="Entrar"
+                                 icon="pi pi-sign-in"
+                                 action="#{loginBean.login}"
+                                 update="msgs"
+                                 styleClass="login-button"
+                                 ajax="true"/>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span>OU</span>
+                </div>
+
+                <!-- Social Login -->
+                <div class="social-login">
+                    <div class="social-button" onclick="alert('Funcionalidade em desenvolvimento');">
+                        <i class="pi pi-google" style="color: #DB4437;"></i>
+                        <span>Google</span>
+                    </div>
+                    <div class="social-button" onclick="alert('Funcionalidade em desenvolvimento');">
+                        <i class="pi pi-microsoft" style="color: #00A4EF;"></i>
+                        <span>Microsoft</span>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="login-footer">
+                    <p>Não tem uma conta? <a href="#" class="signup-link" onclick="return false;">Registe-se</a></p>
+                    <p style="margin-top: 1rem;">© 2026 Sistema de Gestão de Loja Infantil - Todos os direitos reservados</p>
+                </div>
+            </h:form>
+        </div>
+    </div>
+</h:body>
+</html>

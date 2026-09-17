@@ -1,0 +1,468 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<style>
+:root {
+	--primary: #2563eb;
+	--primary-dark: #1e3a8a;
+	--success: #2563eb;
+	--danger: #ef4444;
+	--warning: #f59e0b;
+	--info: #3b82f6;
+	--gray-50: #f9fafb;
+	--gray-100: #f3f4f6;
+	--gray-200: #e5e7eb;
+	--gray-600: #4b5563;
+	--gray-900: #111827;
+}
+
+.sales-page {
+	animation: fadeIn 0.5s ease-out;
+}
+
+/* Header Section */
+.page-header {
+	background: linear-gradient(135deg, var(--primary) 0%, #1e3a8a 100%);
+	border-radius: 16px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	color: white;
+	box-shadow: 0 10px 40px rgba(37, 99, 235, 0.25);
+	position: relative;
+	overflow: hidden;
+}
+
+.header-content {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+}
+
+.header-left {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.page-title {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0;
+}
+
+.title-text {
+	font-size: 2rem;
+	font-weight: 800;
+	color: white;
+	margin: 0;
+}
+
+.page-date {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	background: rgba(255, 255, 255, 0.15);
+	padding: 0.5rem 1rem;
+	border-radius: 10px;
+	backdrop-filter: blur(8px);
+}
+
+.date-text {
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: white;
+}
+
+.btn-new-sale {
+	background: white !important;
+	color: var(--primary) !important;
+	border-radius: 12px !important;
+	padding: 0.75rem 1.5rem !important;
+	font-weight: 700 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.5rem !important;
+	transition: all 0.3s ease !important;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-new-sale:hover {
+	background: #f3f4f6 !important;
+	transform: translateY(-2px) !important;
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Stats Cards */
+.stats-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 1.5rem;
+	margin-bottom: 2rem;
+}
+
+.stat-card {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.stat-card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, var(--primary) 0%, var(--info) 100%);
+}
+
+.stat-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.stat-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+}
+
+.stat-icon-wrapper {
+	width: 48px;
+	height: 48px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	background: var(--gray-50);
+}
+
+.stat-label {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--gray-600);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	margin-bottom: 0.5rem;
+}
+
+.stat-value {
+	font-size: 1.875rem;
+	font-weight: 800;
+	color: var(--gray-900);
+	line-height: 1;
+}
+
+.stat-trend {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--success);
+	margin-top: 0.5rem;
+}
+
+/* DataTable Container */
+.table-container {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+}
+
+/* Padronização idêntica aos Produtos */
+.ui-datatable thead th {
+	background: var(--gray-50) !important;
+	color: var(--gray-900) !important;
+	font-weight: 700 !important;
+	padding: 1rem !important;
+	border-bottom: 2px solid var(--gray-200) !important;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.5px;
+}
+
+.ui-datatable tbody td {
+	padding: 1rem !important;
+	border-bottom: 1px solid var(--gray-100) !important;
+	vertical-align: middle !important;
+	font-size: 0.9rem;
+	color: var(--gray-900);
+}
+
+.ui-datatable tbody tr {
+	transition: all 0.2s ease;
+}
+
+.ui-datatable tbody tr:hover {
+	background: var(--gray-50) !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.ui-datatable .ui-datatable-footer {
+	background: var(--gray-50) !important;
+	border: none !important;
+	padding: 1rem !important;
+	border-top: 2px solid var(--gray-200) !important;
+	border-radius: 0 0 16px 16px !important;
+}
+
+/* Elementos da tabela */
+.sale-code {
+	font-weight: 700;
+	color: var(--primary);
+}
+
+.customer-name {
+	font-weight: 600;
+	color: var(--gray-900);
+}
+
+.total-value {
+	font-weight: 700;
+	color: var(--primary);
+	font-size: 0.95rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: center;
+}
+
+.action-btn {
+	width: 38px !important;
+	height: 38px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 10px !important;
+	border: none !important;
+	transition: all 0.3s ease !important;
+	cursor: pointer;
+}
+
+.action-btn.btn-view {
+	background: var(--primary) !important;
+	color: white !important;
+}
+
+.action-btn.btn-view:hover {
+	background: var(--primary-dark) !important;
+	transform: scale(1.1) !important;
+	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4) !important;
+}
+
+/* Footer Total */
+.footer-total {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.75rem;
+}
+
+.footer-label {
+	font-size: 0.875rem;
+	color: var(--gray-600);
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.footer-value {
+	font-size: 1.25rem;
+	color: var(--primary);
+	font-weight: 800;
+}
+
+/* Filter Input */
+.ui-column-filter {
+	border: 1px solid var(--gray-200) !important;
+	border-radius: 8px !important;
+	padding: 0.5rem !important;
+	transition: all 0.3s ease !important;
+	background: white !important;
+}
+
+.ui-column-filter:focus {
+	border-color: var(--primary) !important;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+	outline: none !important;
+}
+
+/* Dialog Confirmação */
+.ui-confirmdialog-no {
+	background: #f1f5f9 !important;
+	border: 1px solid #cbd5e1 !important;
+	color: #475569 !important;
+	border-radius: 8px !important;
+}
+
+.ui-confirmdialog-yes {
+	background: var(--primary) !important;
+	border: none !important;
+	color: white !important;
+	border-radius: 8px !important;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(20px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+	.header-content { flex-direction: column; text-align: center; }
+	.header-left { align-items: center; width: 100%; }
+}
+</style>
+
+	<h:form id="formSales">
+		<div class="sales-page">
+
+			<!-- Header -->
+			<div class="page-header">
+				<div class="header-content">
+					<div class="header-left">
+						<div class="page-title">
+							<h1 class="title-text">🛍️ Vendas</h1>
+						</div>
+						<div class="page-date">
+							<i class="pi pi-calendar"></i>
+							<h:outputText value="#{saleBean.currentDate}" styleClass="date-text">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</div>
+					</div>
+
+					<p:commandButton value="Nova Venda" icon="pi pi-plus"
+						styleClass="btn-new-sale"
+						actionListener="#{dashboardBean.loadSaleInclude}"
+						update=":mainForm:mainContent" process="@this" />
+				</div>
+			</div>
+
+			<!-- Stats Cards -->
+			<div class="stats-grid">
+				<div class="stat-card">
+					<div class="stat-header">
+						<div class="stat-icon-wrapper">💰</div>
+					</div>
+					<div class="stat-label">Total de Vendas Hoje</div>
+					<div class="stat-value">
+						<h:outputText value="#{saleBean.totalGeral}">
+							<f:convertNumber type="currency" currencySymbol="MT " />
+						</h:outputText>
+					</div>
+					<div class="stat-trend"><span>📈</span> Em tempo real</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-header">
+						<div class="stat-icon-wrapper">📊</div>
+					</div>
+					<div class="stat-label">Número de Vendas</div>
+					<div class="stat-value">
+						<h:outputText value="#{saleBean.listSalesOfDay.size()}" />
+					</div>
+					<div class="stat-trend"><span>✅</span> Vendas registradas</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-header">
+						<div class="stat-icon-wrapper">💵</div>
+					</div>
+					<div class="stat-label">Ticket Médio</div>
+					<div class="stat-value">
+						<h:outputText value="#{saleBean.listSalesOfDay.size() > 0 ? saleBean.totalGeral / saleBean.listSalesOfDay.size() : 0}">
+							<f:convertNumber type="currency" currencySymbol="MT " />
+						</h:outputText>
+					</div>
+					<div class="stat-trend"><span>📉</span> Por venda</div>
+				</div>
+			</div>
+
+			<!-- Table Section -->
+			<div class="table-container">
+				<p:dataTable id="salesTable" value="#{saleBean.listSalesOfDay}"
+					var="sales" paginator="true" rows="10" 
+					responsiveLayout="scroll"
+					rowsPerPageTemplate="10,15,20,25"
+					styleClass="p-datatable-striped p-datatable-sm"
+					emptyMessage="Nenhuma venda encontrada para esta data"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords} vendas"
+					filteredValue="#{saleBean.filteredSales}"
+					widgetVar="salesTableWidget">
+
+					<p:ajax event="filter" update="@this" />
+
+					<p:column headerText="Data" style="width:15%" sortBy="#{sales.dateSale}">
+						<h:outputText value="#{sales.dateSale}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="Africa/Maputo" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Código" style="width:20%"
+						filterBy="#{sales.saleCode}" sortBy="#{sales.saleCode}"
+						filterMatchMode="contains" filterPlaceholder="Pesquisar código...">
+						<h:outputText value="##{sales.saleCode}" styleClass="sale-code" />
+					</p:column>
+
+					<p:column headerText="Cliente" style="width:35%" 
+						filterBy="#{sales.customer.name}" filterMatchMode="contains"
+						filterPlaceholder="Pesquisar cliente...">
+						<h:outputText value="#{empty sales.customer.name ? 'Cliente não informado' : sales.customer.name}" styleClass="customer-name" />
+					</p:column>
+
+					<p:column headerText="Total" style="width:15%; text-align:right;" sortBy="#{sales.totalSale}">
+						<h:outputText value="#{sales.totalSale}" styleClass="total-value">
+							<f:convertNumber type="currency" currencySymbol="MT " />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Ações" style="width:15%; text-align:center;">
+						<div class="action-buttons">
+							<p:commandButton icon="pi pi-eye" title="Visualizar Venda"
+								styleClass="action-btn btn-view"
+								actionListener="#{saleBean.viewSpecificSale(sales.id)}"
+								update=":mainForm:mainContent" process="@this" />						
+						</div>
+					</p:column>
+
+					<f:facet name="footer">
+						<div class="footer-total">
+							<span class="footer-label">Total Geral:</span>
+							<h:outputText value="#{saleBean.totalGeral}" styleClass="footer-value">
+								<f:convertNumber type="currency" currencySymbol="MT " />
+							</h:outputText>
+						</div>
+					</f:facet>
+
+				</p:dataTable>
+			</div>
+
+		</div>
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+			<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+		</p:confirmDialog>
+	</h:form>
+</ui:composition>

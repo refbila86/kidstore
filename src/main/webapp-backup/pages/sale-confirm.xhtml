@@ -1,0 +1,512 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:form id="formSaleConfirm" styleClass="sale-container p-fluid">
+
+        <style>
+            .sale-container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 2rem 1rem;
+                animation: fadeIn 0.5s ease-out;
+            }
+
+            .sale-header {
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                border-radius: 20px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+                color: white;
+            }
+
+            .header-content {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .header-info-main {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .header-icon {
+                font-size: 2.8rem;
+            }
+
+            .header-text h1 {
+                margin: 0;
+                font-size: 1.8rem;
+                font-weight: 700;
+            }
+
+            .header-text p {
+                margin: 0.5rem 0 0;
+                font-size: 1rem;
+                opacity: 0.95;
+            }
+
+            .status-badge-warning {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.5rem 1.25rem;
+                border-radius: 50px;
+                font-size: 0.9rem;
+                font-weight: 600;
+                background: #fef3c7;
+                color: #92400e;
+                border: 1px solid #fde68a;
+            }
+
+            /* Resumo Superior da Venda */
+            .sale-summary-card {
+                background: white;
+                border-radius: 20px;
+                padding: 1.5rem 2rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                border: 1px solid #dbeafe;
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 1.5rem;
+            }
+
+            .summary-item {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .summary-icon {
+                font-size: 2rem;
+                color: #2563eb;
+                background: #eff6ff;
+                padding: 0.75rem;
+                border-radius: 12px;
+            }
+
+            .summary-label {
+                font-size: 0.85rem;
+                color: #64748b;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .summary-value {
+                font-size: 1.15rem;
+                color: #1e3a8a;
+                font-weight: 700;
+                margin-top: 0.2rem;
+            }
+
+            /* Card Principal */
+            .sale-card {
+                background: white;
+                border-radius: 20px;
+                padding: 2rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                border: 1px solid #dbeafe;
+            }
+
+            .section-title {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: #1e3a8a;
+                margin: 0 0 1.5rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 2px solid #dbeafe;
+            }
+
+            /* Customer Display */
+            .customer-display {
+                background: #eff6ff;
+                border-left: 4px solid #2563eb;
+                padding: 1.25rem 1.5rem;
+                border-radius: 12px;
+                margin-bottom: 2rem;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .customer-icon {
+                font-size: 2rem;
+                color: #2563eb;
+            }
+
+            .customer-label {
+                font-size: 0.85rem;
+                color: #1e40af;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+
+            .customer-name {
+                font-size: 1.2rem;
+                color: #1e3a8a;
+                font-weight: 700;
+            }
+
+            /* Tabela de Itens */
+            .sale-container .ui-datatable {
+                border-radius: 12px;
+                overflow: hidden;
+                border: 1px solid #dbeafe;
+            }
+
+            .sale-container .ui-datatable thead th {
+                background: #f1f5f9 !important;
+                color: #1e3a8a !important;
+                font-weight: 700 !important;
+                padding: 1rem !important;
+                border: none !important;
+                border-bottom: 2px solid #dbeafe !important;
+            }
+
+            .sale-container .ui-datatable tbody td {
+                padding: 0.9rem 1rem !important;
+                border-bottom: 1px solid #f1f5f9 !important;
+            }
+
+            .row-number {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 28px;
+                height: 28px;
+                background: #2563eb;
+                color: white;
+                border-radius: 50%;
+                font-weight: 700;
+                font-size: 0.85rem;
+            }
+
+            .total-footer {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                gap: 1rem;
+                padding: 1.25rem 1.5rem;
+                background: #eff6ff;
+                border-radius: 0 0 12px 12px;
+            }
+
+            .total-label {
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: #1e3a8a;
+            }
+
+            .total-value {
+                font-size: 1.8rem;
+                font-weight: 800;
+                color: #16a34a;
+            }
+
+            /* Warning Box */
+            .warning-box {
+                background: #fefce8;
+                border-left: 4px solid #eab308;
+                padding: 1.25rem 1.5rem;
+                border-radius: 12px;
+                margin: 2rem 0;
+                display: flex;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .warning-icon {
+                font-size: 1.5rem;
+                color: #ca8a04;
+                flex-shrink: 0;
+            }
+
+            .warning-title {
+                font-weight: 700;
+                color: #854d0e;
+                font-size: 1rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .warning-text {
+                color: #713f12;
+                font-size: 0.9rem;
+                line-height: 1.5;
+                margin: 0;
+            }
+
+            /* Botões Globais */
+            .form-divider {
+                margin: 2rem 0;
+                border: 0;
+                border-top: 1px solid #dbeafe;
+            }
+
+            .button-group {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .left-buttons {
+                display: flex;
+                gap: 1rem;
+            }
+
+            .btn-cancel {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                background: #f8fafc !important;
+                border: 2px solid #cbd5e1 !important;
+                color: #475569 !important;
+            }
+
+            .btn-back {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                background: #eff6ff !important;
+                border: 2px solid #bfdbfe !important;
+                color: #1e40af !important;
+            }
+
+            .btn-confirm {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                font-weight: 700 !important;
+                background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+                border: none !important;
+                color: white !important;
+            }
+
+            .btn-confirm:hover {
+                box-shadow: 0 8px 20px rgba(22, 163, 74, 0.30) !important;
+                transform: translateY(-1px);
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @media (max-width: 768px) {
+                .sale-container {
+                    padding: 1rem 0.5rem;
+                }
+
+                .sale-header,
+                .sale-card,
+                .sale-summary-card {
+                    padding: 1.5rem;
+                }
+
+                .sale-summary-card {
+                    grid-template-columns: 1fr;
+                }
+
+                .button-group,
+                .left-buttons {
+                    flex-direction: column;
+                    width: 100%;
+                }
+
+                .button-group .ui-button,
+                .left-buttons .ui-button {
+                    width: 100%;
+                }
+            }
+        </style>
+
+        <p:messages id="msgs" showDetail="true" closable="true" />
+
+        <!-- Cabeçalho Principal -->
+        <div class="sale-header">
+            <div class="header-content">
+                <div class="header-info-main">
+                    <div class="header-icon">
+                        <i class="pi pi-check-circle"></i>
+                    </div>
+
+                    <div class="header-text">
+                        <h1>Confirmar Venda</h1>
+                        <p>Revise os detalhes dos produtos e do cliente antes de finalizar a venda.</p>
+                    </div>
+                </div>
+
+                <div class="status-badge-warning">
+                    <i class="pi pi-exclamation-triangle"></i>
+                    <span>Aguardando Confirmação</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumo Superior da Venda -->
+        <div class="sale-summary-card">
+            <div class="summary-item">
+                <i class="pi pi-hashtag summary-icon"></i>
+                <div>
+                    <div class="summary-label">Número da Venda</div>
+                    <div class="summary-value">
+                        <h:outputText value="#{saleBean.saleCode}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-item">
+                <i class="pi pi-user summary-icon"></i>
+                <div>
+                    <div class="summary-label">Cliente</div>
+                    <div class="summary-value">
+                        <h:outputText value="#{saleBean.selectedCustomer != null ? saleBean.selectedCustomer.name : 'Cliente Anônimo'}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-item">
+                <i class="pi pi-calendar summary-icon"></i>
+                <div>
+                    <div class="summary-label">Data de Emissão</div>
+                    <div class="summary-value">
+                        <h:outputText value="#{saleBean.currentDate}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Principal da Confirmação -->
+        <div class="sale-card">
+
+            <!-- Detalhes do Cliente -->
+            <div class="customer-display">
+                <i class="pi pi-user customer-icon"></i>
+                <div>
+                    <div class="customer-label">Cliente Selecionado</div>
+                    <div class="customer-name">
+                        <h:outputText value="#{saleBean.selectedCustomer != null ? saleBean.selectedCustomer.name : 'Cliente Anônimo'}" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela de Itens -->
+            <h3 class="section-title">
+                <i class="pi pi-shopping-bag"></i>
+                Itens da Venda
+            </h3>
+
+            <p:dataTable id="salesTable"
+                value="#{saleBean.currentSale.salesItems}"
+                var="item"
+                styleClass="p-datatable-striped"
+                emptyMessage="Nenhum item adicionado à venda.">
+
+                <p:column headerText="#" style="width:8%; text-align:center;">
+                    <span class="row-number">
+                        <h:outputText value="#{salesTable.rowIndex + 1}" />
+                    </span>
+                </p:column>
+
+                <p:column headerText="Produto" style="width:42%;">
+                    <h:outputText value="#{item.product.name}" style="font-weight:600; color:#1e293b;" />
+                </p:column>
+
+                <p:column headerText="Preço Unit." style="width:18%; text-align:right;">
+                    <h:outputText value="#{item.price}">
+                        <f:convertNumber type="currency" currencySymbol="MT " minFractionDigits="2" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Qtd." style="width:12%; text-align:center;">
+                    <h:outputText value="#{item.quantity}" style="font-weight:600;">
+                        <f:convertNumber pattern="#,##0" />
+                    </h:outputText>
+                    <span style="color: #64748b; font-size: 0.85rem;"> un.</span>
+                </p:column>
+
+                <p:column headerText="Subtotal" style="width:20%; text-align:right;">
+                    <h:outputText value="#{item.subtotal}" style="font-weight:700; color:#2563eb;">
+                        <f:convertNumber type="currency" currencySymbol="MT " minFractionDigits="2" />
+                    </h:outputText>
+                </p:column>
+
+                <f:facet name="footer">
+                    <div class="total-footer">
+                        <span class="total-label">Total da Venda:</span>
+                        <span class="total-value">
+                            <h:outputText id="total" value="#{saleBean.currentSale.totalSale}">
+                                <f:convertNumber type="currency" currencySymbol="MT " minFractionDigits="2" />
+                            </h:outputText>
+                        </span>
+                    </div>
+                </f:facet>
+            </p:dataTable>
+
+            <!-- Warning Box -->
+            <div class="warning-box">
+                <i class="pi pi-exclamation-triangle warning-icon"></i>
+                <div>
+                    <div class="warning-title">Atenção Importante!</div>
+                    <p class="warning-text">
+                        Ao confirmar esta venda, o stock dos produtos será automaticamente atualizado no sistema e a operação não poderá ser desfeita.
+                    </p>
+                </div>
+            </div>
+
+            <hr class="form-divider" />
+
+            <!-- Botões de Ação Global -->
+            <div class="button-group">
+                <div class="left-buttons">
+                    <p:commandButton value="Voltar"
+                        icon="pi pi-arrow-left"
+                        actionListener="#{dashboardBean.backSaleInclude}"
+                        update=":mainForm:mainContent"
+                        process="@this"
+                        styleClass="btn-back" />
+
+                    <p:commandButton value="Cancelar"
+                        icon="pi pi-times"
+                        actionListener="#{dashboardBean.cancelSaleInclude}"
+                        update=":mainForm:mainContent"
+                        process="@this"
+                        styleClass="btn-cancel" />
+                </div>
+
+                <p:commandButton value="Confirmar Venda"
+                    icon="pi pi-check"
+                    action="#{saleBean.confirmSale}"
+                    actionListener="#{dashboardBean.loadSales}"
+                    process="@form"
+                    update=":mainForm:mainContent"
+                    styleClass="btn-confirm" />
+            </div>
+
+        </div>
+
+        <!-- Diálogo de confirmação global -->
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true">
+            <p:commandButton value="Sim, Confirmar" type="button" styleClass="ui-confirmdialog-yes btn-confirm" icon="pi pi-check" />
+            <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no btn-cancel" icon="pi pi-times" />
+        </p:confirmDialog>
+
+    </h:form>
+</ui:composition>

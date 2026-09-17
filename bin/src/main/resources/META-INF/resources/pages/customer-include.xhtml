@@ -1,0 +1,226 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:form id="formCustomerInclude" styleClass="customer-container p-fluid">
+
+        <style>
+            .customer-container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 2rem 1rem;
+                animation: fadeIn 0.5s ease-out;
+            }
+
+            .customer-header {
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                border-radius: 20px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+                color: white;
+            }
+
+            .header-content {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .header-icon {
+                font-size: 2.8rem;
+            }
+
+            .header-text h1 {
+                margin: 0;
+                font-size: 1.8rem;
+                font-weight: 700;
+            }
+
+            .header-text p {
+                margin: 0.5rem 0 0;
+                font-size: 1rem;
+                opacity: 0.95;
+            }
+
+            .customer-card {
+                background: white;
+                border-radius: 20px;
+                padding: 2rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                border: 1px solid #dbeafe;
+            }
+
+            .section-title {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: #1e3a8a;
+                margin: 0 0 1.5rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 2px solid #dbeafe;
+            }
+
+            .info-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1.25rem;
+            }
+
+            .info-item {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .info-item.full-width {
+                grid-column: 1 / -1;
+            }
+
+            .info-label {
+                font-weight: 600;
+                color: #1e40af;
+                font-size: 0.95rem;
+            }
+
+            .customer-container .ui-inputfield {
+                width: 100%;
+                border-radius: 12px !important;
+                border: 2px solid #dbeafe !important;
+                transition: all 0.3s ease !important;
+            }
+
+            .customer-container .ui-inputfield:focus {
+                border-color: #2563eb !important;
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10) !important;
+            }
+
+            .form-divider {
+                margin: 2rem 0;
+                border: 0;
+                border-top: 1px solid #dbeafe;
+            }
+
+            .button-group {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .btn-cancel {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                background: #f8fafc !important;
+                border: 2px solid #cbd5e1 !important;
+                color: #475569 !important;
+            }
+
+            .btn-next {
+                border-radius: 12px !important;
+                padding: 0.8rem 2rem !important;
+                font-weight: 700 !important;
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+                border: none !important;
+                color: white !important;
+            }
+
+            .btn-next:hover {
+                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.30) !important;
+                transform: translateY(-1px);
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            @media (max-width: 768px) {
+                .customer-container { padding: 1rem 0.5rem; }
+                .customer-header, .customer-card { padding: 1.5rem; }
+                .info-grid { grid-template-columns: 1fr; }
+                .button-group { flex-direction: column; }
+                .button-group .ui-button { width: 100%; }
+            }
+        </style>
+
+        <p:messages id="msgs" showDetail="true" closable="true" />
+
+        <!-- Cabeçalho -->
+        <div class="customer-header">
+            <div class="header-content">
+                <div class="header-icon">
+                    <i class="pi pi-user"></i>
+                </div>
+                <div class="header-text">
+                    <h1>#{customerBean.editMode ? 'Editar Cliente' : 'Cadastro de Cliente'}</h1>
+                    <p>Preencha os dados abaixo para cadastrar um novo cliente no sistema.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Formulário -->
+        <div class="customer-card">
+
+            <h3 class="section-title">
+                <i class="pi pi-id-card"></i>
+                Informações do Cliente
+            </h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <h:outputLabel value="Nome" styleClass="info-label" for="nome" />
+                    <p:inputText id="nome"
+                        value="#{customerBean.itemCustomer.name}"
+                        required="true"
+                        requiredMessage="Informe o nome"
+                        placeholder="Digite o nome do cliente" />
+                </div>
+
+                <div class="info-item">
+                    <h:outputLabel value="Contacto" styleClass="info-label" for="contacto" />
+                    <p:inputText id="contacto"
+                        value="#{customerBean.itemCustomer.cellphone}"
+                        required="true"
+                        requiredMessage="Informe o contacto"
+                        placeholder="Digite o número de telefone" />
+                </div>
+
+                <div class="info-item full-width">
+                    <h:outputLabel value="Endereço" styleClass="info-label" for="endereco" />
+                    <p:inputText id="endereco"
+                        value="#{customerBean.itemCustomer.address}"
+                        required="true"
+                        requiredMessage="Informe o endereço"
+                        placeholder="Digite o endereço completo" />
+                </div>
+            </div>
+
+            <hr class="form-divider" />
+
+            <!-- Botões -->
+            <div class="button-group">
+                <p:commandButton value="Cancelar"
+                    icon="pi pi-times"
+                    action="#{dashboardBean.cancelCustomerInclude}"
+                    update=":mainForm:mainContent"
+                    process="@this"
+                    styleClass="btn-cancel" />
+
+                <p:commandButton value="Próximo"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                    actionListener="#{dashboardBean.loadCustomerConfirm}"
+                    process="@form"
+                    update=":mainForm:mainContent"
+                    styleClass="btn-next" />
+            </div>
+
+        </div>
+
+    </h:form>
+</ui:composition>

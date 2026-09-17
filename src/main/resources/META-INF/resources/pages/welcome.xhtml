@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Dashboard - Geral</title>
+	<style>
+/* HEADER */
+.dashboard-header {
+	background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+	padding: 2rem;
+	border-radius: 12px;
+	color: white;
+	margin-bottom: 2rem;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+}
+
+.dashboard-logo {
+	max-height: 70px;
+	width: auto;
+	object-fit: contain;
+	background: rgba(255, 255, 255, 0.15);
+	padding: 0.5rem;
+	border-radius: 8px;
+}
+
+.dashboard-header h2 {
+	margin: 0;
+	font-size: 2rem;
+	font-weight: 600;
+}
+
+.dashboard-header p {
+	margin: 0.5rem 0 0 0;
+	font-size: 1rem;
+	opacity: 0.95;
+}
+
+/* TABELA DE PRODUTOS VENCIDOS */
+.expired-table .ui-datatable-header {
+	background: #e2e8f0;
+	color: #ef4444;
+	font-weight: 600;
+}
+
+.expired-table .ui-datatable thead th {
+	background: #ef4444;
+	color: white;
+	font-weight: 600;
+	padding: 0.75rem;
+}
+
+.expired-table .ui-datatable tbody td {
+	padding: 0.75rem;
+}
+
+.expired-table .ui-datatable tbody tr {
+	background: #f8fafc;
+}
+
+.expired-table .ui-datatable tbody tr:hover {
+	background: #f1f5f9 !important;
+}
+
+/* GRID */
+.stats-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 1.5rem;
+	margin-top: 2rem;
+}
+
+/* CARD */
+.stat-card {
+	background: white;
+	border-radius: 12px;
+	padding: 1.5rem;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	transition: transform 0.2s, box-shadow 0.2s;
+	border-left: 4px solid;
+}
+/*
+.sales-chart-card {
+	margin-top: 1rem;
+	width: 100%;
+	box-sizing: border-box;
+	min-height: 350px;
+}
+*/
+.sales-chart-card {
+	margin-top: 1rem;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.sales-chart-card h3 {
+	margin: 0 0 5px 0;
+	color: #1e3a8a;
+	font-size: 1rem;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.sales-chart-card .ui-chart {
+	width: 100% !important;
+	height: 280px !important;
+}
+/*
+.sales-chart-card h3 {
+	margin: 0 0 5px 0;
+	color: #1e3a8a;
+	font-size: 1rem;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}*/
+.stat-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* CORES DOS CARDS */
+.stat-card.products {
+	border-left-color: #2563eb;
+}
+
+.stat-card.expired {
+	border-left-color: #ef4444;
+}
+
+.stat-card.near-expiry {
+	border-left-color: #3b82f6;
+}
+
+.stat-card.customers {
+	border-left-color: #0ea5e9;
+}
+
+.stat-card.sales {
+	border-left-color: #1d4ed8;
+}
+
+.stat-card.categories {
+	border-left-color: #475569;
+}
+
+.stat-card.suppliers {
+	border-left-color: #64748b;
+}
+
+.stat-header {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 1rem;
+}
+
+.stat-icon {
+	width: 48px;
+	height: 48px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+}
+
+.stat-card.products .stat-icon {
+	background: #dbeafe;
+	color: #2563eb;
+}
+
+.stat-card.expired .stat-icon {
+	background: #fee2e2;
+	color: #ef4444;
+}
+
+.stat-card.near-expiry .stat-icon {
+	background: #dbeafe;
+	color: #3b82f6;
+}
+
+.stat-card.customers .stat-icon {
+	background: #e0f2fe;
+	color: #0ea5e9;
+}
+
+.stat-card.sales .stat-icon {
+	background: #dbeafe;
+	color: #1d4ed8;
+}
+
+.stat-card.categories .stat-icon {
+	background: #e2e8f0;
+	color: #475569;
+}
+
+.stat-card.suppliers .stat-icon {
+	background: #f1f5f9;
+	color: #334155;
+}
+
+.stat-title {
+	font-size: 0.875rem;
+	color: #6b7280;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.stat-value {
+	font-size: 2rem;
+	font-weight: 700;
+	color: #111827;
+	margin: 0.5rem 0;
+}
+
+.stat-description {
+	font-size: 0.875rem;
+	color: #9ca3af;
+	margin: 0;
+}
+
+.stat-date {
+	font-size: 0.75rem;
+	color: #6b7280;
+	margin-top: 0.5rem;
+	display: block;
+}
+
+/* GRAFICOS E TABELAS - TAMANHO REDUZIDO */
+.charts-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 1.5rem;
+	margin-top: 2rem;
+}
+
+.chart-card {
+	background: white;
+	border-radius: 12px;
+	padding: 1rem 1.5rem;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	max-width: 450px;
+	margin: 0 auto;
+	width: 100%;
+}
+
+.chart-card h3 {
+	margin-top: 0;
+	margin-bottom: 0.5rem;
+	color: #1e293b;
+	font-size: 0.95rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.table-card {
+	background: white;
+	border-radius: 12px;
+	padding: 1rem;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	margin-top: 1.5rem;
+}
+
+/* ESTILO PARA CARD DE STOCK */
+.stat-card.stock .stat-icon {
+	background: #dbeafe;
+	color: #3b82f6;
+}
+
+.stat-card.stock {
+	border-left-color: #3b82f6;
+}
+
+/* ESTILO PARA CARD DE TOTAL */
+.stat-card.total .stat-icon {
+	background: #dbeafe;
+	color: #1e3a8a;
+}
+
+.stat-card.total {
+	border-left-color: #1e3a8a;
+}
+
+/* ESTILO PARA CARD DE RELATÓRIOS */
+.stat-card.reports .stat-icon {
+	background: #e2e8f0;
+	color: #1f2937;
+}
+
+.stat-card.reports {
+	border-left-color: #1f2937;
+}
+
+/* TABELA DE PRODUTOS PRÓXIMOS DA VALIDADE */
+.near-expiry-table .ui-datatable-header {
+	background: #dbeafe;
+	color: #1d4ed8;
+	font-weight: 600;
+}
+
+.near-expiry-table .ui-datatable thead th {
+	background: #3b82f6;
+	color: white;
+	font-weight: 600;
+	padding: 0.75rem;
+}
+
+.near-expiry-table .ui-datatable tbody td {
+	padding: 0.75rem;
+}
+
+.near-expiry-table .ui-datatable tbody tr:hover {
+	background: #eff6ff !important;
+}
+
+@media ( max-width : 600px) {
+	.header-container {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+</style>
+</h:head>
+
+<h:body>
+	<div class="dashboard-header">
+		<div class="header-container">
+			<!-- LOGO DA EMPRESA -->
+			<h:graphicImage library="images" name="logo.png"
+				alt="Logo da Empresa" styleClass="dashboard-logo" />
+
+			<div>
+				<h2>
+					<i class="pi pi-star" style="margin-right: 0.5rem;"></i> Bem-Vindo,
+					<h:outputText value="#{loginBean.fullname}" />
+				</h2>
+				<p>Resumo da loja: stock, vendas, validade de produtos e
+					fornecedores.</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- CARDS DE ESTATÍSTICAS -->
+	<div class="stats-grid">
+		<div class="stat-card products">
+			<div class="stat-header">
+				<div class="stat-icon">
+					<i class="pi pi-box"></i>
+				</div>
+				<div>
+					<div class="stat-title">Total de Produtos</div>
+				</div>
+			</div>
+			<div class="stat-value">
+				<h:outputText value="#{productBean.totalProducts}" />
+			</div>
+			<p class="stat-description">Produtos cadastrados no sistema</p>
+		</div>
+
+		<!-- Card: Produtos em Stock Mínimo -->
+		<div class="stat-card stock">
+			<div class="stat-header">
+				<div class="stat-icon">
+					<i class="pi pi-exclamation-triangle"></i>
+				</div>
+				<div>
+					<div class="stat-title">Alerta de Stock</div>
+				</div>
+			</div>
+			<div class="stat-value">
+				<h:outputText value="#{productBean.zeroStockProducts}" />
+			</div>
+			<p class="stat-description">Produtos no stock mínimo</p>
+		</div>
+
+		<!-- Card: Vendas do Dia -->
+		<div class="stat-card sales">
+			<div class="stat-header">
+				<div class="stat-icon">
+					<i class="pi pi-shopping-cart"></i>
+				</div>
+				<div>
+					<div class="stat-title">Vendas do Dia</div>
+				</div>
+			</div>
+			<div class="stat-value">
+				<h:outputText value="#{saleBean.dailySales}" />
+			</div>
+			<p class="stat-description">Número de vendas realizadas</p>
+			<span class="stat-date"> <i class="pi pi-calendar"
+				style="margin-right: 0.25rem;"></i> <h:outputText
+					value="#{saleBean.currentDate}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</span>
+		</div>
+
+		<!-- Card: Total de Vendas do Dia -->
+		<div class="stat-card total">
+			<div class="stat-header">
+				<div class="stat-icon">
+					<i class="pi pi-dollar"></i>
+				</div>
+				<div>
+					<div class="stat-title">Faturamento do Dia</div>
+				</div>
+			</div>
+			<div class="stat-value">
+				<h:outputText value="#{saleBean.sumDailySales}">
+					<f:convertNumber type="currency" currencySymbol="MT " />
+				</h:outputText>
+			</div>
+			<p class="stat-description">Soma total das vendas</p>
+			<span class="stat-date"> <i class="pi pi-calendar"
+				style="margin-right: 0.25rem;"></i> <h:outputText
+					value="#{saleBean.currentDate}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</span>
+		</div>
+
+		<!-- Card: Relatórios -->
+		<div class="stat-card reports">
+			<div class="stat-header">
+				<div class="stat-icon">
+					<i class="pi pi-chart-bar"></i>
+				</div>
+				<div>
+					<div class="stat-title">Relatórios</div>
+				</div>
+			</div>
+			<div style="padding-top: 1rem;">
+				<p:commandButton value="Acessar Relatórios" icon="pi pi-arrow-right"
+					styleClass="p-button-info" style="width: 100%;"
+					actionListener="#{dashboardBean.loadPage('report-sales')}"
+					update=":mainForm:mainContent" />
+			</div>
+			<p class="stat-description" style="margin-top: 1rem;">Acesse
+				relatórios e estatísticas detalhadas</p>
+		</div>
+	</div>
+
+	<!-- SEÇÃO DE GRÁFICOS (TAMANHO COMPACTO) -->
+	<div class="charts-grid">
+		<!-- Gráfico 1: Top Produtos com Mais Stock (Barras) -->
+		<div class="chart-card">
+			<h3>
+				<i class="pi pi-chart-bar" style="color: #2563eb;"></i> Produtos com
+				Maior Estoque
+			</h3>
+			<p:barChart model="#{productBean.stockBarModel}"
+				rendered="#{productBean.stockBarModel != null}"
+				style="width: 100%; height: 200px;" />
+		</div>
+
+		<!-- Gráfico 2: Produtos mais Vendidos (Pizza) -->
+		<div class="chart-card">
+			<h3>
+				<i class="pi pi-chart-pie" style="color: #1d4ed8;"></i> Produtos
+				Mais Vendidos
+			</h3>
+			<p:pieChart model="#{productBean.topSalesPieModel}"
+				rendered="#{productBean.topSalesPieModel != null}"
+				style="width: 100%; height: 200px;" />
+		</div>
+
+		<!-- GRÁFICO DE VENDAS POR DIA -->
+		<div class="table-card sales-chart-card">
+			<h3>
+				<i class="pi pi-chart-line"></i> Vendas por Dia
+			</h3>
+			<p style="color: #6b7280; margin: 0 0 10px 0; font-size: 0.85rem;">
+				Vendas realizadas nos últimos 7 dias</p>
+			<p:lineChart model="#{saleBean.dailySalesLineModel}"
+				rendered="#{saleBean.dailySalesLineModel != null}"
+				style="width: 100%; height: 280px;" />
+		</div>
+	</div>
+
+	<!-- TABELAS -->
+	<!-- TABELA: Produtos sem movimento -->
+	<div class="table-card" style="border-left: 4px solid #ef4444;">
+		<h3
+			style="color: #ef4444; display: flex; align-items: center; gap: 0.5rem;">
+			<i class="pi pi-times-circle"></i> Produtos sem movimento
+		</h3>
+		<p style="color: #6b7280; margin-bottom: 1rem; font-size: 0.9rem;">
+			Produtos sem movimento - sugere-se a remoção do estoque!</p>
+
+		<p:dataTable value="#{productBean.productsWithNoMoviment}" var="prod"
+			rows="10" paginator="true" paginatorPosition="bottom"
+			emptyMessage="✓ Nenhum produto sem movimento no estoque"
+			styleClass="expired-table">
+
+			<p:column headerText="Produto" sortBy="#{prod.name}"
+				style="font-weight: 600;">
+				<h:outputText value="#{prod.name}" />
+			</p:column>
+
+			<p:column headerText="Categoria">
+				<h:outputText
+					value="#{prod.category != null ? prod.category.name : 'N/A'}" />
+			</p:column>
+
+			<p:column headerText="Fornecedor">
+				<h:outputText
+					value="#{prod.supplier != null ? prod.supplier.name : 'N/A'}" />
+			</p:column>
+
+			<!-- 			<p:column headerText="Data de Validade" -->
+			<!-- 				sortBy="#{prod.expirationDate}"> -->
+			<!-- 				<h:outputText value="#{prod.expirationDate}" -->
+			<!-- 					converter="localDateConverter" -->
+			<!-- 					style="color: #ef4444; font-weight: 700; text-decoration: line-through;" /> -->
+			<!-- 			</p:column> -->
+
+			<!-- 			<p:column headerText="Dias Vencido" style="text-align: center;"> -->
+			<!-- 				<h:outputText -->
+			<!-- 					value="#{productBean.calculateDaysExpired(prod.expirationDate)}" -->
+			<!-- 					style="color: #ef4444; font-weight: 700;" /> -->
+			<!-- 				<span style="color: #6b7280; font-size: 0.8rem;"> dias</span> -->
+			<!-- 			</p:column> -->
+
+			<p:column headerText="Stock" style="text-align: center;">
+				<h:outputText value="#{prod.currentStock}"
+					style="font-weight: 600; color: #ef4444;" />
+			</p:column>
+
+			<p:column headerText="Preço" style="text-align: center;">
+				<h:outputText value="#{prod.salePrice}"
+					style="color: #ef4444; font-weight: 600;">
+					<f:convertNumber type="currency" currencySymbol="MT " />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Valor Total" style="text-align: center;">
+				<h:outputText value="#{prod.currentStock * prod.salePrice}"
+					style="color: #ef4444; font-weight: 600;">
+					<f:convertNumber type="currency" currencySymbol="MT " />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Status" style="text-align: center;">
+				<span
+					style="background: #fee2e2; color: #dc2626; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">
+					SEM MOVIMENTO </span>
+			</p:column>
+		</p:dataTable>
+
+		<!-- Resumo de Perdas -->
+		<div
+			style="margin-top: 1rem; padding: 1rem; background: #fee2e2; border-radius: 8px; border-left: 4px solid #ef4444;">
+			<div
+				style="display: flex; justify-content: space-between; align-items: center;">
+				<div>
+					<strong style="color: #dc2626;">⚠️ Total parado sem
+						movimento:</strong>
+					<p
+						style="color: #6b7280; font-size: 0.875rem; margin: 0.25rem 0 0 0;">
+						Valor estimado dos produtos sem movimento em estoque</p>
+				</div>
+				<div style="font-size: 1.5rem; font-weight: 700; color: #dc2626;">
+					<!-- CHAMADA DO NOVO MÉTODO AQUI -->
+					<h:outputText
+						value="#{productBean.productsWithNoMoviment.stream()
+                        .map(p -> p.salePrice * p.currentStock)
+                        .sum()}">
+						<f:convertNumber type="currency" currencySymbol="MT " />
+					</h:outputText>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- TABELA: Produtos Próximos da Validade -->
+	<!-- 	<div class="table-card" style="border-left: 4px solid #3b82f6;"> -->
+	<!-- 		<h3 -->
+	<!-- 			style="color: #6b7280; display: flex; align-items: center; gap: 0.5rem;"> -->
+	<!-- 			<i class="pi pi-times-circle"></i> Produtos Próximos da Validade -->
+	<!-- 		</h3> -->
+	<!-- 		<p style="color: #6b7280; margin-bottom: 1rem; font-size: 0.9rem;"> -->
+	<!-- 			Produtos que vencem nos próximos 30 dias - ação necessária!</p> -->
+
+	<!-- 		<p:dataTable value="#{productBean.productsNearExpiry}" var="prod" -->
+	<!-- 			rows="10" paginator="true" paginatorPosition="bottom" -->
+	<!-- 			emptyMessage="✓ Nenhum produto próximo da validade" -->
+	<!-- 			styleClass="near-expiry-table"> -->
+
+	<!-- 			<p:column headerText="Produto" sortBy="#{prod.name}" -->
+	<!-- 				style="font-weight: 600;"> -->
+	<!-- 				<h:outputText value="#{prod.name}" /> -->
+	<!-- 			</p:column> -->
+
+	<!-- 			<p:column headerText="Categoria"> -->
+	<!-- 				<h:outputText -->
+	<!-- 					value="#{prod.category != null ? prod.category.name : 'N/A'}" /> -->
+	<!-- 			</p:column> -->
+
+	<!-- 			<p:column headerText="Fornecedor"> -->
+	<!-- 				<h:outputText -->
+	<!-- 					value="#{prod.supplier != null ? prod.supplier.name : 'N/A'}" /> -->
+	<!-- 			</p:column> -->
+
+	<!-- 			<p:column headerText="Data de Validade" -->
+	<!-- 				sortBy="#{prod.expirationDate}"> -->
+	<!-- 				<h:outputText value="#{prod.expirationDate}" -->
+	<!-- 					converter="localDateConverter" -->
+	<!-- 					style="color: #3b82f6; font-weight: 600;" /> -->
+	<!-- 			</p:column> -->
+
+	<!-- 			<p:column headerText="Stock" style="text-align: center;"> -->
+	<!-- 				<h:outputText value="#{prod.currentStock}" -->
+	<!-- 					style="font-weight: 600; #{prod.currentStock le prod.minimumStock ? 'color: #ef4444;' : ''}" /> -->
+	<!-- 			</p:column> -->
+
+	<!-- 			<p:column headerText="Preço Venda"> -->
+	<!-- 				<h:outputText value="#{prod.salePrice}"> -->
+	<!-- 					<f:convertNumber type="currency" currencySymbol="MT " /> -->
+	<!-- 				</h:outputText> -->
+	<!-- 			</p:column> -->
+	<!-- 		</p:dataTable> -->
+	<!-- 	</div> -->
+
+	<!-- TABELA: Últimos Produtos Adicionados -->
+	<div class="table-card">
+		<h3>Últimos Produtos Adicionados</h3>
+		<p:dataTable value="#{productBean.lastProducts}" var="prod" rows="5"
+			paginator="true">
+			<p:column headerText="Produto">
+				<h:outputText value="#{prod.name}" />
+			</p:column>
+			<p:column headerText="Categoria">
+				<h:outputText
+					value="#{prod.category != null ? prod.category.name : 'N/A'}" />
+			</p:column>
+			<p:column headerText="Stock actual" style="text-align: center;">
+				<h:outputText value="#{prod.currentStock}" />
+			</p:column>
+		</p:dataTable>
+	</div>
+
+	<!-- TABELA: Últimos Clientes -->
+	<div class="dashboard-header">
+		<div class="header-container">
+			<img src="#{request.contextPath}/images/logo.png"
+				class="dashboard-logo" alt="Logo" />
+
+			<div>
+				<h2>
+					<i class="pi pi-star" style="margin-right: 0.5rem;"></i> Bem-Vindo,
+					<h:outputText value="#{loginBean.fullname}" />
+				</h2>
+				<p>Resumo da loja: stock, vendas, validade de produtos e
+					fornecedores.</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- TABELA: Últimos Fornecedores -->
+	<div class="table-card">
+		<h3>Últimos Fornecedores</h3>
+		<p:dataTable value="#{supplierBean.lastSuppliers}" var="s" rows="5"
+			paginator="true">
+			<p:column headerText="Nome">
+				<h:outputText value="#{s.name}" />
+			</p:column>
+			<p:column headerText="NUIT">
+				<h:outputText value="#{s.nuit}" />
+			</p:column>
+			<p:column headerText="Telefone">
+				<h:outputText value="#{s.phone}" />
+			</p:column>
+		</p:dataTable>
+	</div>
+</h:body>
+</html>

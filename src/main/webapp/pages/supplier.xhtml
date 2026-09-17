@@ -1,0 +1,318 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<style>
+:root {
+	--primary: #2563eb;
+	--success: #2563eb;
+	--warning: #f59e0b;
+	--danger: #ef4444;
+	--gray-50: #f9fafb;
+	--gray-100: #f3f4f6;
+	--gray-200: #e5e7eb;
+	--gray-600: #4b5563;
+	--gray-900: #111827;
+}
+
+.supplier-page {
+	animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* ======= CABEÇALHO ======= */
+.page-header {
+	background: linear-gradient(135deg, var(--primary) 0%, #1e3a8a 100%);
+	border-radius: 16px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	color: white;
+	box-shadow: 0 10px 40px rgba(37, 99, 235, 0.25);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.page-header h1 {
+	font-size: 2rem;
+	font-weight: 800;
+	margin: 0;
+}
+
+.btn-new-supplier {
+	background: white !important;
+	color: var(--primary) !important;
+	border-radius: 12px !important;
+	padding: 0.75rem 1.5rem !important;
+	font-weight: 700 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.5rem !important;
+	transition: all 0.3s ease;
+}
+
+.btn-new-supplier:hover {
+	background: #f3f4f6 !important;
+	transform: translateY(-2px);
+}
+
+/* ======= CARDS ======= */
+.stats-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 1.5rem;
+	margin-bottom: 2rem;
+}
+
+.stat-card {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.stat-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.stat-header {
+	display: flex;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.stat-icon-wrapper {
+	width: 50px;
+	height: 50px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(30, 58, 138, 0.1) 100%);
+}
+
+.stat-label {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--gray-600);
+	text-transform: uppercase;
+	margin-bottom: 0.5rem;
+}
+
+.stat-value {
+	font-size: 1.5rem;
+	font-weight: 800;
+	color: var(--gray-900);
+}
+
+/* ======= RESUMO ======= */
+.table-summary {
+	margin-bottom: 1rem;
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--gray-600);
+	text-align: right;
+	padding: 0.5rem 0.5rem 0 0;
+}
+
+/* ======= TABELA ======= */
+.table-container {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+}
+
+.custom-datatable {
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.custom-datatable thead th {
+	background: var(--gray-50) !important;
+	color: var(--gray-900) !important;
+	font-weight: 700;
+	border-bottom: 2px solid var(--gray-200);
+	text-transform: uppercase;
+	font-size: 0.8rem;
+	letter-spacing: 0.05em;
+}
+
+.custom-datatable tbody tr:nth-child(even) {
+	background-color: var(--gray-50);
+}
+
+.custom-datatable tbody tr:hover {
+	background-color: rgba(37, 99, 235, 0.08);
+	transition: background-color 0.3s ease;
+}
+
+.custom-datatable .ui-paginator {
+	border-top: 1px solid var(--gray-200);
+	background: white;
+	padding: 0.5rem 1rem;
+	border-radius: 0 0 16px 16px;
+}
+
+.custom-datatable .ui-paginator .ui-paginator-pages a {
+	border-radius: 8px;
+	margin: 0 2px;
+}
+
+.custom-datatable .ui-paginator .ui-paginator-pages a.ui-state-active {
+	background: var(--primary);
+	color: white;
+	font-weight: 700;
+}
+
+/* ======= AÇÕES ======= */
+.action-btn {
+	width: 38px !important;
+	height: 38px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 10px !important;
+	border: none !important;
+	transition: all 0.3s ease;
+	margin-right: 0.5rem;
+}
+
+.action-btn.btn-edit {
+	background: var(--warning) !important;
+	color: white !important;
+}
+
+.action-btn.btn-edit:hover {
+	background: #d97706 !important;
+	transform: scale(1.1);
+}
+
+.action-btn.btn-delete {
+	background: var(--danger) !important;
+	color: white !important;
+}
+
+.action-btn.btn-delete:hover {
+	background: #dc2626 !important;
+	transform: scale(1.1);
+}
+
+.action-btn.btn-view {
+	background: var(--primary) !important;
+	color: white !important;
+}
+
+.action-btn.btn-view:hover {
+	background: #1e3a8a !important;
+	transform: scale(1.1);
+}
+</style>
+
+	<h:form id="formSupplier" class="supplier-page">
+
+		<!-- ======= HEADER ======= -->
+		<div class="page-header">
+			<h1>🏢 Gestão de Fornecedores</h1>
+
+			<p:commandButton value="Novo Fornecedor" icon="pi pi-plus"
+				styleClass="btn-new-supplier"
+				actionListener="#{dashboardBean.loadSupplierInclude}"
+				update=":mainForm:mainContent" process="@this" />
+		</div>
+
+		<!-- ======= TABELA ======= -->
+		<div class="table-container">
+			<p:dataTable id="tabela" value="#{supplierBean.listSuppliers}" var="s"
+				paginator="true" rows="10" responsiveLayout="scroll"
+				emptyMessage="Nenhum fornecedor encontrado"
+				styleClass="p-datatable-striped custom-datatable"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}  {RowsPerPageDropdown}"
+				currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords}"
+				rowsPerPageTemplate="5,10,20,50" sortMode="multiple"
+				filteredValue="#{supplierBean.filteredSuppliers}">
+
+				<p:column headerText="ID" sortBy="#{s.id}"
+					style="width:8%; text-align:center;">
+					<h:outputText value="#{s.id}" />
+				</p:column>
+
+				<p:column headerText="Nome" sortBy="#{s.name}" filterBy="#{s.name}"
+					style="width:20%" filterMatchMode="contains"
+					filterPlaceholder="Pesquisar...">
+					<h:outputText value="#{s.name}" style="font-weight:600;" />
+				</p:column>
+
+				<p:column headerText="NUIT" sortBy="#{s.nuit}" style="width:12%">
+					<h:outputText value="#{s.nuit}" />
+				</p:column>
+
+				<p:column headerText="Telefone" style="width:12%">
+					<h:outputText value="#{s.phone}" />
+				</p:column>
+
+				<p:column headerText="Email" filterBy="#{s.email}"
+					filterMatchMode="contains" style="width:18%">
+					<h:outputText value="#{s.email}" />
+				</p:column>
+
+				<p:column headerText="Ações"
+					style="width:15%; text-align:center;">
+
+					<p:commandButton icon="pi pi-pencil" title="Editar"
+						styleClass="action-btn btn-edit"
+						actionListener="#{supplierBean.edit(s)}"
+						update=":mainForm:mainContent" process="@this" />
+
+					<p:commandButton icon="pi pi-trash" title="Remover"
+						styleClass="action-btn btn-delete"
+						actionListener="#{supplierBean.delete(s)}" update="tabela">
+						<p:confirm header="Confirmação"
+							message="Deseja realmente excluir este fornecedor?"
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+
+					<p:commandButton icon="pi pi-eye" title="Visualizar"
+						styleClass="action-btn btn-view"
+						actionListener="#{supplierBean.edit(s)}"
+						update=":mainForm:mainContent" process="@this" />
+
+				</p:column>
+
+			</p:dataTable>
+		</div>
+
+		<!-- Confirm Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+			responsive="true" width="350">
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+		</p:confirmDialog>
+
+	</h:form>
+
+</ui:composition>

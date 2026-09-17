@@ -1,0 +1,916 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Dashboard - Sistema de Gestão de Loja Infantil</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+
+    <style>
+        /* =========================================================
+           VARIÁVEIS DE DESIGN PREMIUM
+           ========================================================= */
+        :root {
+            --primary: #2563eb;
+            --primary-light: #60a5fa;
+            --primary-dark: #1e3a8a;       /* Azul escuro para categorias */
+            --primary-deeper: #1e40af;     /* Azul intermediário */
+            --primary-glow: rgba(37, 99, 235, 0.4);
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #e74c3c;
+
+            --text: #0f172a;
+            --text-soft: #475569;
+            --muted: #94a3b8;
+
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 88px;
+            --header-height: 80px;
+            --footer-height: 56px;
+
+            --shadow-soft: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+            --shadow-elevated: 0 20px 40px -12px rgba(37, 99, 235, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.25);
+            --shadow-category: 0 8px 20px rgba(30, 58, 138, 0.25);
+        }
+
+        /* =========================================================
+           RESET E BASE
+           ========================================================= */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            background-color: #f8fafc;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Fundo Mesh Gradient Animado */
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(96, 165, 250, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(37, 99, 235, 0.1), transparent 25%),
+                radial-gradient(circle at 50% 80%, rgba(147, 197, 253, 0.15), transparent 30%),
+                #f8fafc;
+            animation: meshMove 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes meshMove {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-light); }
+
+        /* =========================================================
+           LAYOUT PRINCIPAL
+           ========================================================= */
+        .layout {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            grid-template-rows: var(--header-height) 1fr var(--footer-height);
+            grid-template-areas:
+                "sidebar header"
+                "sidebar main"
+                "sidebar footer";
+            height: 100vh;
+            transition: grid-template-columns 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .layout.sidebar-collapsed {
+            grid-template-columns: var(--sidebar-collapsed-width) 1fr;
+        }
+
+        /* =========================================================
+           SIDEBAR
+           ========================================================= */
+        .sidebar {
+            grid-area: sidebar;
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: 4px 0 24px rgba(15, 23, 42, 0.04);
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            min-height: var(--header-height);
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .logo-icon {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+            color: #ffffff;
+            font-size: 1.4rem;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+            animation: float 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            letter-spacing: -0.03em;
+            white-space: nowrap;
+        }
+
+        .sidebar-collapsed .sidebar-header h2,
+        .sidebar-collapsed .category-header-title span,
+        .sidebar-collapsed .ui-menuitem-link span,
+        .sidebar-collapsed .category-icon-badge {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* =========================================================
+           MENU SIDEBAR
+           ========================================================= */
+        .sidebar-menu {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem 1rem;
+        }
+
+        .dashboard-direct-btn {
+            margin-bottom: 1.5rem;
+            padding: 0 0.5rem;
+        }
+
+        .dashboard-direct-btn .ui-menuitem-link {
+            padding: 0.85rem 1rem !important;
+            border-radius: 14px !important;
+            background: #ffffff !important;
+            border: 1px solid rgba(226, 232, 240, 0.8) !important;
+            color: var(--primary-dark) !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0.6rem !important;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .dashboard-direct-btn .ui-menuitem-link:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow) !important;
+            border-color: var(--primary-light) !important;
+        }
+
+        .dashboard-direct-btn .ui-menuitem-link.active {
+            background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%) !important;
+            color: #ffffff !important;
+            border-color: transparent !important;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4) !important;
+        }
+
+        .dashboard-direct-btn .ui-menuitem-link.active .ui-menuitem-icon {
+            color: #ffffff !important;
+        }
+
+        /* =========================================================
+           ACCORDION - CATEGORIAS COM DESTAKE PREMIUM
+           ========================================================= */
+        .sidebar-menu .ui-accordion {
+            background: transparent !important;
+            border: 0 !important;
+        }
+
+        /* HEADER DA CATEGORIA - ESTILO DESTACADO */
+        .sidebar-menu .ui-accordion .ui-accordion-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
+            border: 0 !important;
+            border-radius: 14px !important;
+            margin: 1.25rem 0 0.5rem 0 !important;
+            padding: 0.85rem 1rem !important;
+            min-height: 52px !important;
+            color: #ffffff !important;
+            font-size: 0.78rem !important;
+            font-weight: 700 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            box-shadow: 0 4px 14px rgba(30, 58, 138, 0.25) !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Brilho sutil na categoria */
+        .sidebar-menu .ui-accordion .ui-accordion-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .sidebar-menu .ui-accordion .ui-accordion-header:hover::before {
+            left: 100%;
+        }
+
+        /* Título da categoria com ícone em círculo */
+        .category-header-title {
+            display: flex !important;
+            align-items: center !important;
+            flex: 1 !important;
+            gap: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Badge circular do ícone da categoria */
+        .category-icon-badge {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .category-icon-badge i {
+            color: #ffffff !important;
+            font-size: 0.95rem !important;
+            margin: 0 !important;
+        }
+
+        .sidebar-menu .ui-accordion .ui-accordion-header span {
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Seta da categoria */
+        .sidebar-menu .ui-accordion .ui-accordion-header .ui-accordion-header-icon {
+            position: static !important;
+            float: none !important;
+            order: 2 !important;
+            margin-left: auto !important;
+            font-size: 0.85rem !important;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.15);
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* HOVER - Categoria mais clara */
+        .sidebar-menu .ui-accordion .ui-accordion-header:hover {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 24px rgba(30, 58, 138, 0.35) !important;
+        }
+
+        .sidebar-menu .ui-accordion .ui-accordion-header:hover .category-icon-badge {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(-5deg) scale(1.05);
+        }
+
+        /* ATIVO - Categoria aberta com estilo diferenciado */
+        .sidebar-menu .ui-accordion .ui-accordion-header.ui-state-active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%) !important;
+            box-shadow: 0 8px 24px rgba(30, 58, 138, 0.4) !important;
+            border-bottom-left-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        .sidebar-menu .ui-accordion .ui-accordion-header.ui-state-active .ui-accordion-header-icon {
+            transform: rotate(180deg) !important;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .sidebar-menu .ui-accordion .ui-accordion-header.ui-state-active .category-icon-badge {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        /* CONTEÚDO DO ACCORDION - Fundo suave */
+        .sidebar-menu .ui-accordion .ui-accordion-content {
+            background: linear-gradient(180deg, rgba(30, 58, 138, 0.04) 0%, rgba(255,255,255,0.5) 100%) !important;
+            border: 1px solid rgba(30, 58, 138, 0.08) !important;
+            border-top: 0 !important;
+            border-radius: 0 0 14px 14px !important;
+            padding: 0.5rem 0.5rem 0.75rem 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+            box-shadow: inset 0 4px 12px rgba(30, 58, 138, 0.03);
+        }
+
+        /* =========================================================
+           ITENS DO MENU INTERNO
+           ========================================================= */
+        .sidebar-menu .ui-menu {
+            background: transparent !important;
+            border: 0 !important;
+            width: 100% !important;
+        }
+
+        .sidebar-menu .ui-menuitem-link {
+            padding: 0.7rem 1rem !important;
+            margin: 0.15rem 0 !important;
+            border-radius: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            color: var(--text-soft) !important;
+            font-size: 0.88rem !important;
+            font-weight: 500 !important;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            position: relative;
+        }
+
+        .sidebar-menu .ui-menuitem-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) scaleY(0);
+            width: 4px;
+            height: 60%;
+            background: linear-gradient(180deg, #1e3a8a, #2563eb);
+            border-radius: 0 4px 4px 0;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .sidebar-menu .ui-menuitem-link:hover {
+            background: rgba(255, 255, 255, 0.8) !important;
+            color: var(--primary-dark) !important;
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.08);
+        }
+
+        .sidebar-menu .ui-menuitem-link:hover::before,
+        .sidebar-menu .ui-menuitem-link.active::before {
+            transform: translateY(-50%) scaleY(1);
+        }
+
+        .sidebar-menu .ui-menuitem-link.active {
+            background: rgba(30, 58, 138, 0.08) !important;
+            color: var(--primary-dark) !important;
+            font-weight: 600 !important;
+        }
+
+        .sidebar-menu .ui-menuitem-link .ui-menuitem-icon {
+            margin-right: 0.85rem !important;
+            font-size: 1.05rem !important;
+            color: var(--muted) !important;
+            transition: all 0.25s ease !important;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-menu .ui-menuitem-link:hover .ui-menuitem-icon,
+        .sidebar-menu .ui-menuitem-link.active .ui-menuitem-icon {
+            color: var(--primary-dark) !important;
+            transform: scale(1.1);
+        }
+
+        /* =========================================================
+           HEADER
+           ========================================================= */
+        .header {
+            grid-area: header;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 90;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left { gap: 1.5rem; }
+        .header-right { gap: 1.25rem; }
+
+        .header-title {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header-title i {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+        }
+
+        .toggle-btn {
+            background: #ffffff !important;
+            border: 1px solid rgba(226, 232, 240, 0.8) !important;
+            color: var(--text-soft) !important;
+            cursor: pointer !important;
+            border-radius: 14px !important;
+            width: 44px !important;
+            height: 44px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .toggle-btn:hover {
+            background: var(--primary-dark) !important;
+            color: #ffffff !important;
+            border-color: var(--primary-dark) !important;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(30, 58, 138, 0.3) !important;
+        }
+
+        /* =========================================================
+           UTILIZADOR E LOGOUT
+           ========================================================= */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            background: #ffffff;
+            padding: 0.4rem 1.2rem 0.4rem 0.4rem;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 50px;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.88rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+            cursor: default;
+        }
+
+        .user-info:hover {
+            box-shadow: var(--shadow-elevated);
+            transform: translateY(-1px);
+            border-color: var(--primary-light);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+        }
+
+        .logout-btn {
+            background: #ffffff !important;
+            border: 1px solid rgba(254, 205, 211, 0.8) !important;
+            color: #e11d48 !important;
+            font-weight: 600 !important;
+            border-radius: 14px !important;
+            padding: 0.6rem 1.2rem !important;
+            font-size: 0.85rem !important;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+
+        .logout-btn:hover {
+            background: #e11d48 !important;
+            color: #ffffff !important;
+            border-color: #e11d48 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(225, 29, 72, 0.3) !important;
+        }
+
+        .header-logo {
+            height: 36px;
+            width: auto;
+            max-width: 120px;
+            object-fit: contain;
+            border-left: 1px solid rgba(226, 232, 240, 0.8);
+            padding-left: 1.25rem;
+            margin-left: 0.5rem;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .header-logo:hover { opacity: 1; }
+
+        /* =========================================================
+           CONTEÚDO PRINCIPAL
+           ========================================================= */
+        .main {
+            grid-area: main;
+            padding: 2rem 2.5rem;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .main::before {
+            content: '';
+            position: absolute;
+            top: -150px; right: -100px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(40px);
+        }
+
+        .content-wrapper {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            padding: 2rem;
+            min-height: calc(100vh - var(--header-height) - var(--footer-height) - 4rem);
+            box-shadow: var(--shadow-elevated);
+            animation: contentSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            border-top: 4px solid var(--primary-dark);
+        }
+
+        .content-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+        }
+
+        @keyframes contentSlideUp {
+            from { opacity: 0; transform: translateY(24px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+        .footer {
+            grid-area: footer;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            color: var(--text-soft);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5rem;
+            font-size: 0.82rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer p {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin: 0;
+        }
+
+        .footer i { color: var(--primary-dark); font-size: 1rem; }
+
+        .footer strong {
+            color: var(--primary-dark);
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            background: rgba(30, 58, 138, 0.08);
+            border-radius: 8px;
+            border: 1px solid rgba(30, 58, 138, 0.15);
+        }
+
+        /* =========================================================
+           RESPONSIVO
+           ========================================================= */
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 1fr;
+                grid-template-areas: "header" "main" "footer";
+            }
+            .sidebar {
+                position: fixed;
+                left: -300px;
+                top: 0; bottom: 0;
+                width: 280px;
+                transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: 20px 0 60px rgba(15, 23, 42, 0.15);
+            }
+            .sidebar.active { left: 0; }
+            .sidebar.active::before {
+                content: '';
+                position: fixed;
+                top: 0; left: 280px; right: 0; bottom: 0;
+                background: rgba(15, 23, 42, 0.4);
+                backdrop-filter: blur(4px);
+                z-index: -1;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header { padding: 0 1rem; }
+            .header-title span { display: none; }
+            .header-logo { display: none; }
+            .user-info span { display: none; }
+            .user-info { padding: 0.4rem; }
+            .main { padding: 1rem; }
+            .content-wrapper { padding: 1.5rem; border-radius: 20px; }
+            .footer { padding: 0 1rem; flex-direction: column; gap: 0.75rem; text-align: center; }
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="bg-mesh"></div>
+
+    <h:form id="mainForm">
+        <div class="layout" id="mainLayout">
+
+            <!-- =====================================================
+                 SIDEBAR
+                 ===================================================== -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo-wrapper">
+                        <i class="pi pi-star-fill logo-icon"></i>
+                        <h2>Loja Infantil</h2>
+                    </div>
+                </div>
+
+                <div class="sidebar-menu">
+                    <div class="dashboard-direct-btn">
+                        <p:menu>
+                            <p:menuitem value="Visão Geral"
+                                        icon="pi pi-th-large"
+                                        actionListener="#{dashboardBean.loadPage('welcome')}"
+                                        update=":mainForm:mainContent"
+                                        styleClass="#{dashboardBean.currentPage == 'welcome.xhtml' ? 'active' : ''}" />
+                        </p:menu>
+                    </div>
+
+                    <p:accordionPanel multiple="true" activeIndex="0">
+                        
+                        <!-- GESTÃO -->
+                        <p:tab rendered="#{loginBean.admin}">
+                            <f:facet name="title">
+                                <div class="category-header-title">
+                                    <div class="category-icon-badge">
+                                        <i class="pi pi-cog"></i>
+                                    </div>
+                                    <span>Gestão</span>
+                                </div>
+                            </f:facet>
+                            <p:menu>
+                                <p:menuitem value="Categorias" icon="pi pi-tag" actionListener="#{dashboardBean.loadPage('category')}" update=":mainForm:mainContent" styleClass="#{dashboardBean.currentPage == 'category.xhtml' ? 'active' : ''}" />
+                                <p:menuitem value="Produtos" icon="pi pi-box" actionListener="#{dashboardBean.loadPage('product')}" update=":mainForm:mainContent" styleClass="#{dashboardBean.currentPage == 'product.xhtml' ? 'active' : ''}" />
+                                <p:menuitem value="Clientes" icon="pi pi-users" actionListener="#{dashboardBean.loadPage('customer')}" update=":mainForm:mainContent" styleClass="#{dashboardBean.currentPage == 'customer.xhtml' ? 'active' : ''}" />
+                                <p:menuitem value="Fornecedores" icon="pi pi-building" actionListener="#{dashboardBean.loadPage('supplier')}" update=":mainForm:mainContent" styleClass="#{dashboardBean.currentPage == 'supplier.xhtml' ? 'active' : ''}" />
+                            </p:menu>
+                        </p:tab>
+
+                        <!-- VENDAS -->
+                        <p:tab>
+                            <f:facet name="title">
+                                <div class="category-header-title">
+                                    <div class="category-icon-badge">
+                                        <i class="pi pi-shopping-cart"></i>
+                                    </div>
+                                    <span>Vendas</span>
+                                </div>
+                            </f:facet>
+                            <p:menu>
+                                <p:menuitem value="Entrada de Produtos" icon="pi pi-arrow-down-left" actionListener="#{dashboardBean.loadPage('stock-entry')}" update=":mainForm:mainContent" rendered="#{loginBean.admin}" styleClass="#{dashboardBean.currentPage == 'stock-entry.xhtml' ? 'active' : ''}" />
+                                <p:menuitem value="Saída de Produtos" icon="pi pi-shopping-cart" actionListener="#{dashboardBean.loadPage('sales')}" update=":mainForm:mainContent" styleClass="#{dashboardBean.currentPage == 'sales.xhtml' ? 'active' : ''}" />
+                            </p:menu>
+                        </p:tab>
+
+                        <!-- RELATÓRIOS -->
+                        <p:tab rendered="#{loginBean.admin}">
+                            <f:facet name="title">
+                                <div class="category-header-title">
+                                    <div class="category-icon-badge">
+                                        <i class="pi pi-chart-bar"></i>
+                                    </div>
+                                    <span>Relatórios</span>
+                                </div>
+                            </f:facet>
+                            <p:menu>
+                                <p:menuitem value="Vendas" icon="pi pi-chart-line" actionListener="#{dashboardBean.loadPage('report-sales')}" update=":mainForm:mainContent" />
+                            </p:menu>
+                        </p:tab>
+
+                        <!-- CAIXA -->
+                        <p:tab>
+                            <f:facet name="title">
+                                <div class="category-header-title">
+                                    <div class="category-icon-badge">
+                                        <i class="pi pi-wallet"></i>
+                                    </div>
+                                    <span>Caixa</span>
+                                </div>
+                            </f:facet>
+                            <p:menu>
+                                <p:menuitem value="Manipular Caixa" icon="pi pi-money-bill" actionListener="#{dashboardBean.loadPage('cashier')}" update=":mainForm:mainContent" styleClass="#{dashboardBean.currentPage == 'caixa-manipular.xhtml' ? 'active' : ''}" />
+                            </p:menu>
+                        </p:tab>
+
+                        <!-- UTILITÁRIOS -->
+                        <p:tab>
+                            <f:facet name="title">
+                                <div class="category-header-title">
+                                    <div class="category-icon-badge">
+                                        <i class="pi pi-sliders-h"></i>
+                                    </div>
+                                    <span>Utilitários</span>
+                                </div>
+                            </f:facet>
+                            <p:menu>
+                                <p:menuitem value="Utilizadores" icon="pi pi-user-plus" actionListener="#{dashboardBean.loadPage('user')}" update=":mainForm:mainContent" styleClass="#{dashboardBean.currentPage == 'user.xhtml' ? 'active' : ''}" />
+                            </p:menu>
+                        </p:tab>
+
+                    </p:accordionPanel>
+                </div>
+            </div>
+
+            <!-- =====================================================
+                 HEADER
+                 ===================================================== -->
+            <div class="header">
+                <div class="header-left">
+                    <p:commandButton icon="pi pi-bars" styleClass="toggle-btn" process="@this" onclick="toggleSidebar(); return false;" />
+                    <h1 class="header-title">
+                        <i class="pi pi-compass"></i>
+                        <span>Painel do Sistema</span>
+                    </h1>
+                </div>
+
+                <div class="header-right">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            #{loginBean.username.substring(0,1).toUpperCase()}
+                        </div>
+                        <span>#{loginBean.username}</span>
+                    </div>
+
+                    <p:commandButton value="Sair" icon="pi pi-sign-out" styleClass="logout-btn" action="#{loginBean.logout}" />
+
+                    <h:graphicImage library="images" name="logo.png" styleClass="header-logo" alt="Logotipo" />
+                </div>
+            </div>
+
+            <!-- =====================================================
+                 CONTEÚDO
+                 ===================================================== -->
+            <div class="main">
+                <div class="content-wrapper">
+                    <p:outputPanel id="mainContent" layout="block">
+                        <ui:include src="#{dashboardBean.currentPage}" />
+                    </p:outputPanel>
+                </div>
+            </div>
+
+            <!-- =====================================================
+                 FOOTER
+                 ===================================================== -->
+            <div class="footer">
+                <p>
+                    <i class="pi pi-shield"></i>
+                    <span>© 2026 Sistema de Gestão de Loja Infantil</span>
+                </p>
+                <div>
+                    <strong>v1.0.0</strong>
+                </div>
+            </div>
+
+        </div>
+    </h:form>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        function toggleSidebar() {
+            var layout = document.getElementById('mainLayout');
+            var sidebar = document.getElementById('sidebar');
+
+            if (window.innerWidth > 1024) {
+                layout.classList.toggle('sidebar-collapsed');
+            } else {
+                sidebar.classList.toggle('active');
+            }
+        }
+        
+        document.addEventListener('click', function(event) {
+            var sidebar = document.getElementById('sidebar');
+            var toggleBtn = document.querySelector('.toggle-btn');
+            
+            if (window.innerWidth <= 1024 && sidebar.classList.contains('active')) {
+                if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
+        //]]>
+    </script>
+</h:body>
+</html>

@@ -1,0 +1,513 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<h:form id="formStockEntry" styleClass="stock-container p-fluid">
+
+		<style>
+.stock-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 2rem 1rem;
+	animation: fadeIn 0.4s ease-out;
+}
+
+.stock-header {
+	background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+	border-radius: 20px;
+	padding: 2rem;
+	margin-bottom: 1.5rem;
+	box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+	color: white;
+}
+
+.header-content {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+}
+
+.header-title-group {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.header-icon {
+	font-size: 2.5rem;
+}
+
+.header-text h1 {
+	margin: 0;
+	font-size: 1.8rem;
+	font-weight: 700;
+}
+
+.header-text p {
+	margin: 0.25rem 0 0;
+	font-size: 0.95rem;
+	opacity: 0.9;
+}
+
+.status-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.5rem 1rem;
+	border-radius: 20px;
+	font-size: 0.8rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	background: rgba(255, 255, 255, 0.2);
+	backdrop-filter: blur(8px);
+	color: white;
+}
+
+.status-badge.editing {
+	background: #fef3c7;
+	color: #b45309;
+}
+
+.info-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 1.25rem;
+	margin-bottom: 1.5rem;
+}
+
+.info-card {
+	background: white;
+	border-radius: 16px;
+	padding: 1.25rem;
+	border: 1px solid #dbeafe;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.info-icon-box {
+	width: 46px;
+	height: 46px;
+	border-radius: 12px;
+	background: #eff6ff;
+	color: #2563eb;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.25rem;
+}
+
+.info-meta {
+	display: flex;
+	flex-direction: column;
+}
+
+.info-label {
+	font-size: 0.75rem;
+	font-weight: 700;
+	color: #64748b;
+	text-transform: uppercase;
+}
+
+.info-value {
+	font-size: 1.1rem;
+	font-weight: 800;
+	color: #0f172a;
+}
+
+.form-card {
+	background: white;
+	border-radius: 20px;
+	padding: 2rem;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+	border: 1px solid #dbeafe;
+	margin-bottom: 1.5rem;
+}
+
+.section-title {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #1e3a8a;
+	margin: 0 0 1.5rem;
+	padding-bottom: 0.75rem;
+	border-bottom: 2px solid #dbeafe;
+}
+
+.field-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.field-group label {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #334155;
+}
+
+/* Customização de Inputs com PrimeFaces */
+.stock-container .ui-selectonemenu {
+	border-radius: 10px !important;
+	border: 1px solid #cbd5e1 !important;
+	background: white !important;
+}
+
+.stock-container .ui-inputnumber-input {
+	border-radius: 10px !important;
+	border: 1px solid #cbd5e1 !important;
+	padding: 0.65rem 1rem !important;
+	font-size: 0.95rem !important;
+}
+
+.stock-container .ui-selectonemenu:focus-within, .stock-container .ui-inputnumber-input:focus
+	{
+	border-color: #2563eb !important;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+.product-details-box {
+	background: #f8fafc;
+	border-radius: 14px;
+	padding: 1.25rem;
+	border: 1px dashed #cbd5e1;
+	margin-top: 1.25rem;
+}
+
+.details-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 1rem;
+	margin-bottom: 1.25rem;
+}
+
+.detail-card-item {
+	background: white;
+	padding: 1rem;
+	border-radius: 12px;
+	border: 1px solid #e2e8f0;
+}
+
+.detail-card-item .d-label {
+	font-size: 0.75rem;
+	font-weight: 700;
+	color: #64748b;
+	text-transform: uppercase;
+	margin-bottom: 0.25rem;
+}
+
+.detail-card-item .d-value {
+	font-size: 1.15rem;
+	font-weight: 800;
+	color: #0f172a;
+}
+
+.detail-card-item .d-value.price {
+	color: #2563eb;
+}
+
+.detail-card-item .d-value.stock-ok {
+	color: #10b981;
+}
+
+.detail-card-item .d-value.stock-low {
+	color: #ef4444;
+}
+
+.stock-container .ui-datatable thead th {
+	background: #f8fafc !important;
+	color: #1e3a8a !important;
+	font-weight: 700 !important;
+	padding: 0.85rem 1rem !important;
+	border-bottom: 2px solid #dbeafe !important;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+}
+
+.stock-container .ui-datatable tbody td {
+	padding: 0.85rem 1rem !important;
+	border-bottom: 1px solid #f1f5f9 !important;
+	font-size: 0.95rem;
+}
+
+.btn-delete {
+	width: 36px !important;
+	height: 36px !important;
+	border-radius: 10px !important;
+	background: #fef2f2 !important;
+	color: #ef4444 !important;
+	border: none !important;
+	transition: all 0.2s ease !important;
+}
+
+.btn-delete:hover {
+	background: #ef4444 !important;
+	color: white !important;
+}
+
+.form-divider {
+	margin: 2rem 0;
+	border: 0;
+	border-top: 1px solid #dbeafe;
+}
+
+.button-group {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 1rem;
+}
+
+.btn-secondary {
+	border-radius: 12px !important;
+	padding: 0.8rem 1.75rem !important;
+	background: #f8fafc !important;
+	border: 2px solid #cbd5e1 !important;
+	color: #475569 !important;
+}
+
+.btn-primary {
+	border-radius: 12px !important;
+	padding: 0.8rem 1.75rem !important;
+	font-weight: 700 !important;
+	background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+	border: none !important;
+	color: white !important;
+}
+
+.btn-confirm {
+	border-radius: 12px !important;
+	padding: 0.8rem 2rem !important;
+	font-weight: 700 !important;
+	background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+	border: none !important;
+	color: white !important;
+}
+
+.btn-confirm:hover {
+	box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3) !important;
+	transform: translateY(-1px);
+}
+
+@
+keyframes fadeIn {from { opacity:0;
+	transform: translateY(15px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+@media ( max-width : 768px) {
+	.stock-container {
+		padding: 1rem 0.5rem;
+	}
+	.stock-header, .form-card {
+		padding: 1.5rem;
+	}
+	.button-group {
+		flex-direction: column-reverse;
+	}
+	.button-group .ui-button {
+		width: 100%;
+	}
+}
+</style>
+
+		<p:messages id="msgs" showDetail="true" closable="true" />
+
+		<!-- Cabeçalho -->
+		<div class="stock-header">
+			<div class="header-content">
+				<div class="header-title-group">
+					<div class="header-icon">
+						<i class="pi pi-box"></i>
+					</div>
+					<div class="header-text">
+						<h1>#{stockEntryBean.editing ? 'Editar Entrada' : 'Nova
+							Entrada de Estoque'}</h1>
+						<p>Adicione produtos para atualização de estoque do
+							inventário.</p>
+					</div>
+				</div>
+
+				<span
+					class="status-badge #{stockEntryBean.editing ? 'editing' : ''}">
+					<i class="pi pi-circle-fill"></i> #{stockEntryBean.editing ? 'Modo
+					de Edição' : 'Nova Entrada'}
+				</span>
+			</div>
+		</div>
+
+		<!-- Informações Gerais da Entrada -->
+		<div class="info-grid">
+			<div class="info-card">
+				<div class="info-icon-box">
+					<i class="pi pi-calendar"></i>
+				</div>
+				<div class="info-meta">
+					<span class="info-label">Data de Lançamento</span> <span
+						class="info-value"> <h:outputText
+							value="#{stockEntryBean.currentDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</span>
+				</div>
+			</div>
+
+			<div class="info-card">
+				<div class="info-icon-box">
+					<i class="pi pi-list"></i>
+				</div>
+				<div class="info-meta">
+					<span class="info-label">Itens Adicionados</span> <span
+						class="info-value"> <h:outputText id="itemCount"
+							value="#{stockEntryBean.itemStockEntry.listEntriesDetails.size()}" />
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Card de Adição de Produtos -->
+		<div class="form-card">
+			<h3 class="section-title">
+				<i class="pi pi-plus-circle"></i> Adicionar Itens ao Estoque
+			</h3>
+
+			<div class="field-group">
+				<label for="productSelect">Selecione o Produto</label>
+				<p:selectOneMenu id="productSelect"
+					value="#{stockEntryBean.selectedProduct}"
+					converter="productConverter" filter="true"
+					filterMatchMode="contains">
+					<f:selectItem itemLabel="Digite ou selecione o produto..."
+						itemValue="#{null}" noSelectionOption="true" />
+					<f:selectItems value="#{stockEntryBean.listProducts}" var="p"
+						itemLabel="#{p.name}" itemValue="#{p}" />
+					<p:ajax event="change" process="@this"
+						listener="#{stockEntryBean.onProductSelect}"
+						update="productDetails" />
+				</p:selectOneMenu>
+			</div>
+
+			<!-- Detalhes do Produto Selecionado -->
+			<p:outputPanel id="productDetails" layout="block">
+				<div class="product-details-box">
+					<div class="details-grid">
+						<div class="detail-card-item">
+							<div class="d-label">Preço de Venda</div>
+							<div class="d-value price">
+								<h:outputText id="price"
+									value="#{stockEntryBean.selectedProduct.salePrice}">
+									<f:convertNumber type="currency" currencySymbol="MT "
+										minFractionDigits="2" />
+								</h:outputText>
+							</div>
+						</div>
+
+						<div class="detail-card-item">
+							<div class="d-label">Estoque Atual</div>
+							<div
+								class="d-value #{stockEntryBean.selectedProduct != null and stockEntryBean.selectedProduct.currentStock gt 0 ? 'stock-ok' : 'stock-low'}">
+								<h:outputText id="stock"
+									value="#{stockEntryBean.selectedProduct != null ? stockEntryBean.selectedProduct.currentStock : 0}">
+									<f:convertNumber pattern="#,##0" />
+								</h:outputText>
+								<span style="font-size: 0.85rem; font-weight: 500;"> un.</span>
+							</div>
+						</div>
+
+						<div class="field-group">
+							<label for="quantity">Qtd. a Adicionar</label>
+							<p:inputNumber id="quantity" value="#{stockEntryBean.quantity}"
+								minValue="1" decimalPlaces="0"
+								disabled="#{stockEntryBean.selectedProduct eq null}" />
+						</div>
+					</div>
+
+					<p:commandButton id="addButton" value="Adicionar Item"
+						icon="pi pi-plus" styleClass="btn-primary"
+						actionListener="#{stockEntryBean.addProduct}"
+						update="stockEntryTable productDetails msgs nextButton productSelect quantity itemCount"
+						process="@this productSelect quantity"
+						disabled="#{stockEntryBean.selectedProduct eq null}" />
+				</div>
+			</p:outputPanel>
+		</div>
+
+		<!-- Tabela de Itens Adicionados -->
+		<div class="form-card">
+			<h3 class="section-title">
+				<i class="pi pi-shopping-cart"></i> Lista de Produtos da Entrada
+			</h3>
+
+			<p:dataTable id="stockEntryTable"
+				value="#{stockEntryBean.itemStockEntry.listEntriesDetails}"
+				var="item" styleClass="p-datatable-striped p-datatable-sm"
+				responsiveLayout="scroll"
+				emptyMessage="Nenhum item adicionado a esta entrada de estoque.">
+
+				<p:column headerText="Produto" style="width:65%;">
+					<h:outputText value="#{item.product.name}"
+						style="font-weight: 600; color:#0f172a;" />
+				</p:column>
+
+				<p:column headerText="Quantidade Entrada"
+					style="width:20%; text-align:center;">
+					<h:outputText value="#{item.quantity}"
+						style="font-weight: 700; color: #2563eb;">
+						<f:convertNumber pattern="#,##0" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Ações" style="width:15%; text-align:center;">
+					<p:commandButton icon="pi pi-trash" title="Remover item"
+						styleClass="btn-delete"
+						actionListener="#{stockEntryBean.removeItem(item)}"
+						update=":mainForm:formStockEntry:stockEntryTable :mainForm:formStockEntry:itemCount :mainForm:formStockEntry:nextButton"
+						process="@this">
+						<p:confirm header="Remover Item"
+							message="Deseja realmente remover este item da lista?"
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+			<hr class="form-divider" />
+
+			<!-- Ações da Tela -->
+			<div class="button-group">
+				<p:commandButton value="Cancelar" icon="pi pi-times"
+					styleClass="btn-secondary"
+					actionListener="#{dashboardBean.cancelStockEntryInclude}"
+					update=":mainForm:mainContent" process="@this" />
+
+				<p:commandButton id="nextButton" value="Avançar / Confirmar"
+					icon="pi pi-arrow-right" iconPos="right"
+					actionListener="#{dashboardBean.loadStockEntryConfirm}"
+					process="@form" update=":mainForm:mainContent"
+					styleClass="btn-confirm"
+					disabled="#{empty stockEntryBean.itemStockEntry.listEntriesDetails}" />
+			</div>
+		</div>
+
+		<!-- Confirmação Global -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+			responsive="true" width="380">
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no btn-secondary" icon="pi pi-times" />
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes btn-delete" icon="pi pi-check" />
+		</p:confirmDialog>
+
+	</h:form>
+</ui:composition>

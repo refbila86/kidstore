@@ -1,0 +1,306 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<style>
+:root {
+	--primary: #6366f1;
+	--success: #10b981;
+	--warning: #f59e0b;
+	--danger: #ef4444;
+	--gray-50: #f9fafb;
+	--gray-100: #f3f4f6;
+	--gray-200: #e5e7eb;
+	--gray-600: #4b5563;
+	--gray-900: #111827;
+}
+
+.category-page {
+	animation: fadeIn 0.5s ease-out;
+}
+
+@
+keyframes fadeIn {from { opacity:0;
+	transform: translateY(20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+
+/* ======= CABEÇALHO ======= */
+.page-header {
+	background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+	border-radius: 16px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	color: white;
+	box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.page-header h1 {
+	font-size: 2rem;
+	font-weight: 800;
+	margin: 0;
+}
+
+.btn-new-category {
+	background: white !important;
+	color: var(--primary) !important;
+	border-radius: 12px !important;
+	padding: 0.75rem 1.5rem !important;
+	font-weight: 700 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.5rem !important;
+	transition: all 0.3s ease;
+}
+
+.btn-new-category:hover {
+	background: #f3f4f6 !important;
+	transform: translateY(-2px);
+}
+
+/* ======= CARDS ======= */
+.stats-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 1.5rem;
+	margin-bottom: 2rem;
+}
+
+.stat-card {
+	background: white;
+	border-radius: 16px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--gray-200);
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.stat-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.stat-header {
+	display: flex;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.stat-icon-wrapper {
+	width: 50px;
+	height: 50px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%,
+		rgba(139, 92, 246, 0.1) 100%);
+}
+
+.stat-label {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--gray-600);
+	text-transform: uppercase;
+	margin-bottom: 0.5rem;
+}
+
+.stat-value {
+	font-size: 1.5rem;
+	font-weight: 800;
+	color: var(--gray-900);
+}
+
+/* ======= RESUMO ======= */
+.table-summary {
+	margin-bottom: 1rem;
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--gray-600);
+	text-align: right;
+	padding: 0.5rem 0.5rem 0 0;
+}
+
+/* ======= TABELA ======= */
+.custom-datatable {
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.custom-datatable thead th {
+	background: var(--gray-50) !important;
+	color: var(--gray-900) !important;
+	font-weight: 700;
+	border-bottom: 2px solid var(--gray-200);
+	text-transform: uppercase;
+	font-size: 0.8rem;
+	letter-spacing: 0.05em;
+}
+
+.custom-datatable tbody tr:nth-child(even) {
+	background-color: var(--gray-50);
+}
+
+.custom-datatable tbody tr:hover {
+	background-color: rgba(99, 102, 241, 0.08);
+	transition: background-color 0.3s ease;
+}
+
+.custom-datatable .ui-paginator {
+	border-top: 1px solid var(--gray-200);
+	background: white;
+	padding: 0.5rem 1rem;
+	border-radius: 0 0 16px 16px;
+}
+
+.custom-datatable .ui-paginator .ui-paginator-pages a {
+	border-radius: 8px;
+	margin: 0 2px;
+}
+
+.custom-datatable .ui-paginator .ui-paginator-pages a.ui-state-active {
+	background: var(--primary);
+	color: white;
+	font-weight: 700;
+}
+</style>
+
+	<h:form id="formCashier" class="category-page">
+
+		<!-- ======= HEADER ======= -->
+		<div class="page-header">
+			<h1>💰 Gestão de Caixa</h1>
+
+			<p:commandButton value="Novo Caixa" icon="pi pi-plus"
+				styleClass="btn-new-category"
+				actionListener="#{dashboardBean.loadCashierInclude}"
+				update=":mainForm:mainContent" process="@this" />
+		</div>
+
+		<!-- ======= CARDS ======= -->
+		<div class="stats-grid">
+			<div class="stat-card">
+				<div class="stat-header">
+					<div class="stat-icon-wrapper">💰</div>
+				</div>
+				<div class="stat-label">Total de Caixas</div>
+				<div class="stat-value">
+					<h:outputText value="#{cashierBean.listCashier.size()}" />
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-header">
+					<div class="stat-icon-wrapper">✅</div>
+				</div>
+				<div class="stat-label">Caixas Fechados</div>
+				<div class="stat-value">
+					<h:outputText value="#{cashierBean.closedCashiers}" />
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-header">
+					<div class="stat-icon-wrapper">🕒</div>
+				</div>
+				<div class="stat-label">Caixas Abertos</div>
+				<div class="stat-value">
+					<h:outputText value="#{cashierBean.countMissingCashier}" />
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-header">
+					<div class="stat-icon-wrapper">💵</div>
+				</div>
+				<div class="stat-label">Total Geral em Caixa</div>
+				<div class="stat-value">
+					<h:outputText value="#{cashierBean.totalCash}">
+						<f:convertNumber type="currency" currencySymbol="MT" />
+					</h:outputText>
+				</div>
+			</div>
+		</div>
+
+		<!-- ======= RESUMO ======= -->
+		<div class="table-summary">
+			Listando
+			<h:outputText value="#{cashierBean.listCashier.size()}" />
+			caixas no total —
+			<h:outputText value="#{cashierBean.countMissingCashier}" />
+			abertos e
+			<h:outputText value="#{cashierBean.closedCashiers}" />
+			fechados.
+		</div>
+
+		<!-- ======= TABELA ======= -->
+		<div class="table-container">
+			<p:dataTable id="tabela" value="#{cashierBean.listCashier}" var="c"
+				paginator="true" rows="10" responsiveLayout="scroll"
+				emptyMessage="Nenhum caixa encontrado"
+				styleClass="p-datatable-striped custom-datatable"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}  {RowsPerPageDropdown}"
+				currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords}"
+				rowsPerPageTemplate="5,10,20,50" sortMode="multiple">
+
+				<p:column headerText="ID" sortBy="#{c.id}"
+					style="width:10%; text-align:center;">
+					<h:outputText value="#{c.id}" />
+				</p:column>
+
+				<p:column headerText="Data" sortBy="#{c.date}">
+					<h:outputText value="#{c.date}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="Africa/Maputo" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Total" sortBy="#{c.totalOfDay}">
+					<h:outputText value="#{c.totalOfDay}">
+						<f:convertNumber type="currency" currencySymbol="MT" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Estado" sortBy="#{c.status}">
+					<h:outputText value="🟢 Aberto" rendered="#{c.status eq 'ABERTO'}"
+						style="color:#10b981;font-weight:600;" />
+					<h:outputText value="🔴 Fechado"
+						rendered="#{c.status eq 'FECHADO'}"
+						style="color:#ef4444;font-weight:600;" />
+					<h:outputText value="#{c.status}"
+						rendered="#{c.status ne 'ABERTO' and c.status ne 'FECHADO'}"
+						style="color:#4b5563;" />
+				</p:column>
+
+				<p:column headerText="Fechado em" sortBy="#{c.closeDate}">
+					<h:outputText value="#{c.closeDate}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="Africa/Maputo" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Fechado por" sortBy="#{c.user.username}">
+					<h:outputText value="#{c.user.username}" />
+				</p:column>
+
+			</p:dataTable>
+		</div>
+
+	</h:form>
+
+</ui:composition>
